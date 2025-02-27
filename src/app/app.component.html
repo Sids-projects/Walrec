@@ -1,17 +1,49 @@
 <main class="app-main">
   <nav class="app-nav">
     <header class="app-nav-head">
-      <img src="./assets/emoji-6.svg" alt="profile Picture" />
+      <span class="material-symbols-outlined"> face </span>
       <div>
         <p>John</p>
         <small>john&#64;gmail.com</small>
       </div>
     </header>
-    <div class="app-nav-body"></div>
-    <footer class="app-nav-footer"></footer>
+    <div class="app-nav-body">
+      <p>Menu</p>
+      <div>
+        <a routerLink="dashboard"
+          ><span class="material-symbols-outlined"> monitoring </span>
+          Dashboard</a
+        >
+        <a routerLink="expense"
+          ><span class="material-symbols-outlined"> paid </span> Expenses</a
+        >
+        <a routerLink="income"
+          ><span class="material-symbols-outlined">
+            account_balance_wallet
+          </span>
+          Income</a
+        >
+        <a routerLink="budget"
+          ><span class="material-symbols-outlined"> payments </span> Budgets</a
+        >
+        <a routerLink="report"
+          ><span class="material-symbols-outlined"> lab_profile </span>
+          Reports</a
+        >
+      </div>
+    </div>
+    <footer class="app-nav-footer">
+      <a routerLink="settings">
+        <span class="material-symbols-outlined"> settings </span>
+        Settings
+      </a>
+    </footer>
   </nav>
-  <section>
+
+  <section class="app-body">
     <header></header>
-    <div></div>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
   </section>
 </main>

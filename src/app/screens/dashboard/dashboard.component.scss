@@ -1,0 +1,39 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+
+  h3 {
+    grid-column: span 4;
+    font-weight: 700;
+    font-size: 2rem;
+  }
+
+  .chart-cubes {
+    border: 0.1rem solid #e3e5e2;
+    border-radius: 0.6rem;
+    padding: 1rem 1.6rem;
+
+    p {
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #848c93;
+      font-size: 1.6rem;
+    }
+
+    h4 {
+      text-align: center;
+      font-size: 2.4rem;
+      padding: 2rem 0;
+      font-weight: 600;
+    }
+  }
+
+  .chart-01,
+  .chart-02 {
+    border: 0.1rem solid #e3e5e2;
+    border-radius: 0.6rem;
+    padding: 1rem 1rem 0 0;
+    grid-column: span 2;
+  }
+}

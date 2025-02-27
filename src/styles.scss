@@ -33,7 +33,8 @@ body {
 .mat-typography h6,
 .mat-typography p,
 small,
-input {
+input,
+a {
   font-family: "Quicksand", serif;
   margin: 0;
   padding: 0;
@@ -42,29 +43,33 @@ input {
 .app-main {
   height: 100vh;
   display: grid;
-  grid-template-columns: 30rem 1fr;
+  grid-template-columns: 26rem 1fr;
 
   .app-nav {
     background-color: #f3f5f7;
     border-right: 0.1rem solid #e3e5e2;
     display: grid;
-    grid-template-rows: 5rem 1fr 8rem;
-    padding: 1.4rem;
+    grid-template-rows: 5rem 1fr 4rem;
+    padding: 1.4rem 1.6rem;
 
     .app-nav-head {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: flex-start;
-      gap: 0.8rem;
+      gap: 1rem;
 
-      img {
-        width: 3.2rem;
+      .material-symbols-outlined {
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.2rem !important;
       }
 
       div {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
+        gap: 0.6rem;
 
         p {
           font-weight: 700;
@@ -77,5 +82,54 @@ input {
         }
       }
     }
+
+    .app-nav-body {
+      p {
+        margin-top: 2.2rem;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        color: #848c93;
+        text-transform: uppercase;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 2.6rem;
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          text-decoration: none;
+          font-weight: 600;
+          color: #28313e;
+          gap: 0.8rem;
+        }
+      }
+    }
+
+    .app-nav-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-decoration: none;
+        font-weight: 600;
+        color: #28313e;
+        font-size: 1.4rem;
+        gap: 0.8rem;
+      }
+    }
+  }
+
+  .app-body {
+    padding: 2.4rem;
   }
 }
