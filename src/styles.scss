@@ -34,7 +34,9 @@ body {
 .mat-typography p,
 small,
 input,
-a {
+a,
+table,
+button {
   font-family: "Quicksand", serif;
   margin: 0;
   padding: 0;
@@ -127,9 +129,5 @@ a {
         gap: 0.8rem;
       }
     }
-  }
-
-  .app-body {
-    padding: 2.4rem;
   }
 }

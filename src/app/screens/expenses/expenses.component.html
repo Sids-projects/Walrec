@@ -1,1 +1,138 @@
-<p>expenses works!</p>
+<section class="expense">
+  <div class="expense-title">
+    <h3>Expenses</h3>
+    <button type="button" (click)="openPopupFn()">
+      <p>Add Expense</p>
+      <span class="material-symbols-outlined"> add_circle </span>
+    </button>
+  </div>
+  <header class="set-01-header">
+    <input type="search" placeholder="Search" />
+    <div class="btn-box">
+      <button type="button" [matMenuTriggerFor]="categoryMenu">
+        Category <span class="material-symbols-outlined"> expand_all </span>
+      </button>
+      <mat-menu #categoryMenu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+      <button type="button">
+        Range <span class="material-symbols-outlined"> expand_all </span>
+      </button>
+      <button type="button">
+        Method <span class="material-symbols-outlined"> expand_all </span>
+      </button>
+    </div>
+  </header>
+  <div class="set-01-body">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <p><span class="material-symbols-outlined"> numbers </span> Id</p>
+          </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> titlecase </span> Title
+            </p>
+          </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> attach_money </span>
+              Amount
+            </p>
+          </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Date
+            </p>
+          </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> credit_card </span>
+              Method
+            </p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of summaryData">
+          <td>
+            <p class="count" [matTooltip]="data.notes">
+              <span class="material-symbols-outlined"> error </span> 1
+            </p>
+          </td>
+          <td>{{ data.title }}</td>
+          <td>{{ data.amount }}</td>
+          <td>{{ data.date }}</td>
+          <td>{{ data.payment }}</td>
+        </tr>
+        <tr *ngIf="summaryData.length == 0">
+          <td colspan="5" class="nodata">No Data Found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="expense-popup-box" *ngIf="openPopup">
+  <div class="expense-popup">
+    <h3>Add Expense</h3>
+    <form class="grid-layout" [formGroup]="expenseForm">
+      <div>
+        <label for="title">Title</label>
+        <input
+          formControlName="title"
+          type="text"
+          name="title"
+          placeholder="e.g., Groceries, Rent"
+          required
+        />
+      </div>
+      <div>
+        <label for="amount">Amount</label>
+        <div class="flex-layout">
+          <select name="currency" id="currency" required>
+            <option value="rupee">&#8377;</option>
+          </select>
+          <input
+            formControlName="amount"
+            type="number"
+            name="amount"
+            placeholder="e.g., 5000"
+            required
+          />
+        </div>
+      </div>
+      <div>
+        <label for="date">Date of Expense</label>
+        <input formControlName="date" type="date" name="date" required />
+      </div>
+      <div>
+        <label for="payment">Payment Method</label>
+        <select formControlName="payment" name="payment" id="payment">
+          <option value="Cash">Cash</option>
+          <option value="Credit Card">Credit Card</option>
+          <option value="Debit Card">Debit Card</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Digital Wallet">Digital Wallet</option>
+        </select>
+      </div>
+      <div>
+        <label for="notes">Notes</label>
+        <textarea
+          formControlName="notes"
+          name="notes"
+          id="notes"
+          placeholder="Ex. From ABC Bank"
+        ></textarea>
+      </div>
+      <div class="btn-box">
+        <button type="button" (click)="closePopupFn()">Close</button>
+        <button type="reset">Rest</button>
+        <button type="button" (click)="formSubmit()">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

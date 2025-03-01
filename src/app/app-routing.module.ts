@@ -8,6 +8,7 @@ import { ReportsComponent } from './screens/reports/reports.component';
 import { SettingsComponent } from './screens/settings/settings.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'expense', component: ExpensesComponent },
   { path: 'income', component: IncomeComponent },
