@@ -7,22 +7,37 @@
     </button>
   </div>
   <header class="set-01-header">
-    <input type="search" placeholder="Search" />
-    <div class="btn-box">
-      <button type="button" [matMenuTriggerFor]="categoryMenu">
-        Category <span class="material-symbols-outlined"> expand_all </span>
-      </button>
-      <mat-menu #categoryMenu="matMenu">
-        <button mat-menu-item>Item 1</button>
-        <button mat-menu-item>Item 2</button>
-      </mat-menu>
-      <button type="button">
-        Range <span class="material-symbols-outlined"> expand_all </span>
-      </button>
-      <button type="button">
-        Method <span class="material-symbols-outlined"> expand_all </span>
-      </button>
-    </div>
+    <select name="payment" id="payment">
+      <option value="" disabled selected>Payment Method</option>
+      <option value="Cash">Cash</option>
+      <option value="Credit Card">Credit Card</option>
+      <option value="Debit Card">Debit Card</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Digital Wallet">Digital Wallet</option>
+    </select>
+    <input
+      type="text"
+      id="dateInput"
+      onfocus="this.type='date'"
+      onblur="if(!this.value) this.type='text'"
+      placeholder="From date"
+    />
+    <input
+      type="text"
+      id="dateInput"
+      onfocus="this.type='date'"
+      onblur="if(!this.value) this.type='text'"
+      placeholder="To date"
+    />
+    <button type="button">
+      <span class="material-symbols-outlined"> filter_alt </span>
+    </button>
+    <button type="button" (click)="sortFn()">
+      <span class="material-symbols-outlined"> swap_vert </span>
+    </button>
+    <button type="button" (click)="resetTable()">
+      <span class="material-symbols-outlined"> refresh </span>
+    </button>
   </header>
   <div class="set-01-body">
     <table>
@@ -57,10 +72,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of summaryData">
+        <tr *ngFor="let data of summaryData; let i = index">
           <td>
             <p class="count" [matTooltip]="data.notes">
-              <span class="material-symbols-outlined"> error </span> 1
+              <span class="material-symbols-outlined"> error </span>
+              {{ data.id }}
             </p>
           </td>
           <td>{{ data.title }}</td>
@@ -111,13 +127,16 @@
       </div>
       <div>
         <label for="payment">Payment Method</label>
-        <select formControlName="payment" name="payment" id="payment">
-          <option value="Cash">Cash</option>
-          <option value="Credit Card">Credit Card</option>
-          <option value="Debit Card">Debit Card</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-          <option value="Digital Wallet">Digital Wallet</option>
-        </select>
+        <div class="payment-method">
+          <select formControlName="payment" name="payment" id="payment">
+            <option *ngFor="let data of paymentMethod" [value]="data.value">
+              {{ data.display }}
+            </option>
+          </select>
+          <button type="button">
+            <span class="material-symbols-outlined"> add </span>
+          </button>
+        </div>
       </div>
       <div>
         <label for="notes">Notes</label>

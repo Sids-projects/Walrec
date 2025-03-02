@@ -1,0 +1,31 @@
+<section class="login">
+  <div class="set-01"></div>
+  <div class="set-02">
+    <form>
+      <h3>Create your account</h3>
+      <div>
+        <label for="firstName">First Name</label>
+        <input type="text" name="firstName" id="firstName" />
+      </div>
+      <div>
+        <label for="lastName">Last Name</label>
+        <input type="text" name="firstName" id="lastName" />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" />
+      </div>
+      <div>
+        <mat-checkbox class="example-margin"
+          >Agree with terms and conditions</mat-checkbox
+        >
+      </div>
+      <button type="button">Signup</button>
+      <p>Already have account? <a (click)="login()">Login</a></p>
+    </form>
+  </div>
+</section>

@@ -10,6 +10,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Components
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
@@ -18,6 +20,15 @@ import { IncomeComponent } from './screens/income/income.component';
 import { BudgetsComponent } from './screens/budgets/budgets.component';
 import { ReportsComponent } from './screens/reports/reports.component';
 import { SettingsComponent } from './screens/settings/settings.component';
+import { LoginComponent } from './screens/login/login.component';
+import { SignupComponent } from './screens/signup/signup.component';
+
+// Firebase
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -28,16 +39,35 @@ import { SettingsComponent } from './screens/settings/settings.component';
     BudgetsComponent,
     ReportsComponent,
     SettingsComponent,
+    LoginComponent,
+    SignupComponent,
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
     BrowserModule,
     AppRoutingModule,
     MatTooltipModule,
     MatButtonModule,
     ReactiveFormsModule,
     MatMenuModule,
+    FormsModule,
+    MatCheckboxModule,
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [
+    provideAnimationsAsync(),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'walrec-9e5d8',
+        appId: '1:820253293958:web:7b2d287619869552258007',
+        storageBucket: 'walrec-9e5d8.firebasestorage.app',
+        apiKey: 'AIzaSyAIu4UojLVj3N2i0hapseXIo0IRmS-04Ck',
+        authDomain: 'walrec-9e5d8.firebaseapp.com',
+        messagingSenderId: '820253293958',
+      })
+    ),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

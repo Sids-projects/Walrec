@@ -1,0 +1,28 @@
+<section class="login">
+  <div class="set-01"></div>
+  <div class="set-02">
+    <form>
+      <h3>Create an account</h3>
+      <div>
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="alex@gmail.com"
+        />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter a Strong Pin"
+        />
+      </div>
+      <button type="button" (click)="login()">Login</button>
+      <p>Forgot Password? <a (click)="signupRoute()">Signup</a></p>
+    </form>
+  </div>
+</section>

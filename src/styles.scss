@@ -33,13 +33,60 @@ body {
 .mat-typography h6,
 .mat-typography p,
 small,
+label,
 input,
 a,
 table,
-button {
+button,
+select {
   font-family: "Quicksand", serif;
   margin: 0;
   padding: 0;
+}
+
+.mdc-label {
+  margin-bottom: 0 !important;
+  font-weight: 500 !important;
+  font-size: 1.4rem !important;
+}
+
+label {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
+}
+
+input {
+  border: 0.1rem solid #d8d8d8;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #757575;
+}
+
+select {
+  border: 0.1rem solid #d8d8d8;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+  color: #757575;
+}
+
+textarea {
+  border: 0.1rem solid #d8d8d8;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #757575;
 }
 
 .app-main {

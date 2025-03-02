@@ -6,9 +6,13 @@ import { IncomeComponent } from './screens/income/income.component';
 import { BudgetsComponent } from './screens/budgets/budgets.component';
 import { ReportsComponent } from './screens/reports/reports.component';
 import { SettingsComponent } from './screens/settings/settings.component';
+import { LoginComponent } from './screens/login/login.component';
+import { SignupComponent } from './screens/signup/signup.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'expense', component: ExpensesComponent },
   { path: 'income', component: IncomeComponent },

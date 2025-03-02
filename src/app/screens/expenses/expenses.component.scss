@@ -35,15 +35,17 @@
   .set-01-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 1.4rem;
     margin-top: 3.4rem;
     margin-bottom: 2rem;
 
+    select,
     input {
       border: 0.1rem solid #d8d8d8;
-      min-width: 20rem;
+      min-width: 18rem;
       width: 100%;
-      max-width: 28rem;
+      max-width: 20rem;
       padding: 0.8rem;
       border-radius: 0.6rem;
       font-size: 1.4rem;
@@ -51,28 +53,15 @@
       color: #757575;
     }
 
-    .btn-box {
+    button {
+      border: 0.1rem solid #d8d8d8;
+      background-color: #f3f5f7;
+      color: #868686;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 1.4rem;
-
-      button {
-        border: 0.1rem solid #d8d8d8;
-        background-color: #ffffff;
-        font-weight: 500;
-        padding: 0.8rem 1.4rem;
-        border-radius: 0.6rem;
-        font-size: 1.4rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 2rem;
-
-        .material-symbols-outlined {
-          font-size: 1.8rem !important;
-        }
-      }
+      justify-content: center;
+      padding: 0.4rem;
+      border-radius: 0.6rem;
     }
   }
 
@@ -179,43 +168,22 @@
       gap: 1.4rem;
     }
 
-    label {
-      display: block;
-      font-size: 1.6rem;
-      margin-bottom: 0.8rem;
+    .payment-method {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 0.6rem;
-    }
+      gap: 1.4rem;
 
-    input {
-      border: 0.1rem solid #d8d8d8;
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 0.6rem;
-      font-size: 1.4rem;
-      font-weight: 500;
-      color: #757575;
-    }
-
-    select {
-      border: 0.1rem solid #d8d8d8;
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 0.6rem;
-      font-size: 1.4rem;
-      color: #757575;
-    }
-
-    textarea {
-      border: 0.1rem solid #d8d8d8;
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 0.6rem;
-      font-size: 1.4rem;
-      font-weight: 500;
-      color: #757575;
+      button {
+        border: 0.1rem solid #d8d8d8;
+        background-color: #f3f5f7;
+        color: #868686;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem;
+        border-radius: 0.6rem;
+      }
     }
 
     .btn-box {
