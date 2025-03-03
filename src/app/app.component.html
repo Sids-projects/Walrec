@@ -1,5 +1,8 @@
-<main class="app-main">
-  <nav class="app-nav">
+<main
+  class="app-main"
+  [ngStyle]="{ 'grid-template-columns': isLoggedIn ? '26rem 1fr' : '1fr' }"
+>
+  <nav class="app-nav" *ngIf="isLoggedIn">
     <header class="app-nav-head">
       <span class="material-symbols-outlined"> face </span>
       <div>
@@ -33,6 +36,10 @@
       </div>
     </div>
     <footer class="app-nav-footer">
+      <a (click)="logout()">
+        <span class="material-symbols-outlined"> logout </span>
+        Logout
+      </a>
       <a routerLink="settings">
         <span class="material-symbols-outlined"> settings </span>
         Settings

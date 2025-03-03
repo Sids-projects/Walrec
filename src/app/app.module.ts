@@ -29,6 +29,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { ForgotPasswordComponent } from './screens/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './screens/verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
     SettingsComponent,
     LoginComponent,
     SignupComponent,
+    ForgotPasswordComponent,
+    VerifyEmailComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
