@@ -26,6 +26,9 @@
         />
       </div>
       <button type="submit">Login</button>
+      <button (click)="signinWithGoogle()" type="button">
+        Login with Google
+      </button>
       <p>Don't have an account? <a (click)="signupRoute()">Signup</a></p>
       <p>Forgot Password? <a (click)="forgotPassword()">Reset</a></p>
     </form>

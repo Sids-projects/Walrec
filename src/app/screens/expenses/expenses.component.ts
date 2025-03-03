@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DataService } from '../../shared/data.service';
+import { Expense } from '../../model/expense';
+import { AuthService } from '../../shared/auth.service';
 
 @Component({
   selector: 'app-expenses',
@@ -8,11 +11,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class ExpensesComponent {
   expenseForm!: FormGroup;
-  summaryData: any = [];
   openPopup: boolean = false;
   originalData: any = [];
   isAscending: boolean = true;
-
+  // Payment Method
   paymentMethod: { value: string; display: string }[] = [
     { value: 'Cash', display: 'Cash' },
     { value: 'Credit Card', display: 'Credit Card' },
@@ -20,8 +22,17 @@ export class ExpensesComponent {
     { value: 'Bank Transfer', display: 'Bank Transfer' },
     { value: 'Digital Wallet', display: 'Digital Wallet' },
   ];
+  expenseList: Expense[] = [];
+  expenseObj: Expense = {
+    id: '',
+    title: '',
+    amount: 0,
+    date: '',
+    payment: 0,
+    notes: '',
+  };
 
-  constructor() {}
+  constructor(private dataService: DataService, private auth: AuthService) {}
 
   ngOnInit() {
     this.expenseForm = new FormGroup({
@@ -32,9 +43,7 @@ export class ExpensesComponent {
       notes: new FormControl(''),
     });
 
-    this.summaryData = [];
-
-    this.originalData = [...this.summaryData];
+    this.getAllExpense();
   }
 
   openPopupFn() {
@@ -45,25 +54,53 @@ export class ExpensesComponent {
     this.openPopup = false;
   }
 
-  formSubmit() {
-    const newExpense = {
-      ...this.expenseForm.value,
-      id: this.summaryData.length + 1,
-    };
-    this.summaryData.push(newExpense);
+  getAllExpense() {
+    this.dataService.getAllExpense().subscribe(
+      (res) => {
+        this.expenseList = res.map((e: any) => {
+          const data = e.payload.doc.data();
+          data.id = e.payload.doc.id;
+          return data;
+        });
+      },
+      (err) => {
+        alert('Error while fetching data');
+      }
+    );
+  }
+
+  resetForm() {
     this.expenseForm.reset();
-    this.openPopup = false;
   }
 
-  sortFn() {
-    this.summaryData.sort((a: any, b: any) => {
-      return this.isAscending ? a.amount - b.amount : b.amount - a.amount;
-    });
+  addExpense() {
+    if (
+      this.expenseForm.value.title == '' ||
+      this.expenseForm.value.amount == '' ||
+      this.expenseForm.value.date == '' ||
+      this.expenseForm.value.payment == ''
+    ) {
+      alert('All the required fields should be filled');
+      return;
+    }
 
-    this.isAscending = !this.isAscending;
+    this.expenseObj.id = '';
+    this.expenseObj.title = this.expenseForm.value.title;
+    this.expenseObj.amount = this.expenseForm.value.amount;
+    this.expenseObj.date = this.expenseForm.value.date;
+    this.expenseObj.payment = this.expenseForm.value.payment;
+    this.expenseObj.notes = this.expenseForm.value.notes;
+
+    this.dataService.addExpense(this.expenseObj);
+    this.resetForm();
+    this.closePopupFn();
   }
 
-  resetTable() {
-    this.summaryData = [...this.originalData];
+  updateExpense() {}
+
+  deleteExpense(expense: Expense) {
+    if (window.confirm('Are you sure? You want to delete ' + expense.title)) {
+      this.dataService.deleteExpense(expense);
+    }
   }
 }

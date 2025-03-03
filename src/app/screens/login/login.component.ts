@@ -43,4 +43,8 @@ export class LoginComponent {
   forgotPassword() {
     this.router.navigate(['forgot']);
   }
+
+  signinWithGoogle() {
+    this.auth.googleSignIn();
+  }
 }
