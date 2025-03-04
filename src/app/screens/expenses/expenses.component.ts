@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { Expense } from '../../model/expense';
 import { AuthService } from '../../shared/auth.service';
+import { map } from 'rxjs/operators';
+import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-expenses',
@@ -55,18 +57,26 @@ export class ExpensesComponent {
   }
 
   getAllExpense() {
-    this.dataService.getAllExpense().subscribe(
-      (res) => {
-        this.expenseList = res.map((e: any) => {
-          const data = e.payload.doc.data();
-          data.id = e.payload.doc.id;
-          return data;
-        });
-      },
-      (err) => {
-        alert('Error while fetching data');
-      }
-    );
+    this.dataService
+      .getAllExpense()
+      .pipe(
+        map((res: DocumentChangeAction<any>[]) =>
+          res.map((e) => {
+            const data = e.payload.doc.data();
+            return { id: e.payload.doc.id, ...data };
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          this.expenseList = res;
+          console.log(this.expenseList);
+        },
+        error: (err) => {
+          alert('Error while fetching data');
+          console.error(err);
+        },
+      });
   }
 
   resetForm() {
@@ -91,12 +101,17 @@ export class ExpensesComponent {
     this.expenseObj.payment = this.expenseForm.value.payment;
     this.expenseObj.notes = this.expenseForm.value.notes;
 
-    this.dataService.addExpense(this.expenseObj);
-    this.resetForm();
-    this.closePopupFn();
+    this.dataService
+      .addExpense(this.expenseObj)
+      .then(() => {
+        this.getAllExpense(); // Refresh the table after adding
+        this.resetForm();
+        this.closePopupFn();
+      })
+      .catch((error) => {
+        alert('Error adding expense: ' + error.message);
+      });
   }
-
-  updateExpense() {}
 
   deleteExpense(expense: Expense) {
     if (window.confirm('Are you sure? You want to delete ' + expense.title)) {

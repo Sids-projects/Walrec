@@ -1,5 +1,10 @@
 import { Component, AfterViewInit } from '@angular/core';
 import ApexCharts from 'apexcharts';
+import { DataService } from '../../shared/data.service';
+import { AuthService } from '../../shared/auth.service';
+import { map } from 'rxjs/operators';
+import { DocumentChangeAction } from '@angular/fire/compat/firestore';
+import { Expense } from '../../model/expense';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +12,12 @@ import ApexCharts from 'apexcharts';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements AfterViewInit {
+  expenseList: Expense[] = [];
+  expenseAmount: number = 0;
+
+  lineChart!: ApexCharts;
+  barChart!: ApexCharts;
+
   lineOptions: any = {
     chart: {
       type: 'line',
@@ -14,12 +25,12 @@ export class DashboardComponent implements AfterViewInit {
     },
     series: [
       {
-        name: 'Sales',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+        name: 'Expenses',
+        data: [], // Will be updated dynamically
       },
     ],
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+      categories: [], // Will be updated dynamically
     },
     stroke: {
       curve: 'smooth',
@@ -27,50 +38,75 @@ export class DashboardComponent implements AfterViewInit {
     markers: {
       size: 5,
     },
-    // title: {
-    //   text: 'Sales Growth Over Years',
-    //   align: 'center',
-    // },
   };
 
-  barOptions: any = {
-    chart: {
-      type: 'bar',
-      height: 350,
-    },
-    series: [
-      {
-        name: 'Revenue',
-        data: [10, 30, 45, 60, 75, 90, 100, 120, 150],
-      },
-    ],
-    xaxis: {
-      categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018],
-    },
-    colors: ['#008FFB'],
-    // title: {
-    //   text: 'Revenue by Year',
-    //   align: 'center',
-    // },
-  };
+  constructor(private dataService: DataService, private auth: AuthService) {}
 
-  constructor() {}
+  ngOnInit() {
+    this.getAllExpense();
+  }
+
+  getAllExpense() {
+    this.dataService
+      .getAllExpense()
+      .pipe(
+        map((res: DocumentChangeAction<any>[]) =>
+          res.map((e) => {
+            const data = e.payload.doc.data();
+            return { id: e.payload.doc.id, ...data };
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          this.expenseList = res;
+          this.updateCharts();
+          this.updateExpenseCube();
+        },
+        error: (err) => {
+          alert('Error while fetching data');
+          console.error(err);
+        },
+      });
+  }
+
+  updateCharts() {
+    const expenseAmounts = this.expenseList.map((expense) => expense.amount);
+    const expenseDates = this.expenseList.map((expense) => expense.date);
+
+    this.lineOptions.series = [{ name: 'Expenses', data: expenseAmounts }];
+    this.lineOptions.xaxis.categories = expenseDates;
+
+    this.renderCharts();
+  }
 
   ngAfterViewInit() {
+    this.renderCharts();
+  }
+
+  renderCharts() {
     const lineElement = document.querySelector('#lineChart');
     if (lineElement) {
-      const lineChart = new ApexCharts(lineElement, this.lineOptions);
-      lineChart.render();
+      if (this.lineChart) {
+        this.lineChart.updateOptions(this.lineOptions);
+      } else {
+        this.lineChart = new ApexCharts(lineElement, this.lineOptions);
+        this.lineChart.render();
+      }
     } else {
       console.error('Line chart element not found in the DOM');
     }
+  }
 
-    const barElement = document.querySelector('#barChart');
-    if (barElement) {
-      const barChart = new ApexCharts(barElement, this.barOptions);
-      barChart.render();
-    } else {
-      console.error('Bar chart element not found in the DOM');
+  updateExpenseCube() {
+    const amount: any = [];
+    for (let i = 0; i < this.expenseList.length; i++) {
+      amount.push(this.expenseList[i].amount);
+    }
+
+    this.expenseAmount = amount.reduce(addFn, 0);
+    function addFn(add: any, a: any) {
+      return add + a;
     }
   }
 }
