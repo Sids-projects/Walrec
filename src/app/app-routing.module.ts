@@ -11,6 +11,7 @@ import { LoginComponent } from './screens/login/login.component';
 import { SignupComponent } from './screens/signup/signup.component';
 import { ForgotPasswordComponent } from './screens/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './screens/verify-email/verify-email.component';
+import { ProfileComponent } from './screens/profile/profile.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'budget', component: BudgetsComponent, canActivate: [authGuard] },
   { path: 'report', component: ReportsComponent, canActivate: [authGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-root',
@@ -10,19 +10,29 @@ import { AuthService } from './shared/auth.service';
 export class AppComponent {
   title = 'walrec';
   isLoggedIn = false;
+  userEmail: string = '';
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private auth: AuthService, private fireauth: AngularFireAuth) {}
 
   ngOnInit() {
     this.isLoggedIn = !!localStorage.getItem('token');
+    this.getUserEmail();
   }
 
   logout() {
     this.auth.logout();
-    this.isLoggedIn = false; // Update UI after logout
+    this.isLoggedIn = false;
   }
 
   checkLoginStatus() {
-    this.isLoggedIn = !!localStorage.getItem('token'); // Ensure dynamic update
+    this.isLoggedIn = !!localStorage.getItem('token');
+  }
+
+  getUserEmail() {
+    this.fireauth.authState.subscribe((user) => {
+      if (user) {
+        this.userEmail = user.email ?? '';
+      }
+    });
   }
 }

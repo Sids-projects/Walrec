@@ -1,14 +1,21 @@
 <main
   class="app-main"
-  [ngStyle]="{ 'grid-template-columns': isLoggedIn ? '26rem 1fr' : '1fr' }"
+  [ngClass]="isLoggedIn ? 'app-main-withNav' : 'app-main-noNav'"
 >
   <nav class="app-nav" *ngIf="isLoggedIn">
     <header class="app-nav-head">
-      <span class="material-symbols-outlined"> face </span>
-      <div>
-        <p>John</p>
-        <small>john&#64;gmail.com</small>
+      <div class="user-info">
+        <span class="material-symbols-outlined"> face </span>
+        <div class="user-name">
+          <p>{{ userEmail.split("@")[0] }}</p>
+          <small [matTooltip]="userEmail" class="truncate-email">{{
+            userEmail
+          }}</small>
+        </div>
       </div>
+      <a routerLink="profile" class="edit-icon"
+        ><span class="material-symbols-outlined"> info </span>
+      </a>
     </header>
     <div class="app-nav-body">
       <p>Menu</p>

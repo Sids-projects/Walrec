@@ -1,0 +1,93 @@
+<section class="profile">
+  <header>
+    <h3>Profile</h3>
+    <span class="material-symbols-outlined"> edit </span>
+  </header>
+  <form
+    class="profile-fields"
+    [formGroup]="profileForm"
+    (ngSubmit)="updateAccount()"
+  >
+    <div class="profile-pic-box">
+      <div class="profile-pic grid-expand">
+        <span class="material-symbols-outlined">face</span>
+      </div>
+      <div>
+        <h3>{{ userEmail.split("@")[0] }}</h3>
+        <p>{{ userEmail }}</p>
+      </div>
+    </div>
+    <div class="grid-expand">
+      <h3>Change Avatar</h3>
+      <div class="profile-faces">
+        <div *ngFor="let data of profilePic">
+          <label [for]="data">
+            <span class="material-symbols-outlined"> {{ data }} </span>
+          </label>
+          <input
+            type="radio"
+            formControlName="profilePic"
+            [value]="data"
+            name="profilePic"
+            [id]="data"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="profile-field-imp">
+      <label for="firstName">First Name</label>
+      <input
+        type="text"
+        formControlName="firstName"
+        name="firstName"
+        id="firstName"
+        placeholder="ex. Alex"
+      />
+    </div>
+    <div class="profile-field-imp">
+      <label for="lastName">Last Name</label>
+      <input
+        type="text"
+        formControlName="lastName"
+        name="lastName"
+        id="lastName"
+        placeholder="ex. Brat"
+      />
+    </div>
+    <div class="profile-field-imp">
+      <label for="userEmail">Email</label>
+      <input
+        formControlName="userEmail"
+        type="email"
+        name="userEmail"
+        id="userEmail"
+        placeholder="ex. alex@gmail.com"
+      />
+    </div>
+    <div class="gender-field">
+      <div>
+        <label for="genderMale">Male</label>
+        <input
+          formControlName="gender"
+          type="radio"
+          name="gender"
+          id="genderMale"
+          value="male"
+        />
+      </div>
+      <div>
+        <label for="genderFemale">Female</label>
+        <input
+          formControlName="gender"
+          type="radio"
+          name="gender"
+          id="genderFemale"
+          value="female"
+        />
+      </div>
+    </div>
+    <div class="profile-btn grid-expand">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</section>

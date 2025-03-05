@@ -5,6 +5,7 @@ import { Expense } from '../model/expense';
 import { switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
+import { Profile } from '../model/profile';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,6 @@ export class DataService {
     private fireauth: AngularFireAuth
   ) {}
 
-  // Add Expense - Now each expense will be stored under the user's ID
   addExpense(expense: Expense) {
     return this.fireauth.currentUser.then((user) => {
       if (user) {
@@ -41,7 +41,6 @@ export class DataService {
     );
   }
 
-  // Delete Expense - Delete only from the logged-in user's collection
   deleteExpense(expense: Expense) {
     return this.fireauth.currentUser.then((user) => {
       if (user) {
@@ -54,7 +53,6 @@ export class DataService {
     });
   }
 
-  // Update Expense - Updates the existing document instead of deleting and re-adding
   updateExpense(expense: Expense) {
     return this.fireauth.currentUser.then((user) => {
       if (user) {
@@ -65,5 +63,30 @@ export class DataService {
         throw new Error('User not logged in');
       }
     });
+  }
+
+  updateProfile(profile: Profile) {
+    return this.fireauth.currentUser.then((user) => {
+      if (user) {
+        profile.id = this.afs.createId();
+        return this.afs.collection(`/Users/${user.uid}/Profile`).add(profile);
+      } else {
+        throw new Error('User Profile not updated');
+      }
+    });
+  }
+
+  getProfileData(): Observable<DocumentChangeAction<any>[]> {
+    return this.fireauth.authState.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.afs
+            .collection(`/Users/${user.uid}/Profile`)
+            .snapshotChanges();
+        } else {
+          return of();
+        }
+      })
+    );
   }
 }

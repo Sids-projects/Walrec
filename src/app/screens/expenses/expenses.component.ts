@@ -104,7 +104,7 @@ export class ExpensesComponent {
     this.dataService
       .addExpense(this.expenseObj)
       .then(() => {
-        this.getAllExpense(); // Refresh the table after adding
+        this.getAllExpense();
         this.resetForm();
         this.closePopupFn();
       })

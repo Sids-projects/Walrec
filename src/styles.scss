@@ -89,6 +89,22 @@ textarea {
   color: #757575;
 }
 
+.truncate-email {
+  display: inline-block;
+  max-width: 18ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-main-withNav {
+  grid-template-columns: 28rem calc(100vw - 28rem);
+}
+
+.app-main-noNav {
+  grid-template-columns: 100vw;
+}
+
 .app-main {
   height: 100vh;
   display: grid;
@@ -103,30 +119,54 @@ textarea {
     .app-nav-head {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: space-between;
       gap: 1rem;
 
-      .material-symbols-outlined {
-        font-size: 3rem;
+      .user-info {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+
+        .material-symbols-outlined {
+          font-size: 3rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 0.2rem !important;
+        }
+
+        .user-name {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+
+          p {
+            font-weight: 700;
+            line-height: 1.4rem;
+          }
+
+          small {
+            font-weight: 600;
+            line-height: 1rem;
+          }
+        }
+      }
+
+      .edit-icon {
+        border: 0.1rem solid #e3e5e2;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 0.2rem !important;
-      }
+        border-radius: 0.4rem;
+        text-decoration: none;
+        overflow: hidden;
 
-      div {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-
-        p {
-          font-weight: 700;
-          line-height: 1.4rem;
-        }
-
-        small {
-          font-weight: 600;
-          line-height: 1rem;
+        .material-symbols-outlined {
+          font-size: 1.8rem;
+          color: #000000;
+          padding: 0.4rem;
+          background-color: #ffffff;
         }
       }
     }
@@ -178,5 +218,9 @@ textarea {
         cursor: pointer;
       }
     }
+  }
+
+  .app-body {
+    overflow-y: auto;
   }
 }
