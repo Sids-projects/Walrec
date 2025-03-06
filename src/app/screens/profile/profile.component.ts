@@ -85,7 +85,18 @@ export class ProfileComponent {
       .subscribe({
         next: (res) => {
           this.profileList = res;
-          console.log(this.profileList);
+          if (this.profileList.length > 0) {
+            const profileData = this.profileList[0];
+
+            // Patch values into the form
+            this.profileForm.patchValue({
+              profilePic: profileData.profilePic,
+              firstName: profileData.firstName,
+              lastName: profileData.lastName,
+              userEmail: profileData.userEmail,
+              gender: profileData.gender,
+            });
+          }
         },
         error: (err) => {
           alert('Error while fetching data');
@@ -121,5 +132,28 @@ export class ProfileComponent {
       .catch((error) => {
         alert('Error adding expense: ' + error.message);
       });
+  }
+
+  editProfileBtn() {
+    if (this.profileList.length != 0) {
+      this.profileObj = { ...this.profileList[0] }; // Ensure the profile ID is correct
+    }
+
+    if (this.profileObj.id) {
+      this.profileObj.profilePic = this.profileForm.value.profilePic;
+      this.profileObj.firstName = this.profileForm.value.firstName;
+      this.profileObj.lastName = this.profileForm.value.lastName;
+      this.profileObj.userEmail = this.userEmail;
+      this.profileObj.gender = this.profileForm.value.gender;
+
+      this.dataService
+        .editProfile(this.profileObj)
+        .then(() => {
+          this.getProfileData();
+        })
+        .catch((error) => {
+          alert('Error updating profile: ' + error.message);
+        });
+    }
   }
 }

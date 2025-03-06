@@ -66,7 +66,6 @@ export class DataService {
   }
 
   editExpense(expense: Expense) {
-    console.log('Update Expense Triggered');
     return this.fireauth.currentUser.then((user) => {
       if (user) {
         return this.afs
@@ -112,5 +111,29 @@ export class DataService {
         }
       })
     );
+  }
+
+  editProfile(profile: Profile) {
+    return this.fireauth.currentUser.then((user) => {
+      console.log('user', user);
+      if (user) {
+        return this.afs
+          .collection(`/Users/${user.uid}/Profile`)
+          .ref.where('id', '==', profile.id)
+          .get()
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              const docId = querySnapshot.docs[0].id; // Get actual Firestore document ID
+              return this.afs
+                .doc(`/Users/${user.uid}/Profile/${docId}`)
+                .update(profile);
+            } else {
+              throw new Error('Profile not found');
+            }
+          });
+      } else {
+        throw new Error('User not logged in');
+      }
+    });
   }
 }

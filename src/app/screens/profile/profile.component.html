@@ -1,16 +1,13 @@
 <section class="profile">
   <header>
     <h3>Profile</h3>
-    <span class="material-symbols-outlined"> edit </span>
   </header>
-  <form
-    class="profile-fields"
-    [formGroup]="profileForm"
-    (ngSubmit)="updateAccount()"
-  >
+  <form class="profile-fields" [formGroup]="profileForm">
     <div class="profile-pic-box">
       <div class="profile-pic grid-expand">
-        <span class="material-symbols-outlined">face</span>
+        <span class="material-symbols-outlined">{{
+          profileList.length == 0 ? "face" : profileList[0].profilePic
+        }}</span>
       </div>
       <div>
         <h3>{{ userEmail.split("@")[0] }}</h3>
@@ -41,7 +38,6 @@
         formControlName="firstName"
         name="firstName"
         id="firstName"
-        placeholder="ex. Alex"
       />
     </div>
     <div class="profile-field-imp">
@@ -51,7 +47,6 @@
         formControlName="lastName"
         name="lastName"
         id="lastName"
-        placeholder="ex. Brat"
       />
     </div>
     <div class="profile-field-imp">
@@ -61,7 +56,6 @@
         type="email"
         name="userEmail"
         id="userEmail"
-        placeholder="ex. alex@gmail.com"
       />
     </div>
     <div class="gender-field">
@@ -87,7 +81,20 @@
       </div>
     </div>
     <div class="profile-btn grid-expand">
-      <button type="submit">Submit</button>
+      <button
+        type="button"
+        *ngIf="profileList.length == 0"
+        (click)="updateAccount()"
+      >
+        Submit
+      </button>
+      <button
+        type="button"
+        *ngIf="profileList.length != 0"
+        (click)="editProfileBtn()"
+      >
+        Update
+      </button>
     </div>
   </form>
 </section>

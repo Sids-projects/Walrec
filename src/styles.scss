@@ -154,7 +154,6 @@ textarea {
       }
 
       .edit-icon {
-        border: 0.1rem solid #e3e5e2;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -163,10 +162,8 @@ textarea {
         overflow: hidden;
 
         .material-symbols-outlined {
-          font-size: 1.8rem;
+          font-size: 2.4rem;
           color: #000000;
-          padding: 0.4rem;
-          background-color: #ffffff;
         }
       }
     }
