@@ -114,7 +114,7 @@ export class ProfileComponent {
     this.profileObj.gender = this.profileForm.value.gender;
 
     this.dataService
-      .updateProfile(this.profileObj)
+      .createProfile(this.profileObj)
       .then(() => {
         this.getProfileData();
       })

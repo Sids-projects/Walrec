@@ -67,6 +67,9 @@
             </p>
           </th>
           <th>
+            <p><span class="material-symbols-outlined"> edit </span> Edit</p>
+          </th>
+          <th>
             <p>
               <span class="material-symbols-outlined"> delete </span>
               Delete
@@ -87,16 +90,28 @@
           <td>{{ data.date }}</td>
           <td>{{ data.payment }}</td>
           <td>
-            <span
-              class="material-symbols-outlined"
-              (click)="deleteExpense(data)"
-            >
-              delete
-            </span>
+            <p class="td-btns">
+              <span
+                class="material-symbols-outlined"
+                (click)="editExpense(data)"
+              >
+                edit
+              </span>
+            </p>
+          </td>
+          <td>
+            <p class="td-btns">
+              <span
+                class="material-symbols-outlined"
+                (click)="deleteExpense(data)"
+              >
+                delete
+              </span>
+            </p>
           </td>
         </tr>
         <tr *ngIf="expenseList.length == 0">
-          <td colspan="6" class="nodata">No Data Found</td>
+          <td colspan="7" class="nodata">No Data Found</td>
         </tr>
       </tbody>
     </table>
@@ -161,7 +176,12 @@
       <div class="btn-box">
         <button type="button" (click)="closePopupFn()">Close</button>
         <button type="reset">Rest</button>
-        <button type="button" (click)="addExpense()">Submit</button>
+        <button type="button" (click)="addExpense()" *ngIf="showSubmit">
+          Submit
+        </button>
+        <button type="button" (click)="updateExpense()" *ngIf="showUpdate">
+          Update
+        </button>
       </div>
     </form>
   </div>

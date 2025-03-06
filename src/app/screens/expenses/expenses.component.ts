@@ -16,6 +16,8 @@ export class ExpensesComponent {
   openPopup: boolean = false;
   originalData: any = [];
   isAscending: boolean = true;
+  showUpdate: boolean = false;
+  showSubmit: boolean = true;
   // Payment Method
   paymentMethod: { value: string; display: string }[] = [
     { value: 'Cash', display: 'Cash' },
@@ -49,6 +51,9 @@ export class ExpensesComponent {
   }
 
   openPopupFn() {
+    this.showSubmit = true;
+    this.showUpdate = false;
+
     this.openPopup = true;
   }
 
@@ -80,7 +85,22 @@ export class ExpensesComponent {
   }
 
   resetForm() {
-    this.expenseForm.reset();
+    this.expenseForm.reset({
+      title: '',
+      amount: 0,
+      date: '',
+      payment: 'Cash',
+      notes: '',
+    });
+
+    this.expenseObj = {
+      id: '',
+      title: '',
+      amount: 0,
+      date: '',
+      payment: 0,
+      notes: '',
+    };
   }
 
   addExpense() {
@@ -113,9 +133,56 @@ export class ExpensesComponent {
       });
   }
 
+  editExpense(expense: Expense) {
+    this.expenseObj = { ...expense }; // Clone the expense object
+    console.log('Editing Expense:', this.expenseObj.id);
+
+    // Populate the form before opening the popup
+    this.expenseForm.setValue({
+      title: expense.title,
+      amount: expense.amount,
+      date: expense.date,
+      payment: expense.payment,
+      notes: expense.notes,
+    });
+
+    this.openPopupFn();
+
+    this.showSubmit = false;
+    this.showUpdate = true;
+  }
+
+  updateExpense() {
+    if (this.expenseObj.id) {
+      this.expenseObj.title = this.expenseForm.value.title;
+      this.expenseObj.amount = this.expenseForm.value.amount;
+      this.expenseObj.date = this.expenseForm.value.date;
+      this.expenseObj.payment = this.expenseForm.value.payment;
+      this.expenseObj.notes = this.expenseForm.value.notes;
+
+      this.dataService
+        .editExpense(this.expenseObj)
+        .then(() => {
+          this.getAllExpense(); // Refresh expense list
+          this.resetForm();
+          this.closePopupFn(); // Close the popup after updating
+        })
+        .catch((error) => {
+          alert('Error updating expense: ' + error.message);
+        });
+    }
+  }
+
   deleteExpense(expense: Expense) {
     if (window.confirm('Are you sure? You want to delete ' + expense.title)) {
-      this.dataService.deleteExpense(expense);
+      this.dataService
+        .deleteExpense(expense)
+        .then(() => {
+          this.getAllExpense(); // Refresh list after deletion
+        })
+        .catch((error) => {
+          alert('Error deleting expense: ' + error.message);
+        });
     }
   }
 }

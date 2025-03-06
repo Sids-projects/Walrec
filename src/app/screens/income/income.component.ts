@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DataService } from '../../shared/data.service';
+import { Expense } from '../../model/expense';
+import { AuthService } from '../../shared/auth.service';
+import { map } from 'rxjs/operators';
+import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-income',
@@ -8,11 +13,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class IncomeComponent {
   expenseForm!: FormGroup;
-  summaryData: any = [];
   openPopup: boolean = false;
   originalData: any = [];
   isAscending: boolean = true;
-
+  showUpdate: boolean = false;
+  showSubmit: boolean = true;
+  // Payment Method
   paymentMethod: { value: string; display: string }[] = [
     { value: 'Cash', display: 'Cash' },
     { value: 'Credit Card', display: 'Credit Card' },
@@ -20,8 +26,17 @@ export class IncomeComponent {
     { value: 'Bank Transfer', display: 'Bank Transfer' },
     { value: 'Digital Wallet', display: 'Digital Wallet' },
   ];
+  expenseList: Expense[] = [];
+  expenseObj: Expense = {
+    id: '',
+    title: '',
+    amount: 0,
+    date: '',
+    payment: 0,
+    notes: '',
+  };
 
-  constructor() {}
+  constructor(private dataService: DataService, private auth: AuthService) {}
 
   ngOnInit() {
     this.expenseForm = new FormGroup({
@@ -32,9 +47,7 @@ export class IncomeComponent {
       notes: new FormControl(''),
     });
 
-    this.summaryData = [];
-
-    this.originalData = [...this.summaryData];
+    this.getAllExpense();
   }
 
   openPopupFn() {
@@ -45,25 +58,133 @@ export class IncomeComponent {
     this.openPopup = false;
   }
 
-  formSubmit() {
-    const newExpense = {
-      ...this.expenseForm.value,
-      id: this.summaryData.length + 1,
-    };
-    this.summaryData.push(newExpense);
-    this.expenseForm.reset();
-    this.openPopup = false;
+  getAllExpense() {
+    this.dataService
+      .getAllExpense()
+      .pipe(
+        map((res: DocumentChangeAction<any>[]) =>
+          res.map((e) => {
+            const data = e.payload.doc.data();
+            return { id: e.payload.doc.id, ...data };
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          this.expenseList = res;
+          console.log(this.expenseList);
+        },
+        error: (err) => {
+          alert('Error while fetching data');
+          console.error(err);
+        },
+      });
   }
 
-  sortFn() {
-    this.summaryData.sort((a: any, b: any) => {
-      return this.isAscending ? a.amount - b.amount : b.amount - a.amount;
+  resetForm() {
+    this.expenseForm.reset({
+      title: '',
+      amount: 0,
+      date: '',
+      payment: 'Cash',
+      notes: '',
     });
 
-    this.isAscending = !this.isAscending;
+    this.expenseObj = {
+      id: '',
+      title: '',
+      amount: 0,
+      date: '',
+      payment: 0,
+      notes: '',
+    };
   }
 
-  resetTable() {
-    this.summaryData = [...this.originalData];
+  addExpense() {
+    this.showSubmit = true;
+    this.showUpdate = false;
+
+    if (
+      this.expenseForm.value.title == '' ||
+      this.expenseForm.value.amount == '' ||
+      this.expenseForm.value.date == '' ||
+      this.expenseForm.value.payment == ''
+    ) {
+      alert('All the required fields should be filled');
+      return;
+    }
+
+    this.expenseObj.id = '';
+    this.expenseObj.title = this.expenseForm.value.title;
+    this.expenseObj.amount = this.expenseForm.value.amount;
+    this.expenseObj.date = this.expenseForm.value.date;
+    this.expenseObj.payment = this.expenseForm.value.payment;
+    this.expenseObj.notes = this.expenseForm.value.notes;
+
+    this.dataService
+      .addExpense(this.expenseObj)
+      .then(() => {
+        this.getAllExpense();
+        this.resetForm();
+        this.closePopupFn();
+      })
+      .catch((error) => {
+        alert('Error adding expense: ' + error.message);
+      });
+  }
+
+  editExpense(expense: Expense) {
+    this.showSubmit = false;
+    this.showUpdate = true;
+
+    this.expenseObj = { ...expense }; // Clone the expense object
+    console.log('Editing Expense:', this.expenseObj.id);
+
+    // Populate the form before opening the popup
+    this.expenseForm.setValue({
+      title: expense.title,
+      amount: expense.amount,
+      date: expense.date,
+      payment: expense.payment,
+      notes: expense.notes,
+    });
+
+    this.openPopupFn(); // Open the popup so the user can edit
+
+    // Wait for the user to submit the form before updating
+  }
+
+  updateExpense() {
+    if (this.expenseObj.id) {
+      this.expenseObj.title = this.expenseForm.value.title;
+      this.expenseObj.amount = this.expenseForm.value.amount;
+      this.expenseObj.date = this.expenseForm.value.date;
+      this.expenseObj.payment = this.expenseForm.value.payment;
+      this.expenseObj.notes = this.expenseForm.value.notes;
+
+      this.dataService
+        .editExpense(this.expenseObj)
+        .then(() => {
+          this.getAllExpense(); // Refresh expense list
+          this.resetForm();
+          this.closePopupFn(); // Close the popup after updating
+        })
+        .catch((error) => {
+          alert('Error updating expense: ' + error.message);
+        });
+    }
+  }
+
+  deleteExpense(expense: Expense) {
+    if (window.confirm('Are you sure? You want to delete ' + expense.title)) {
+      this.dataService
+        .deleteExpense(expense)
+        .then(() => {
+          this.getAllExpense(); // Refresh list after deletion
+        })
+        .catch((error) => {
+          alert('Error deleting expense: ' + error.message);
+        });
+    }
   }
 }
