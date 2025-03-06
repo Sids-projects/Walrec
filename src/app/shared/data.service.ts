@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Profile } from '../model/profile';
+import { Payment } from '../model/payment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,8 @@ export class DataService {
     private fireauth: AngularFireAuth
   ) {}
 
+  // Expense
   addExpense(expense: Expense) {
-    console.log('Add Expense Triggred');
     return this.fireauth.currentUser.then((user) => {
       if (user) {
         expense.id = this.afs.createId();
@@ -88,6 +89,7 @@ export class DataService {
     });
   }
 
+  // Profile
   createProfile(profile: Profile) {
     return this.fireauth.currentUser.then((user) => {
       if (user) {
@@ -129,6 +131,57 @@ export class DataService {
                 .update(profile);
             } else {
               throw new Error('Profile not found');
+            }
+          });
+      } else {
+        throw new Error('User not logged in');
+      }
+    });
+  }
+
+  // Category
+  createCategory(payment: Payment) {
+    return this.fireauth.currentUser.then((user) => {
+      if (user) {
+        payment.id = this.afs.createId();
+        return this.afs
+          .collection(`/Users/${user.uid}/ExpenseCategory`)
+          .add(payment);
+      } else {
+        throw new Error('User not logged in');
+      }
+    });
+  }
+
+  getAllCategory(): Observable<DocumentChangeAction<any>[]> {
+    return this.fireauth.authState.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.afs
+            .collection(`/Users/${user.uid}/ExpenseCategory`)
+            .snapshotChanges();
+        } else {
+          return of([]);
+        }
+      })
+    );
+  }
+
+  editCategory(payment: Payment) {
+    return this.fireauth.currentUser.then((user) => {
+      if (user) {
+        return this.afs
+          .collection(`/Users/${user.uid}/ExpenseCategory`)
+          .ref.where('id', '==', payment.id)
+          .get()
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              const docId = querySnapshot.docs[0].id;
+              return this.afs
+                .doc(`/Users/${user.uid}/ExpenseCategory/${docId}`)
+                .update(payment);
+            } else {
+              throw new Error('Category not found');
             }
           });
       } else {

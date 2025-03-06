@@ -128,12 +128,19 @@ textarea {
         justify-content: flex-start;
         gap: 1rem;
 
-        .material-symbols-outlined {
-          font-size: 3rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-top: 0.2rem !important;
+        h2 {
+          background-color: #fafafa;
+          border: 0.1rem solid #d6d6d6;
+          padding: 0.4rem;
+          border-radius: 10rem;
+
+          .material-symbols-outlined {
+            font-size: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.2rem !important;
+          }
         }
 
         .user-name {

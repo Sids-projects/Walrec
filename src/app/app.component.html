@@ -5,11 +5,13 @@
   <nav class="app-nav" *ngIf="isLoggedIn">
     <header class="app-nav-head">
       <div class="user-info">
-        <span class="material-symbols-outlined">
-          {{
-            profileList.length == 0 ? "face" : profileList[0].profilePic
-          }}</span
-        >
+        <h2>
+          <span class="material-symbols-outlined">
+            {{
+              profileList.length == 0 ? "face" : profileList[0].profilePic
+            }}</span
+          >
+        </h2>
         <div class="user-name">
           <p>
             {{

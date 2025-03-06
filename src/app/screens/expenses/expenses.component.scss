@@ -12,22 +12,74 @@
       font-size: 2rem;
     }
 
-    button {
-      border: 0.1rem solid #d8d8d8;
-      background-color: #ffffff;
+    .title-btn-box {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
-      padding: 0.6rem 1rem;
-      border-radius: 0.6rem;
+      justify-content: flex-end;
+      gap: 1rem;
+
+      button {
+        border: 0.1rem solid #d8d8d8;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 0.6rem 1rem;
+        border-radius: 0.6rem;
+
+        p {
+          font-weight: 600;
+        }
+
+        .material-symbols-outlined {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
+  .pay-method-list {
+    border: 0.1rem solid #d8d8d8;
+    background-color: #fafafa;
+    padding: 1.4rem;
+    border-radius: 0.8rem;
+    margin-top: 2rem;
+
+    h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.4rem;
 
       p {
-        font-weight: 600;
+        border: 0.1rem solid #d8d8d8;
+        background-color: #ffffff;
+        padding: 0.4rem 1rem;
+        border-radius: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        .edit-icon {
+          font-size: 1.6rem;
+          border-left: 0.1rem solid #d8d8d8;
+          padding-left: 1rem;
+          color: #5e5e5e;
+          cursor: pointer;
+        }
       }
 
-      .material-symbols-outlined {
-        font-size: 2rem;
+      .add-icon {
+        padding: 0.4rem !important;
+        cursor: pointer;
       }
     }
   }

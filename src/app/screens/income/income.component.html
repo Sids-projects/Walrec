@@ -121,7 +121,7 @@
 <div class="expense-popup-box" *ngIf="openPopup">
   <div class="expense-popup">
     <h3>Add Expense</h3>
-    <form class="grid-layout" [formGroup]="expenseForm">
+    <form class="grid-layout" [formGroup]="incomeForm">
       <div>
         <label for="title">Title</label>
         <input
@@ -155,7 +155,7 @@
         <label for="payment">Payment Method</label>
         <div class="payment-method">
           <select formControlName="payment" name="payment" id="payment">
-            <option *ngFor="let data of paymentMethod" [value]="data.value">
+            <option *ngFor="let data of incomeMethod" [value]="data.value">
               {{ data.display }}
             </option>
           </select>

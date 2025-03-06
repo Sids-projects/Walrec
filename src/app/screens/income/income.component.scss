@@ -119,6 +119,19 @@
                 cursor: pointer;
               }
             }
+
+            .td-btns {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              gap: 0.6rem;
+
+              .material-symbols-outlined {
+                font-size: 1.8rem;
+                color: #767676;
+                cursor: pointer;
+              }
+            }
           }
 
           .nodata {

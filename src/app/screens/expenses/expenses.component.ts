@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Form, FormControl, FormControlName, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { Expense } from '../../model/expense';
 import { AuthService } from '../../shared/auth.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
+import { Payment } from '../../model/payment';
 
 @Component({
   selector: 'app-expenses',
@@ -13,19 +14,16 @@ import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 })
 export class ExpensesComponent {
   expenseForm!: FormGroup;
+  categoryForm!: FormGroup;
   openPopup: boolean = false;
+  openCategoryPopup: boolean = false;
   originalData: any = [];
   isAscending: boolean = true;
   showUpdate: boolean = false;
   showSubmit: boolean = true;
-  // Payment Method
-  paymentMethod: { value: string; display: string }[] = [
-    { value: 'Cash', display: 'Cash' },
-    { value: 'Credit Card', display: 'Credit Card' },
-    { value: 'Debit Card', display: 'Debit Card' },
-    { value: 'Bank Transfer', display: 'Bank Transfer' },
-    { value: 'Digital Wallet', display: 'Digital Wallet' },
-  ];
+  showCategory: boolean = false;
+  showCategorySubmit: boolean = true;
+  showCategoryUpdate: boolean = false;
   expenseList: Expense[] = [];
   expenseObj: Expense = {
     id: '',
@@ -34,6 +32,20 @@ export class ExpensesComponent {
     date: '',
     payment: 0,
     notes: '',
+  };
+  // Payment Method
+  paymentMethod: Payment[] = [
+    { id: '01', value: 'Cash', creation: 'default' },
+    { id: '02', value: 'Credit Card', creation: 'default' },
+    { id: '03', value: 'Debit Card', creation: 'default' },
+    { id: '04', value: 'Bank Transfer', creation: 'default' },
+    { id: '05', value: 'Digital Wallet', creation: 'default' },
+  ];
+  paymentList: Payment[] = [];
+  paymentObj: Payment = {
+    id: '',
+    value: '',
+    creation: 'custom',
   };
 
   constructor(private dataService: DataService, private auth: AuthService) {}
@@ -47,7 +59,12 @@ export class ExpensesComponent {
       notes: new FormControl(''),
     });
 
+    this.categoryForm = new FormGroup({
+      categoryName: new FormControl(''),
+    });
+
     this.getAllExpense();
+    this.getAllCategory();
   }
 
   openPopupFn() {
@@ -163,9 +180,9 @@ export class ExpensesComponent {
       this.dataService
         .editExpense(this.expenseObj)
         .then(() => {
-          this.getAllExpense(); // Refresh expense list
+          this.getAllExpense();
           this.resetForm();
-          this.closePopupFn(); // Close the popup after updating
+          this.closePopupFn();
         })
         .catch((error) => {
           alert('Error updating expense: ' + error.message);
@@ -178,11 +195,115 @@ export class ExpensesComponent {
       this.dataService
         .deleteExpense(expense)
         .then(() => {
-          this.getAllExpense(); // Refresh list after deletion
+          this.getAllExpense();
         })
         .catch((error) => {
           alert('Error deleting expense: ' + error.message);
         });
     }
+  }
+
+  categoryView() {
+    this.showCategory = !this.showCategory;
+  }
+
+  openCategoryPopupFn() {
+    this.openCategoryPopup = true;
+  }
+
+  closeCategoryPopup() {
+    this.openCategoryPopup = false;
+  }
+
+  resetCategoryForm() {
+    this.categoryForm.reset({
+      categoryName: '',
+    });
+
+    this.paymentObj = {
+      id: '',
+      value: '',
+      creation: '',
+    };
+  }
+
+  getAllCategory() {
+    this.dataService
+      .getAllCategory()
+      .pipe(
+        map((res: DocumentChangeAction<any>[]) =>
+          res.map((e) => {
+            const data = e.payload.doc.data();
+            return { id: e.payload.doc.id, ...data };
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          let paymentResponse = res;
+          this.paymentList = [...this.paymentMethod, ...paymentResponse];
+          console.log(this.paymentList);
+        },
+        error: (err) => {
+          alert('Error while fetching data');
+          console.error(err);
+        },
+      });
+  }
+
+  editCategory(payment: Payment) {
+    this.paymentObj = { ...payment }; // Clone the expense object
+    console.log('Editing Expense:', this.expenseObj.id);
+
+    // Populate the form before opening the popup
+    this.categoryForm.setValue({
+      categoryName: payment.value,
+    });
+
+    this.openCategoryPopupFn();
+
+    this.showCategorySubmit = false;
+    this.showCategoryUpdate = true;
+  }
+
+  updateCategory() {
+    if (this.paymentObj.id) {
+      this.paymentObj.value = this.categoryForm.value.categoryName;
+
+      this.dataService
+        .editCategory(this.paymentObj)
+        .then(() => {
+          this.getAllCategory();
+          this.resetCategoryForm();
+          this.closeCategoryPopup();
+        })
+        .catch((error) => {
+          alert('Error updating category: ' + error.message);
+        });
+    }
+  }
+
+  createCategory() {
+    this.showCategorySubmit = true;
+    this.showCategoryUpdate = false;
+
+    if (this.categoryForm.value.categoryName == '') {
+      alert('Category Field should be filled');
+      return;
+    }
+
+    this.paymentObj.id = '';
+    this.paymentObj.value = this.categoryForm.value.categoryName;
+
+    this.dataService
+      .createCategory(this.paymentObj)
+      .then(() => {
+        this.getAllCategory();
+        this.resetForm();
+        this.closeCategoryPopup();
+      })
+      .catch((error) => {
+        alert('Error adding category: ' + error.message);
+      });
   }
 }
