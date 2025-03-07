@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
-import { AuthService } from '../../shared/auth.service';
+import { Income } from '../../model/income';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
-import { Income } from '../../model/income';
+import { Payment } from '../../model/payment';
 
 @Component({
   selector: 'app-income',
@@ -13,21 +13,18 @@ import { Income } from '../../model/income';
 })
 export class IncomeComponent {
   incomeForm!: FormGroup;
+  categoryForm!: FormGroup;
   openPopup: boolean = false;
+  openCategoryPopup: boolean = false;
   originalData: any = [];
   isAscending: boolean = true;
   showUpdate: boolean = false;
   showSubmit: boolean = true;
-  // Payment Method
-  incomeMethod: { value: string; display: string }[] = [
-    { value: 'Cash', display: 'Cash' },
-    { value: 'Credit Card', display: 'Credit Card' },
-    { value: 'Debit Card', display: 'Debit Card' },
-    { value: 'Bank Transfer', display: 'Bank Transfer' },
-    { value: 'Digital Wallet', display: 'Digital Wallet' },
-  ];
-  expenseList: Income[] = [];
-  expenseObj: Income = {
+  showCategory: boolean = false;
+  showCategorySubmit: boolean = true;
+  showCategoryUpdate: boolean = false;
+  incomeList: Income[] = [];
+  incomeObj: Income = {
     id: '',
     title: '',
     amount: 0,
@@ -35,8 +32,21 @@ export class IncomeComponent {
     payment: 0,
     notes: '',
   };
+  // Payment Method
+  paymentMethod: Payment[] = [
+    { id: '01', value: 'Salary', creation: 'default' },
+    { id: '02', value: 'Lottery', creation: 'default' },
+    { id: '03', value: 'Cupon', creation: 'default' },
+    { id: '04', value: 'Reward', creation: 'default' },
+  ];
+  paymentList: Payment[] = [];
+  paymentObj: Payment = {
+    id: '',
+    value: '',
+    creation: 'custom',
+  };
 
-  constructor(private dataService: DataService, private auth: AuthService) {}
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
     this.incomeForm = new FormGroup({
@@ -47,10 +57,18 @@ export class IncomeComponent {
       notes: new FormControl(''),
     });
 
-    this.getAllExpense();
+    this.categoryForm = new FormGroup({
+      categoryName: new FormControl(''),
+    });
+
+    this.getAllIncome();
+    this.getAllCategory();
   }
 
   openPopupFn() {
+    this.showSubmit = true;
+    this.showUpdate = false;
+
     this.openPopup = true;
   }
 
@@ -58,9 +76,9 @@ export class IncomeComponent {
     this.openPopup = false;
   }
 
-  getAllExpense() {
+  getAllIncome() {
     this.dataService
-      .getAllExpense()
+      .getAllIncome()
       .pipe(
         map((res: DocumentChangeAction<any>[]) =>
           res.map((e) => {
@@ -71,8 +89,8 @@ export class IncomeComponent {
       )
       .subscribe({
         next: (res) => {
-          this.expenseList = res;
-          console.log(this.expenseList);
+          this.incomeList = res;
+          console.log(this.incomeList);
         },
         error: (err) => {
           alert('Error while fetching data');
@@ -90,7 +108,7 @@ export class IncomeComponent {
       notes: '',
     });
 
-    this.expenseObj = {
+    this.incomeObj = {
       id: '',
       title: '',
       amount: 0,
@@ -100,10 +118,7 @@ export class IncomeComponent {
     };
   }
 
-  addExpense() {
-    this.showSubmit = true;
-    this.showUpdate = false;
-
+  addIncome() {
     if (
       this.incomeForm.value.title == '' ||
       this.incomeForm.value.amount == '' ||
@@ -114,17 +129,17 @@ export class IncomeComponent {
       return;
     }
 
-    this.expenseObj.id = '';
-    this.expenseObj.title = this.incomeForm.value.title;
-    this.expenseObj.amount = this.incomeForm.value.amount;
-    this.expenseObj.date = this.incomeForm.value.date;
-    this.expenseObj.payment = this.incomeForm.value.payment;
-    this.expenseObj.notes = this.incomeForm.value.notes;
+    this.incomeObj.id = '';
+    this.incomeObj.title = this.incomeForm.value.title;
+    this.incomeObj.amount = this.incomeForm.value.amount;
+    this.incomeObj.date = this.incomeForm.value.date;
+    this.incomeObj.payment = this.incomeForm.value.payment;
+    this.incomeObj.notes = this.incomeForm.value.notes;
 
     this.dataService
-      .addExpense(this.expenseObj)
+      .addIncome(this.incomeObj)
       .then(() => {
-        this.getAllExpense();
+        this.getAllIncome();
         this.resetForm();
         this.closePopupFn();
       })
@@ -133,13 +148,11 @@ export class IncomeComponent {
       });
   }
 
-  editExpense(expense: Income) {
-    this.showSubmit = false;
-    this.showUpdate = true;
+  editIncome(expense: Income) {
+    this.incomeObj = { ...expense }; // Clone the expense object
+    console.log('Editing Income:', this.incomeObj.id);
 
-    this.expenseObj = { ...expense };
-    console.log('Editing Expense:', this.expenseObj.id);
-
+    // Populate the form before opening the popup
     this.incomeForm.setValue({
       title: expense.title,
       amount: expense.amount,
@@ -149,20 +162,23 @@ export class IncomeComponent {
     });
 
     this.openPopupFn();
+
+    this.showSubmit = false;
+    this.showUpdate = true;
   }
 
-  updateExpense() {
-    if (this.expenseObj.id) {
-      this.expenseObj.title = this.incomeForm.value.title;
-      this.expenseObj.amount = this.incomeForm.value.amount;
-      this.expenseObj.date = this.incomeForm.value.date;
-      this.expenseObj.payment = this.incomeForm.value.payment;
-      this.expenseObj.notes = this.incomeForm.value.notes;
+  updateIncome() {
+    if (this.incomeObj.id) {
+      this.incomeObj.title = this.incomeForm.value.title;
+      this.incomeObj.amount = this.incomeForm.value.amount;
+      this.incomeObj.date = this.incomeForm.value.date;
+      this.incomeObj.payment = this.incomeForm.value.payment;
+      this.incomeObj.notes = this.incomeForm.value.notes;
 
       this.dataService
-        .editExpense(this.expenseObj)
+        .editIncome(this.incomeObj)
         .then(() => {
-          this.getAllExpense();
+          this.getAllIncome();
           this.resetForm();
           this.closePopupFn();
         })
@@ -172,16 +188,135 @@ export class IncomeComponent {
     }
   }
 
-  deleteExpense(expense: Income) {
-    if (window.confirm('Are you sure? You want to delete ' + expense.title)) {
+  deleteIncome(income: Income) {
+    if (window.confirm('Are you sure? You want to delete ' + income.title)) {
       this.dataService
-        .deleteExpense(expense)
+        .deleteIncome(income)
         .then(() => {
-          this.getAllExpense();
+          this.getAllIncome();
         })
         .catch((error) => {
-          alert('Error deleting expense: ' + error.message);
+          alert('Error deleting income: ' + error.message);
         });
     }
+  }
+
+  categoryView() {
+    this.showCategory = !this.showCategory;
+  }
+
+  openCategoryPopupFn() {
+    this.openCategoryPopup = true;
+
+    this.showCategorySubmit = true;
+    this.showCategoryUpdate = false;
+  }
+
+  closeCategoryPopup() {
+    this.openCategoryPopup = false;
+  }
+
+  resetCategoryForm() {
+    this.categoryForm.reset({
+      categoryName: '',
+    });
+
+    this.paymentObj = {
+      id: '',
+      value: '',
+      creation: '',
+    };
+  }
+
+  getAllCategory() {
+    this.dataService
+      .getAllIncomeCategory()
+      .pipe(
+        map((res: DocumentChangeAction<any>[]) =>
+          res.map((e) => {
+            const data = e.payload.doc.data();
+            return { id: e.payload.doc.id, ...data };
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          let paymentResponse = res;
+          this.paymentList = [...this.paymentMethod, ...paymentResponse];
+          console.log(this.paymentList);
+        },
+        error: (err) => {
+          alert('Error while fetching data');
+          console.error(err);
+        },
+      });
+  }
+
+  editCategory(payment: Payment) {
+    this.paymentObj = { ...payment };
+    console.log('Editing Expense:', this.incomeObj.id);
+
+    this.categoryForm.setValue({
+      categoryName: payment.value,
+    });
+
+    this.openCategoryPopupFn();
+
+    this.showCategorySubmit = false;
+    this.showCategoryUpdate = true;
+  }
+
+  updateCategory() {
+    if (this.paymentObj.id) {
+      this.paymentObj.value = this.categoryForm.value.categoryName;
+
+      this.dataService
+        .editIncomeCategory(this.paymentObj)
+        .then(() => {
+          this.getAllCategory();
+          this.resetCategoryForm();
+          this.closeCategoryPopup();
+        })
+        .catch((error) => {
+          alert('Error updating category: ' + error.message);
+        });
+    }
+  }
+
+  deleteCategory(payment: Payment) {
+    if (window.confirm('Are you sure? You want to delete ' + payment.value)) {
+      this.dataService
+        .deleteIncomeCategory(payment)
+        .then(() => {
+          this.getAllCategory();
+        })
+        .catch((error) => {
+          alert('Error deleting category: ' + error.message);
+        });
+    }
+  }
+
+  createCategory() {
+    this.showCategorySubmit = true;
+    this.showCategoryUpdate = false;
+
+    if (this.categoryForm.value.categoryName == '') {
+      alert('Category Field should be filled');
+      return;
+    }
+
+    this.paymentObj.id = '';
+    this.paymentObj.value = this.categoryForm.value.categoryName;
+
+    this.dataService
+      .createIncomeCategory(this.paymentObj)
+      .then(() => {
+        this.getAllCategory();
+        this.resetForm();
+        this.closeCategoryPopup();
+      })
+      .catch((error) => {
+        alert('Error adding category: ' + error.message);
+      });
   }
 }

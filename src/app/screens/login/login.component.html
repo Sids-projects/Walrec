@@ -3,17 +3,17 @@
     <img src="./../../../assets/login.jpg" alt="Login Image" />
   </div>
   <div class="set-02">
+    <header>
+      <h2><span class="material-symbols-outlined"> wallet </span> Walrec</h2>
+    </header>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-      <h3>Login to your account</h3>
+      <div>
+        <h3>Login to your account</h3>
+        <small>Welcome to wallet Recorder</small>
+      </div>
       <div>
         <label for="email">Email</label>
-        <input
-          formControlName="email"
-          type="email"
-          name="email"
-          id="email"
-          placeholder="alex@gmail.com"
-        />
+        <input formControlName="email" type="email" name="email" id="email" />
       </div>
       <div>
         <label for="password">Password</label>
@@ -22,15 +22,20 @@
           type="password"
           name="password"
           id="password"
-          placeholder="Enter a Strong Pin"
         />
       </div>
-      <button type="submit">Login</button>
+      <p class="forgot-txt" (click)="forgotPassword()">Forgot Password?</p>
+      <p class="or-txt">
+        <span class="line"></span>or <span class="line"></span>
+      </p>
       <button (click)="signinWithGoogle()" type="button">
         Login with Google
       </button>
-      <p>Don't have an account? <a (click)="signupRoute()">Signup</a></p>
-      <p>Forgot Password? <a (click)="forgotPassword()">Reset</a></p>
+      <button type="submit" class="login-btn">Login</button>
+      <div class="sub-links">
+        <p>Don't have an account? <a (click)="signupRoute()">Signup</a></p>
+      </div>
     </form>
+    <footer></footer>
   </div>
 </section>

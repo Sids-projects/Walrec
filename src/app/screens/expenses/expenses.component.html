@@ -7,7 +7,7 @@
         <span class="material-symbols-outlined"> add_circle </span>
       </button>
       <button type="button" (click)="openPopupFn()">
-        <p>Add Expense</p>
+        <p>Add</p>
         <span class="material-symbols-outlined"> add_circle </span>
       </button>
     </div>
@@ -17,13 +17,19 @@
     <h3>Categories</h3>
     <div>
       <p *ngFor="let data of paymentList">
-        {{ data.value }}
+        <span>{{ data.value }}</span>
         <ng-container *ngIf="data.creation != 'default'">
           <span
-            class="material-symbols-outlined edit-icon"
+            class="material-symbols-outlined edit-icon edit-icon-bdr"
             (click)="editCategory(data)"
           >
             edit
+          </span>
+          <span
+            class="material-symbols-outlined edit-icon"
+            (click)="deleteCategory(data)"
+          >
+            delete
           </span>
         </ng-container>
       </p>
@@ -69,9 +75,6 @@
       <thead>
         <tr>
           <th>
-            <p><span class="material-symbols-outlined"> numbers </span> Id</p>
-          </th>
-          <th>
             <p>
               <span class="material-symbols-outlined"> titlecase </span> Title
             </p>
@@ -95,47 +98,38 @@
             </p>
           </th>
           <th>
-            <p><span class="material-symbols-outlined"> edit </span> Edit</p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> delete </span>
-              Delete
-            </p>
+            <p><span class="material-symbols-outlined"> edit </span> Actions</p>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of expenseList; let i = index">
-          <td>
-            <p class="count" [matTooltip]="data.notes">
-              <span class="material-symbols-outlined"> error </span>
-              {{ i + 1 }}
-            </p>
-          </td>
           <td>{{ data.title }}</td>
           <td>{{ data.amount }}</td>
           <td>{{ data.date }}</td>
           <td>{{ data.payment }}</td>
           <td>
-            <p class="td-btns">
-              <span
-                class="material-symbols-outlined"
-                (click)="editExpense(data)"
-              >
-                edit
-              </span>
-            </p>
-          </td>
-          <td>
-            <p class="td-btns">
-              <span
-                class="material-symbols-outlined"
-                (click)="deleteExpense(data)"
-              >
-                delete
-              </span>
-            </p>
+            <div class="td-box">
+              <p class="td-btns">
+                <span
+                  class="material-symbols-outlined"
+                  (click)="editExpense(data)"
+                >
+                  edit
+                </span>
+              </p>
+              <p class="td-btns">
+                <span
+                  class="material-symbols-outlined"
+                  (click)="deleteExpense(data)"
+                >
+                  delete
+                </span>
+              </p>
+              <p class="count" [matTooltip]="data.notes">
+                <span class="material-symbols-outlined"> error </span>
+              </p>
+            </div>
           </td>
         </tr>
         <tr *ngIf="expenseList.length == 0">
@@ -188,9 +182,6 @@
               {{ data.value }}
             </option>
           </select>
-          <button type="button">
-            <span class="material-symbols-outlined"> add </span>
-          </button>
         </div>
       </div>
       <div>

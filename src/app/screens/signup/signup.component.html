@@ -1,8 +1,16 @@
 <section class="login">
-  <div class="set-01"></div>
+  <div class="set-01">
+    <img src="./../../../assets/login.jpg" alt="Login Image" />
+  </div>
   <div class="set-02">
+    <header>
+      <h2><span class="material-symbols-outlined"> wallet </span> Walrec</h2>
+    </header>
     <form [formGroup]="signupForm" (ngSubmit)="signup()">
-      <h3>Create your account</h3>
+      <div>
+        <h3>Create your account</h3>
+        <small>Welcome to wallet Recorder</small>
+      </div>
       <div>
         <label for="email">Email</label>
         <input type="email" name="email" id="email" formControlName="email" />
@@ -16,13 +24,12 @@
           formControlName="password"
         />
       </div>
-      <div>
-        <mat-checkbox class="example-margin"
-          >Agree with terms and conditions</mat-checkbox
-        >
-      </div>
-      <button type="submit">Signup</button>
-      <p>Already have account? <a (click)="loginRoute()">Login</a></p>
+      <button type="submit" class="login-btn">Signup</button>
+      <p class="or-txt">
+        <span class="line"></span> Already have account?
+        <span class="line"></span>
+      </p>
+      <button type="button" (click)="loginRoute()">Login</button>
     </form>
   </div>
 </section>

@@ -2,7 +2,7 @@
   <h3>Dashboard</h3>
   <div class="chart-cubes">
     <p>Income</p>
-    <h4>5,000</h4>
+    <h4>{{ incomeAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
   </div>
   <div class="chart-cubes">
     <p>Expense</p>
@@ -10,11 +10,20 @@
   </div>
   <div class="chart-cubes">
     <p>Balance</p>
-    <h4>5,000</h4>
+    <h4>
+      {{ incomeAmount - expenseAmount | currency : "INR" : "symbol" : "2.0-2" }}
+    </h4>
   </div>
   <div class="chart-cubes">
     <p>Total</p>
-    <h4>5,000</h4>
+    <h4>{{ incomeAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
   </div>
-  <div id="lineChart" class="chart-01"></div>
+  <div class="chart-01">
+    <h3>Income</h3>
+    <div id="incomeChart"></div>
+  </div>
+  <div class="chart-01">
+    <h3>Expense</h3>
+    <div id="expenseChart"></div>
+  </div>
 </section>

@@ -65,9 +65,13 @@ input {
   width: 100%;
   padding: 0.8rem;
   border-radius: 0.6rem;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 500;
   color: #757575;
+
+  &:focus {
+    outline: 0.1rem solid #e2c74b;
+  }
 }
 
 select {
@@ -91,14 +95,14 @@ textarea {
 
 .truncate-email {
   display: inline-block;
-  max-width: 18ch;
+  max-width: 22ch;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .app-main-withNav {
-  grid-template-columns: 28rem calc(100vw - 28rem);
+  grid-template-columns: 25rem calc(100vw - 25rem);
 }
 
 .app-main-noNav {
@@ -106,36 +110,40 @@ textarea {
 }
 
 .app-main {
+  background-color: #f3f5f7;
   height: 100vh;
   display: grid;
 
-  .app-nav {
-    background-color: #f3f5f7;
-    border-right: 0.1rem solid #e3e5e2;
-    display: grid;
-    grid-template-rows: 5rem 1fr 6rem;
-    padding: 1.4rem 1.6rem;
+  .app-nav-box {
+    height: 100%;
+    padding: 1.4rem;
 
-    .app-nav-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+    .app-nav {
+      border: 0.1rem solid #e3e5e2;
+      background-color: #ffffff;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 1.4rem 1.6rem;
+      border-radius: 1rem;
+      height: 100%;
 
-      .user-info {
+      .app-nav-head {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        gap: 1rem;
+        justify-content: center;
+        gap: 1.2rem;
+        text-align: center;
+        padding: 0.6rem 0;
 
         h2 {
-          background-color: #fafafa;
-          border: 0.1rem solid #d6d6d6;
-          padding: 0.4rem;
+          background-color: #ffe267;
+          border: 0.1rem solid #e2c957;
+          padding: 0.8rem;
           border-radius: 10rem;
 
           .material-symbols-outlined {
-            font-size: 3rem;
+            font-size: 4rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -149,42 +157,35 @@ textarea {
           gap: 0.6rem;
 
           p {
+            font-size: 1.8rem;
             font-weight: 700;
             line-height: 1.4rem;
           }
 
           small {
             font-weight: 600;
-            line-height: 1rem;
+            line-height: 1.8rem;
+          }
+        }
+
+        .edit-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 0.4rem;
+          text-decoration: none;
+          overflow: hidden;
+
+          .material-symbols-outlined {
+            font-size: 2.4rem;
+            color: #000000;
           }
         }
       }
 
-      .edit-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.4rem;
-        text-decoration: none;
-        overflow: hidden;
+      .app-nav-body {
+        padding: 3.8rem 1rem;
 
-        .material-symbols-outlined {
-          font-size: 2.4rem;
-          color: #000000;
-        }
-      }
-    }
-
-    .app-nav-body {
-      p {
-        margin-top: 2.2rem;
-        margin-bottom: 2rem;
-        font-weight: 600;
-        color: #848c93;
-        text-transform: uppercase;
-      }
-
-      div {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -197,29 +198,53 @@ textarea {
           justify-content: flex-start;
           text-decoration: none;
           font-weight: 600;
+          font-size: 1.4rem;
           color: #28313e;
           gap: 0.8rem;
+          color: #848c93;
+        }
+
+        .active-nav-link {
+          color: #000000;
         }
       }
-    }
 
-    .app-nav-footer {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 1rem;
-
-      a {
+      .app-nav-footer {
         display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        text-decoration: none;
-        font-weight: 600;
-        color: #28313e;
-        font-size: 1.4rem;
-        gap: 0.8rem;
-        cursor: pointer;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2.2rem;
+        padding: 1.8rem 1rem;
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          text-decoration: none;
+          font-weight: 600;
+          color: #848c93;
+          font-size: 1.4rem;
+          gap: 0.8rem;
+          cursor: pointer;
+        }
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          text-decoration: none;
+          font-weight: 600;
+          background-color: transparent;
+          border: none;
+          font-size: 1.4rem;
+          gap: 0.8rem;
+          cursor: pointer;
+        }
+
+        .active-nav-link {
+          color: black;
+        }
       }
     }
   }

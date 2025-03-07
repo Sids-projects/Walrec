@@ -1,6 +1,6 @@
 .expense {
   height: 100%;
-  padding: 2.4rem;
+  padding: 2.8rem 3.2rem 2.8rem 2rem;
 
   .expense-title {
     display: flex;
@@ -19,8 +19,8 @@
       gap: 1rem;
 
       button {
-        border: 0.1rem solid #d8d8d8;
-        background-color: #ffffff;
+        background-color: #ffe267;
+        border: 0.1rem solid #e2c957;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -40,7 +40,7 @@
   }
 
   .pay-method-list {
-    border: 0.1rem solid #d8d8d8;
+    border: 0.1rem dashed #d8d8d8;
     background-color: #fafafa;
     padding: 1.4rem;
     border-radius: 0.8rem;
@@ -66,11 +66,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 1rem;
+
+        .edit-icon-bdr {
+          border-left: 0.1rem solid #d8d8d8;
+          margin-left: 1rem;
+        }
 
         .edit-icon {
           font-size: 1.6rem;
-          border-left: 0.1rem solid #d8d8d8;
           padding-left: 1rem;
           color: #5e5e5e;
           cursor: pointer;
@@ -106,18 +109,26 @@
     }
 
     button {
-      border: 0.1rem solid #d8d8d8;
-      background-color: #f3f5f7;
-      color: #868686;
+      background-color: #ffe267;
+      border: 0.1rem solid #e2c957;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.4rem;
+      padding: 0.6rem;
       border-radius: 0.6rem;
+
+      .material-symbols-outlined {
+        font-size: 2rem;
+      }
     }
   }
 
   .set-01-body {
+    border: 0.1rem solid #e3e5e2;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    overflow: hidden;
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -125,17 +136,9 @@
       thead {
         tr {
           th {
+            background-color: #fee77d;
             text-align: left;
-            background-color: #f3f5f7;
             padding: 1rem 1.4rem;
-
-            &:first-child {
-              border-radius: 0.8rem 0 0 0.8rem;
-            }
-
-            &:last-child {
-              border-radius: 0 0.8rem 0.8rem 0;
-            }
 
             p {
               display: flex;
@@ -143,7 +146,7 @@
               justify-content: flex-start;
               gap: 0.6rem;
               font-weight: 600;
-              color: #646464;
+              color: #3c3c3c;
 
               .material-symbols-outlined {
                 font-size: 1.8rem;
@@ -172,6 +175,13 @@
               }
             }
 
+            .td-box {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              gap: 2rem;
+            }
+
             .td-btns {
               display: flex;
               align-items: center;
@@ -188,6 +198,12 @@
 
           .nodata {
             text-align: center;
+          }
+
+          &:last-child {
+            td {
+              border-bottom: none;
+            }
           }
         }
       }

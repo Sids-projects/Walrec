@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Form, FormControl, FormControlName, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { Expense } from '../../model/expense';
 import { AuthService } from '../../shared/auth.service';
@@ -209,6 +209,9 @@ export class ExpensesComponent {
 
   openCategoryPopupFn() {
     this.openCategoryPopup = true;
+
+    this.showCategorySubmit = true;
+    this.showCategoryUpdate = false;
   }
 
   closeCategoryPopup() {
@@ -279,6 +282,19 @@ export class ExpensesComponent {
         })
         .catch((error) => {
           alert('Error updating category: ' + error.message);
+        });
+    }
+  }
+
+  deleteCategory(payment: Payment) {
+    if (window.confirm('Are you sure? You want to delete ' + payment.value)) {
+      this.dataService
+        .deleteCategory(payment)
+        .then(() => {
+          this.getAllCategory();
+        })
+        .catch((error) => {
+          alert('Error deleting category: ' + error.message);
         });
     }
   }

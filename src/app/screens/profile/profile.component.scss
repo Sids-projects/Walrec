@@ -1,5 +1,5 @@
 .profile {
-  padding: 2.4rem;
+  padding: 2.8rem 3.2rem 2.8rem 2rem;
 
   header {
     display: flex;
@@ -49,9 +49,9 @@
       margin: 2rem 0 0 0;
 
       .profile-pic {
-        background-color: #fafafa;
+        background-color: #ffe267;
+        border: 0.1rem solid #e2c957;
         max-width: fit-content;
-        border: 0.1rem solid #d8d8d8;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -88,9 +88,9 @@
       row-gap: 1.2rem;
 
       label {
-        background-color: #fafafa;
+        background-color: #ffe267;
+        border: 0.1rem solid #e2c957;
         max-width: fit-content;
-        border: 0.1rem solid #d8d8d8;
         display: flex;
         align-items: center;
         justify-content: center;

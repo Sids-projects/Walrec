@@ -1,10 +1,10 @@
 import { Component, AfterViewInit } from '@angular/core';
 import ApexCharts from 'apexcharts';
 import { DataService } from '../../shared/data.service';
-import { AuthService } from '../../shared/auth.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Expense } from '../../model/expense';
+import { Income } from '../../model/income';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,37 +13,35 @@ import { Expense } from '../../model/expense';
 })
 export class DashboardComponent implements AfterViewInit {
   expenseList: Expense[] = [];
+  incomeList: Income[] = [];
   expenseAmount: number = 0;
+  incomeAmount: number = 0;
+  balance: number = 0;
 
-  lineChart!: ApexCharts;
-  barChart!: ApexCharts;
+  incomeChart!: ApexCharts;
+  expenseChart!: ApexCharts;
 
-  lineOptions: any = {
-    chart: {
-      type: 'line',
-      height: 350,
-    },
-    series: [
-      {
-        name: 'Expenses',
-        data: [], // Will be updated dynamically
-      },
-    ],
-    xaxis: {
-      categories: [], // Will be updated dynamically
-    },
-    stroke: {
-      curve: 'smooth',
-    },
-    markers: {
-      size: 5,
-    },
+  incomeOptions: any = {
+    chart: { type: 'area', height: 350 },
+    series: [{ name: 'Income', data: [] }],
+    xaxis: { categories: [] },
+    stroke: { curve: 'smooth' },
+    colors: ['#90EE90'], // Mild green
   };
 
-  constructor(private dataService: DataService, private auth: AuthService) {}
+  expenseOptions: any = {
+    chart: { type: 'area', height: 350 },
+    series: [{ name: 'Expenses', data: [] }],
+    xaxis: { categories: [] },
+    stroke: { curve: 'smooth' },
+    colors: ['#FF9999'], // Mild red
+  };
+
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
     this.getAllExpense();
+    this.getAllIncome();
   }
 
   getAllExpense() {
@@ -60,22 +58,56 @@ export class DashboardComponent implements AfterViewInit {
       .subscribe({
         next: (res) => {
           this.expenseList = res;
-          this.updateCharts();
-          this.updateExpenseCube();
+          this.updateExpenseChart();
+          this.updateSummary();
         },
         error: (err) => {
-          alert('Error while fetching data');
+          alert('Error while fetching expenses');
           console.error(err);
         },
       });
   }
 
-  updateCharts() {
+  getAllIncome() {
+    this.dataService
+      .getAllIncome()
+      .pipe(
+        map((res: DocumentChangeAction<any>[]) =>
+          res.map((e) => {
+            const data = e.payload.doc.data();
+            return { id: e.payload.doc.id, ...data };
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          this.incomeList = res;
+          this.updateIncomeChart();
+          this.updateSummary();
+        },
+        error: (err) => {
+          alert('Error while fetching income');
+          console.error(err);
+        },
+      });
+  }
+
+  updateIncomeChart() {
+    const incomeAmounts = this.incomeList.map((income) => income.amount);
+    const incomeDates = this.incomeList.map((income) => income.date);
+
+    this.incomeOptions.series = [{ name: 'Income', data: incomeAmounts }];
+    this.incomeOptions.xaxis.categories = incomeDates;
+
+    this.renderCharts();
+  }
+
+  updateExpenseChart() {
     const expenseAmounts = this.expenseList.map((expense) => expense.amount);
     const expenseDates = this.expenseList.map((expense) => expense.date);
 
-    this.lineOptions.series = [{ name: 'Expenses', data: expenseAmounts }];
-    this.lineOptions.xaxis.categories = expenseDates;
+    this.expenseOptions.series = [{ name: 'Expenses', data: expenseAmounts }];
+    this.expenseOptions.xaxis.categories = expenseDates;
 
     this.renderCharts();
   }
@@ -85,28 +117,40 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   renderCharts() {
-    const lineElement = document.querySelector('#lineChart');
-    if (lineElement) {
-      if (this.lineChart) {
-        this.lineChart.updateOptions(this.lineOptions);
+    const incomeElement = document.querySelector('#incomeChart');
+    if (incomeElement) {
+      if (this.incomeChart) {
+        this.incomeChart.updateOptions(this.incomeOptions);
       } else {
-        this.lineChart = new ApexCharts(lineElement, this.lineOptions);
-        this.lineChart.render();
+        this.incomeChart = new ApexCharts(incomeElement, this.incomeOptions);
+        this.incomeChart.render();
       }
     } else {
-      console.error('Line chart element not found in the DOM');
+      console.error('Income chart element not found in the DOM');
+    }
+
+    const expenseElement = document.querySelector('#expenseChart');
+    if (expenseElement) {
+      if (this.expenseChart) {
+        this.expenseChart.updateOptions(this.expenseOptions);
+      } else {
+        this.expenseChart = new ApexCharts(expenseElement, this.expenseOptions);
+        this.expenseChart.render();
+      }
+    } else {
+      console.error('Expense chart element not found in the DOM');
     }
   }
 
-  updateExpenseCube() {
-    const amount: any = [];
-    for (let i = 0; i < this.expenseList.length; i++) {
-      amount.push(this.expenseList[i].amount);
-    }
-
-    this.expenseAmount = amount.reduce(addFn, 0);
-    function addFn(add: any, a: any) {
-      return add + a;
-    }
+  updateSummary() {
+    this.expenseAmount = this.expenseList.reduce(
+      (sum, exp) => sum + exp.amount,
+      0
+    );
+    this.incomeAmount = this.incomeList.reduce(
+      (sum, inc) => sum + inc.amount,
+      0
+    );
+    this.balance = this.incomeAmount - this.expenseAmount;
   }
 }

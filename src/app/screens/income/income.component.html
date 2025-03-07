@@ -1,11 +1,44 @@
 <section class="expense">
   <div class="expense-title">
-    <h3>Expenses</h3>
-    <button type="button" (click)="openPopupFn()">
-      <p>Add Expense</p>
-      <span class="material-symbols-outlined"> add_circle </span>
-    </button>
+    <h3>Income</h3>
+    <div class="title-btn-box">
+      <button type="button" (click)="categoryView()">
+        <p>Categories</p>
+        <span class="material-symbols-outlined"> add_circle </span>
+      </button>
+      <button type="button" (click)="openPopupFn()">
+        <p>Add Income</p>
+        <span class="material-symbols-outlined"> add_circle </span>
+      </button>
+    </div>
   </div>
+
+  <div class="pay-method-list" *ngIf="showCategory">
+    <h3>Categories</h3>
+    <div>
+      <p *ngFor="let data of paymentList">
+        <span>{{ data.value }}</span>
+        <ng-container *ngIf="data.creation != 'default'">
+          <span
+            class="material-symbols-outlined edit-icon edit-icon-bdr"
+            (click)="editCategory(data)"
+          >
+            edit
+          </span>
+          <span
+            class="material-symbols-outlined edit-icon"
+            (click)="deleteCategory(data)"
+          >
+            delete
+          </span>
+        </ng-container>
+      </p>
+      <p class="add-icon" (click)="openCategoryPopupFn()">
+        <span class="material-symbols-outlined"> add </span>
+      </p>
+    </div>
+  </div>
+
   <header class="set-01-header">
     <select name="payment" id="payment">
       <option value="" disabled selected>Payment Method</option>
@@ -36,6 +69,7 @@
       <span class="material-symbols-outlined"> swap_vert </span>
     </button>
   </header>
+
   <div class="set-01-body">
     <table>
       <thead>
@@ -78,7 +112,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of expenseList; let i = index">
+        <tr *ngFor="let data of incomeList; let i = index">
           <td>
             <p class="count" [matTooltip]="data.notes">
               <span class="material-symbols-outlined"> error </span>
@@ -93,7 +127,7 @@
             <p class="td-btns">
               <span
                 class="material-symbols-outlined"
-                (click)="editExpense(data)"
+                (click)="editIncome(data)"
               >
                 edit
               </span>
@@ -103,14 +137,14 @@
             <p class="td-btns">
               <span
                 class="material-symbols-outlined"
-                (click)="deleteExpense(data)"
+                (click)="deleteIncome(data)"
               >
                 delete
               </span>
             </p>
           </td>
         </tr>
-        <tr *ngIf="expenseList.length == 0">
+        <tr *ngIf="incomeList.length == 0">
           <td colspan="7" class="nodata">No Data Found</td>
         </tr>
       </tbody>
@@ -118,9 +152,10 @@
   </div>
 </section>
 
+<!-- Expense Popup -->
 <div class="expense-popup-box" *ngIf="openPopup">
   <div class="expense-popup">
-    <h3>Add Expense</h3>
+    <h3>Add Income</h3>
     <form class="grid-layout" [formGroup]="incomeForm">
       <div>
         <label for="title">Title</label>
@@ -152,16 +187,13 @@
         <input formControlName="date" type="date" name="date" required />
       </div>
       <div>
-        <label for="payment">Payment Method</label>
+        <label for="payment">Income Method</label>
         <div class="payment-method">
           <select formControlName="payment" name="payment" id="payment">
-            <option *ngFor="let data of incomeMethod" [value]="data.value">
-              {{ data.display }}
+            <option *ngFor="let data of paymentList" [value]="data.value">
+              {{ data.value }}
             </option>
           </select>
-          <button type="button">
-            <span class="material-symbols-outlined"> add </span>
-          </button>
         </div>
       </div>
       <div>
@@ -176,10 +208,47 @@
       <div class="btn-box">
         <button type="button" (click)="closePopupFn()">Close</button>
         <button type="reset">Rest</button>
-        <button type="button" (click)="addExpense()" *ngIf="showSubmit">
+        <button type="button" (click)="addIncome()" *ngIf="showSubmit">
           Submit
         </button>
-        <button type="button" (click)="updateExpense()" *ngIf="showUpdate">
+        <button type="button" (click)="updateIncome()" *ngIf="showUpdate">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Category Popup -->
+<div class="expense-popup-box" *ngIf="openCategoryPopup">
+  <div class="expense-popup">
+    <h3>Add Income Category</h3>
+    <form class="grid-layout" [formGroup]="categoryForm">
+      <div>
+        <label for="categoryName">Name</label>
+        <input
+          formControlName="categoryName"
+          type="text"
+          name="categoryName"
+          placeholder="e.g., Shopping, Subscriptions"
+          required
+        />
+      </div>
+      <div class="btn-box">
+        <button type="button" (click)="closeCategoryPopup()">Close</button>
+        <button type="reset">Rest</button>
+        <button
+          type="button"
+          (click)="createCategory()"
+          *ngIf="showCategorySubmit"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          (click)="updateCategory()"
+          *ngIf="showCategoryUpdate"
+        >
           Update
         </button>
       </div>
