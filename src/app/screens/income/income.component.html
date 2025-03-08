@@ -4,10 +4,10 @@
     <div class="title-btn-box">
       <button type="button" (click)="categoryView()">
         <p>Categories</p>
-        <span class="material-symbols-outlined"> add_circle </span>
+        <span class="material-symbols-outlined"> category </span>
       </button>
       <button type="button" (click)="openPopupFn()">
-        <p>Add Income</p>
+        <p>Create</p>
         <span class="material-symbols-outlined"> add_circle </span>
       </button>
     </div>
@@ -155,7 +155,12 @@
 <!-- Expense Popup -->
 <div class="expense-popup-box" *ngIf="openPopup">
   <div class="expense-popup">
-    <h3>Add Income</h3>
+    <div class="expense-popup-head">
+      <h3>Add Income</h3>
+      <span class="material-symbols-outlined" (click)="closePopupFn()"
+        >close</span
+      >
+    </div>
     <form class="grid-layout" [formGroup]="incomeForm">
       <div>
         <label for="title">Title</label>
@@ -206,12 +211,23 @@
         ></textarea>
       </div>
       <div class="btn-box">
-        <button type="button" (click)="closePopupFn()">Close</button>
-        <button type="reset">Rest</button>
-        <button type="button" (click)="addIncome()" *ngIf="showSubmit">
+        <button type="reset" class="reset-btn">
+          <span class="material-symbols-outlined"> restart_alt </span>
+        </button>
+        <button
+          type="button"
+          class="submit-btn"
+          (click)="addIncome()"
+          *ngIf="showSubmit"
+        >
           Submit
         </button>
-        <button type="button" (click)="updateIncome()" *ngIf="showUpdate">
+        <button
+          type="button"
+          class="submit-btn"
+          (click)="updateIncome()"
+          *ngIf="showUpdate"
+        >
           Update
         </button>
       </div>
@@ -222,7 +238,12 @@
 <!-- Category Popup -->
 <div class="expense-popup-box" *ngIf="openCategoryPopup">
   <div class="expense-popup">
-    <h3>Add Income Category</h3>
+    <div class="expense-popup-head">
+      <h3>Add Income Category</h3>
+      <span class="material-symbols-outlined" (click)="closeCategoryPopup()">
+        close
+      </span>
+    </div>
     <form class="grid-layout" [formGroup]="categoryForm">
       <div>
         <label for="categoryName">Name</label>
@@ -235,10 +256,12 @@
         />
       </div>
       <div class="btn-box">
-        <button type="button" (click)="closeCategoryPopup()">Close</button>
-        <button type="reset">Rest</button>
+        <button type="reset" class="reset-btn">
+          <span class="material-symbols-outlined"> restart_alt </span>
+        </button>
         <button
           type="button"
+          class="submit-btn"
           (click)="createCategory()"
           *ngIf="showCategorySubmit"
         >
@@ -246,6 +269,7 @@
         </button>
         <button
           type="button"
+          class="submit-btn"
           (click)="updateCategory()"
           *ngIf="showCategoryUpdate"
         >

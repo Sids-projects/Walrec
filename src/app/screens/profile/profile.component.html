@@ -2,7 +2,19 @@
   <header>
     <h3>Profile</h3>
   </header>
-  <form class="profile-fields" [formGroup]="profileForm">
+
+  <section class="profile-box">
+    <div class="welcome-box">
+      <div>
+        <h3>Welcome to Wallet Recorder</h3>
+        <p>Empower your financial journey</p>
+        <button type="button">Explore</button>
+      </div>
+      <div>
+        <img src="./assets/profile-vector.svg" alt="Profile Vector" />
+      </div>
+    </div>
+
     <div class="profile-pic-box">
       <div class="profile-pic grid-expand">
         <span class="material-symbols-outlined">{{
@@ -10,10 +22,20 @@
         }}</span>
       </div>
       <div>
-        <h3>{{ userEmail.split("@")[0] }}</h3>
+        <h3>
+          {{
+            profileForm.value.firstName == "" &&
+            profileForm.value.lastName == ""
+              ? userEmail.split("@")[0]
+              : profileForm.value.firstName + " " + profileForm.value.lastName
+          }}
+        </h3>
         <p>{{ userEmail }}</p>
       </div>
     </div>
+  </section>
+
+  <form class="profile-fields" [formGroup]="profileForm">
     <div class="grid-expand">
       <h3>Change Avatar</h3>
       <div class="profile-faces">

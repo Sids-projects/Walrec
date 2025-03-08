@@ -1,8 +1,8 @@
 .dashboard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 3rem;
-  padding: 2.8rem 3.2rem 2.8rem 2rem;
+  gap: 1.8rem;
+  padding: var(--screen-padding);
 
   h3 {
     grid-column: span 4;

@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 
+:root {
+  --screen-padding: 1.8rem 2.2rem 1.4rem 0.6rem;
+}
+
 html,
 body {
   height: 100%;
@@ -63,7 +67,8 @@ label {
 input {
   border: 0.1rem solid #d8d8d8;
   width: 100%;
-  padding: 0.8rem;
+  height: 4rem;
+  padding: 0 1.4rem;
   border-radius: 0.6rem;
   font-size: 1.6rem;
   font-weight: 500;
@@ -72,6 +77,11 @@ input {
   &:focus {
     outline: 0.1rem solid #e2c74b;
   }
+}
+
+input[type="radio"] {
+  height: auto !important;
+  padding: 0 !important;
 }
 
 select {

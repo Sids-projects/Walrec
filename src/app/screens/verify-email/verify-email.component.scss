@@ -1,0 +1,44 @@
+.verify {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .verift-card {
+    border: 0.1rem solid #d8d8d8;
+    background-color: #ffffff;
+    max-width: 50rem;
+    padding: 4rem;
+    border-radius: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 20rem;
+    }
+
+    h3 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-top: 2.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    p {
+      font-weight: 500;
+    }
+
+    button {
+      background-color: #ffe267;
+      border: 0.1rem solid #e2c957;
+      padding: 0.6rem 1.4rem;
+      border-radius: 0.6rem;
+      margin-top: 2rem;
+    }
+  }
+}

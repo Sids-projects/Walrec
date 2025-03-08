@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AuthService } from '../../shared/auth.service';
 import { DataService } from '../../shared/data.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Profile } from '../../model/profile';
@@ -41,7 +40,6 @@ export class ProfileComponent {
   };
 
   constructor(
-    private auth: AuthService,
     private fireauth: AngularFireAuth,
     private dataService: DataService
   ) {}

@@ -1,6 +1,34 @@
 <section class="login">
   <div class="set-01">
-    <img src="./../../../assets/login.jpg" alt="Login Image" />
+    <div class="slide-01 login-slides" *ngIf="slides[0]">
+      <img src="./../../../assets/login-vector-01.svg" alt="login-vector-01" />
+      <h3>Track Every Expense with Ease</h3>
+      <p>
+        Stay in control of your finances by recording every transaction
+        effortlessly.
+      </p>
+    </div>
+    <div class="slide-02 login-slides" *ngIf="slides[1]">
+      <img src="./../../../assets/login-vector-02.svg" alt="login-vector-02" />
+      <h3>Smart Budgeting for Better Savings</h3>
+      <p>
+        Set monthly budgets and get insights to optimize your spending habits.
+      </p>
+    </div>
+    <div class="slide-03 login-slides" *ngIf="slides[2]">
+      <img src="./../../../assets/login-vector-03.svg" alt="login-vector-03" />
+      <h3>Your Data, Fully Secured</h3>
+      <p>
+        End-to-end encryption ensures your financial data stays private and
+        protected.
+      </p>
+    </div>
+
+    <div class="login-dots">
+      <span [class.active-dot]="slides[0]"></span>
+      <span [class.active-dot]="slides[1]"></span>
+      <span [class.active-dot]="slides[2]"></span>
+    </div>
   </div>
   <div class="set-02">
     <header>
@@ -26,7 +54,7 @@
       </div>
       <p class="forgot-txt" (click)="forgotPassword()">Forgot Password?</p>
       <p class="or-txt">
-        <span class="line"></span>or <span class="line"></span>
+        <span class="line"></span> or <span class="line"></span>
       </p>
       <button (click)="signinWithGoogle()" type="button">
         Login with Google
