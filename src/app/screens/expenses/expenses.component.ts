@@ -29,6 +29,7 @@ export class ExpensesComponent {
     id: '',
     title: '',
     amount: 0,
+    time: '',
     date: '',
     payment: 0,
     notes: '',
@@ -47,8 +48,11 @@ export class ExpensesComponent {
     value: '',
     creation: 'custom',
   };
+  newDate = new Date();
 
-  constructor(private dataService: DataService, private auth: AuthService) {}
+  constructor(private dataService: DataService, private auth: AuthService) {
+    console.log(this.newDate);
+  }
 
   ngOnInit() {
     this.expenseForm = new FormGroup({
@@ -114,6 +118,7 @@ export class ExpensesComponent {
       id: '',
       title: '',
       amount: 0,
+      time: '',
       date: '',
       payment: 0,
       notes: '',

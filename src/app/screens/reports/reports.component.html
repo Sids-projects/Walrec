@@ -1,1 +1,80 @@
-<p>reports works!</p>
+<section class="expense">
+  <div class="expense-title">
+    <h3>Report</h3>
+  </div>
+
+  <header class="set-01-header">
+    <select name="payment" id="payment">
+      <option value="" disabled selected>Payment Method</option>
+      <option value="Cash">Cash</option>
+      <option value="Credit Card">Credit Card</option>
+      <option value="Debit Card">Debit Card</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Digital Wallet">Digital Wallet</option>
+    </select>
+    <input
+      type="text"
+      id="dateInput"
+      onfocus="this.type='date'"
+      onblur="if(!this.value) this.type='text'"
+      placeholder="From date"
+    />
+    <input
+      type="text"
+      id="dateInput"
+      onfocus="this.type='date'"
+      onblur="if(!this.value) this.type='text'"
+      placeholder="To date"
+    />
+    <button type="button">
+      <span class="material-symbols-outlined"> filter_alt </span>
+    </button>
+    <button type="button">
+      <span class="material-symbols-outlined"> swap_vert </span>
+    </button>
+  </header>
+
+  <div class="set-01-body">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Date
+            </p>
+          </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> titlecase </span> Title
+            </p>
+          </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> attach_money </span>
+              Amount
+            </p>
+          </th>
+
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> credit_card </span>
+              Method
+            </p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of expenseList; let i = index">
+          <td>{{ data.date }}</td>
+          <td>{{ data.title }}</td>
+          <td>{{ data.amount }}</td>
+          <td>{{ data.payment }}</td>
+        </tr>
+        <tr *ngIf="expenseList.length == 0">
+          <td colspan="7" class="nodata">No Data Found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

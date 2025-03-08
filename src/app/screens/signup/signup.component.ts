@@ -10,6 +10,9 @@ import { AuthService } from '../../shared/auth.service';
 })
 export class SignupComponent {
   signupForm!: FormGroup;
+  slideIndex: number = 0;
+  slides = [false, false, false];
+  interval: any;
 
   constructor(private router: Router, private auth: AuthService) {}
 
@@ -18,6 +21,24 @@ export class SignupComponent {
       email: new FormControl(''),
       password: new FormControl(''),
     });
+    this.setActiveSlide(0);
+    this.startAutoSlide();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
+
+  startAutoSlide() {
+    this.interval = setInterval(() => {
+      this.slideIndex = (this.slideIndex + 1) % this.slides.length;
+      this.setActiveSlide(this.slideIndex);
+    }, 4000);
+  }
+
+  setActiveSlide(index: number) {
+    this.slides = [false, false, false];
+    this.slides[index] = true;
   }
 
   signup() {

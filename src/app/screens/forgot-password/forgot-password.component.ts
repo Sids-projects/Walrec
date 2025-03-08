@@ -10,6 +10,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class ForgotPasswordComponent {
   forgotForm!: FormGroup;
+  slideIndex: number = 0;
+  slides = [false, false, false];
+  interval: any;
 
   constructor(private router: Router, private auth: AuthService) {}
 
@@ -17,6 +20,24 @@ export class ForgotPasswordComponent {
     this.forgotForm = new FormGroup({
       email: new FormControl(''),
     });
+    this.setActiveSlide(0);
+    this.startAutoSlide();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
+
+  startAutoSlide() {
+    this.interval = setInterval(() => {
+      this.slideIndex = (this.slideIndex + 1) % this.slides.length;
+      this.setActiveSlide(this.slideIndex);
+    }, 4000);
+  }
+
+  setActiveSlide(index: number) {
+    this.slides = [false, false, false];
+    this.slides[index] = true;
   }
 
   forgotPassword() {
