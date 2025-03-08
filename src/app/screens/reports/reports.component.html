@@ -55,24 +55,114 @@
               Amount
             </p>
           </th>
-
           <th>
             <p>
               <span class="material-symbols-outlined"> credit_card </span>
               Method
             </p>
           </th>
+          <th>
+            <p>
+              <span class="material-symbols-outlined"> tag </span>
+              Label
+            </p>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of expenseList; let i = index">
+        <!-- Today Section -->
+        <tr *ngIf="todayList.length > 0">
+          <td colspan="5" class="td-days">
+            <p>
+              <span class="material-symbols-outlined"> flag </span>
+              Today
+            </p>
+          </td>
+        </tr>
+        <tr *ngFor="let data of todayList">
           <td>{{ data.date }}</td>
           <td>{{ data.title }}</td>
-          <td>{{ data.amount }}</td>
+          <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
           <td>{{ data.payment }}</td>
+          <td>
+            <p
+              [class]="
+                data.label == 'expense' ? 'td-label-expense' : 'td-label-income'
+              "
+            >
+              <span class="material-symbols-outlined">
+                {{ data.label == "expense" ? "north_east" : "south_west" }}
+              </span>
+              {{ data.label }}
+            </p>
+          </td>
         </tr>
-        <tr *ngIf="expenseList.length == 0">
-          <td colspan="7" class="nodata">No Data Found</td>
+
+        <!-- Yesterday Section -->
+        <tr *ngIf="yesterdayList.length > 0">
+          <td colspan="5" class="td-days">
+            <p>
+              <span class="material-symbols-outlined"> flag </span>
+              Yesterday
+            </p>
+          </td>
+        </tr>
+        <tr *ngFor="let data of yesterdayList">
+          <td>{{ data.date }}</td>
+          <td>{{ data.title }}</td>
+          <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
+          <td>{{ data.payment }}</td>
+          <td>
+            <p
+              [class]="
+                data.label == 'expense' ? 'td-label-expense' : 'td-label-income'
+              "
+            >
+              <span class="material-symbols-outlined">
+                {{ data.label == "expense" ? "north_east" : "south_west" }}
+              </span>
+              {{ data.label }}
+            </p>
+          </td>
+        </tr>
+
+        <!-- Older Section -->
+        <tr *ngIf="olderList.length > 0">
+          <td colspan="5" class="td-days">
+            <p>
+              <span class="material-symbols-outlined"> flag </span>
+              Older
+            </p>
+          </td>
+        </tr>
+        <tr *ngFor="let data of olderList">
+          <td>{{ data.date }}</td>
+          <td>{{ data.title }}</td>
+          <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
+          <td>{{ data.payment }}</td>
+          <td>
+            <p
+              [class]="
+                data.label == 'expense' ? 'td-label-expense' : 'td-label-income'
+              "
+            >
+              <span class="material-symbols-outlined">
+                {{ data.label == "expense" ? "north_east" : "south_west" }}
+              </span>
+              {{ data.label }}
+            </p>
+          </td>
+        </tr>
+
+        <!-- No Data Message -->
+        <tr
+          *ngIf="
+            todayList.length === 0 &&
+            yesterdayList.length === 0 &&
+            olderList.length === 0
+          "
+        >
+          <td colspan="5" class="nodata">No Data Found</td>
         </tr>
       </tbody>
     </table>

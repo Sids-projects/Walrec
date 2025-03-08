@@ -6,4 +6,5 @@ export interface Expense {
   date: string;
   payment: number;
   notes: string;
+  label: string;
 }

@@ -202,6 +202,11 @@
             text-align: center;
           }
 
+          .td-day {
+            background-color: #fafafa;
+            text-align: left;
+          }
+
           &:last-child {
             td {
               border-bottom: none;
@@ -262,6 +267,10 @@
       display: flex;
       align-items: center;
       gap: 1.4rem;
+    }
+
+    .flex-layout-fluid {
+      width: 100%;
     }
 
     .payment-method {

@@ -75,7 +75,10 @@
       <thead>
         <tr>
           <th>
-            <p><span class="material-symbols-outlined"> numbers </span> Id</p>
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Date & Time
+            </p>
           </th>
           <th>
             <p>
@@ -90,58 +93,43 @@
           </th>
           <th>
             <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Date
-            </p>
-          </th>
-          <th>
-            <p>
               <span class="material-symbols-outlined"> credit_card </span>
               Method
             </p>
           </th>
           <th>
-            <p><span class="material-symbols-outlined"> edit </span> Edit</p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> delete </span>
-              Delete
-            </p>
+            <p><span class="material-symbols-outlined"> edit </span> Actions</p>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of incomeList; let i = index">
-          <td>
-            <p class="count" [matTooltip]="data.notes">
-              <span class="material-symbols-outlined"> error </span>
-              {{ i + 1 }}
-            </p>
-          </td>
+          <td>{{ data.date }} | {{ data.time }}</td>
           <td>{{ data.title }}</td>
-          <td>{{ data.amount }}</td>
-          <td>{{ data.date }}</td>
+          <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
           <td>{{ data.payment }}</td>
           <td>
-            <p class="td-btns">
-              <span
-                class="material-symbols-outlined"
-                (click)="editIncome(data)"
-              >
-                edit
-              </span>
-            </p>
-          </td>
-          <td>
-            <p class="td-btns">
-              <span
-                class="material-symbols-outlined"
-                (click)="deleteIncome(data)"
-              >
-                delete
-              </span>
-            </p>
+            <div class="td-box">
+              <p class="td-btns">
+                <span
+                  class="material-symbols-outlined"
+                  (click)="editIncome(data)"
+                >
+                  edit
+                </span>
+              </p>
+              <p class="td-btns">
+                <span
+                  class="material-symbols-outlined"
+                  (click)="deleteIncome(data)"
+                >
+                  delete
+                </span>
+              </p>
+              <p class="count" [matTooltip]="data.notes">
+                <span class="material-symbols-outlined"> error </span>
+              </p>
+            </div>
           </td>
         </tr>
         <tr *ngIf="incomeList.length == 0">
@@ -162,16 +150,23 @@
       >
     </div>
     <form class="grid-layout" [formGroup]="incomeForm">
-      <div>
-        <label for="title">Title</label>
-        <input
-          formControlName="title"
-          type="text"
-          name="title"
-          placeholder="e.g., Groceries, Rent"
-          required
-        />
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="label">Label</label>
+          <input formControlName="label" type="text" name="label" />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="title">Title</label>
+          <input
+            formControlName="title"
+            type="text"
+            name="title"
+            placeholder="e.g., Salary, Lottery"
+            required
+          />
+        </div>
       </div>
+
       <div>
         <label for="amount">Amount</label>
         <div class="flex-layout">
@@ -187,9 +182,15 @@
           />
         </div>
       </div>
-      <div>
-        <label for="date">Date of Expense</label>
-        <input formControlName="date" type="date" name="date" required />
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="date">Date of Income</label>
+          <input formControlName="date" type="date" name="date" required />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="time">Time of Income</label>
+          <input formControlName="time" type="time" name="time" required />
+        </div>
       </div>
       <div>
         <label for="payment">Income Method</label>

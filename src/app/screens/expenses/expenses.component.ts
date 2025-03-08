@@ -33,6 +33,7 @@ export class ExpensesComponent {
     date: '',
     payment: 0,
     notes: '',
+    label: 'expense',
   };
   // Payment Method
   paymentMethod: Payment[] = [
@@ -58,9 +59,11 @@ export class ExpensesComponent {
     this.expenseForm = new FormGroup({
       title: new FormControl(''),
       amount: new FormControl(0),
+      time: new FormControl(),
       date: new FormControl(),
       payment: new FormControl('Cash'),
       notes: new FormControl(''),
+      label: new FormControl({ value: 'expense', disabled: true }),
     });
 
     this.categoryForm = new FormGroup({
@@ -74,12 +77,12 @@ export class ExpensesComponent {
   openPopupFn() {
     this.showSubmit = true;
     this.showUpdate = false;
-
     this.openPopup = true;
   }
 
   closePopupFn() {
     this.openPopup = false;
+    this.resetForm();
   }
 
   getAllExpense() {
@@ -109,9 +112,11 @@ export class ExpensesComponent {
     this.expenseForm.reset({
       title: '',
       amount: 0,
+      time: '',
       date: '',
       payment: 'Cash',
       notes: '',
+      label: 'expense',
     });
 
     this.expenseObj = {
@@ -122,6 +127,7 @@ export class ExpensesComponent {
       date: '',
       payment: 0,
       notes: '',
+      label: '',
     };
   }
 
@@ -130,7 +136,9 @@ export class ExpensesComponent {
       this.expenseForm.value.title == '' ||
       this.expenseForm.value.amount == '' ||
       this.expenseForm.value.date == '' ||
-      this.expenseForm.value.payment == ''
+      this.expenseForm.value.time == '' ||
+      this.expenseForm.value.payment == '' ||
+      this.expenseForm.value.label == 'expense'
     ) {
       alert('All the required fields should be filled');
       return;
@@ -139,9 +147,11 @@ export class ExpensesComponent {
     this.expenseObj.id = '';
     this.expenseObj.title = this.expenseForm.value.title;
     this.expenseObj.amount = this.expenseForm.value.amount;
+    this.expenseObj.time = this.expenseForm.value.time;
     this.expenseObj.date = this.expenseForm.value.date;
     this.expenseObj.payment = this.expenseForm.value.payment;
     this.expenseObj.notes = this.expenseForm.value.notes;
+    this.expenseObj.label = 'expense';
 
     this.dataService
       .addExpense(this.expenseObj)
@@ -163,9 +173,11 @@ export class ExpensesComponent {
     this.expenseForm.setValue({
       title: expense.title,
       amount: expense.amount,
+      time: expense.time,
       date: expense.date,
       payment: expense.payment,
       notes: expense.notes,
+      label: 'expense',
     });
 
     this.openPopupFn();
@@ -178,9 +190,11 @@ export class ExpensesComponent {
     if (this.expenseObj.id) {
       this.expenseObj.title = this.expenseForm.value.title;
       this.expenseObj.amount = this.expenseForm.value.amount;
+      this.expenseObj.time = this.expenseForm.value.time;
       this.expenseObj.date = this.expenseForm.value.date;
       this.expenseObj.payment = this.expenseForm.value.payment;
       this.expenseObj.notes = this.expenseForm.value.notes;
+      this.expenseObj.label = 'expense';
 
       this.dataService
         .editExpense(this.expenseObj)
@@ -208,19 +222,20 @@ export class ExpensesComponent {
     }
   }
 
+  // Category
   categoryView() {
     this.showCategory = !this.showCategory;
   }
 
   openCategoryPopupFn() {
     this.openCategoryPopup = true;
-
     this.showCategorySubmit = true;
     this.showCategoryUpdate = false;
   }
 
   closeCategoryPopup() {
     this.openCategoryPopup = false;
+    this.resetCategoryForm();
   }
 
   resetCategoryForm() {

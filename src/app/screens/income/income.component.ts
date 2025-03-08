@@ -28,9 +28,11 @@ export class IncomeComponent {
     id: '',
     title: '',
     amount: 0,
+    time: '',
     date: '',
     payment: 0,
     notes: '',
+    label: 'income',
   };
   // Payment Method
   paymentMethod: Payment[] = [
@@ -52,9 +54,11 @@ export class IncomeComponent {
     this.incomeForm = new FormGroup({
       title: new FormControl(''),
       amount: new FormControl(0),
+      time: new FormControl(''),
       date: new FormControl(),
       payment: new FormControl('Cash'),
       notes: new FormControl(''),
+      label: new FormControl({ value: 'income', disabled: true }),
     });
 
     this.categoryForm = new FormGroup({
@@ -68,12 +72,12 @@ export class IncomeComponent {
   openPopupFn() {
     this.showSubmit = true;
     this.showUpdate = false;
-
     this.openPopup = true;
   }
 
   closePopupFn() {
     this.openPopup = false;
+    this.resetForm();
   }
 
   getAllIncome() {
@@ -103,18 +107,22 @@ export class IncomeComponent {
     this.incomeForm.reset({
       title: '',
       amount: 0,
+      time: '',
       date: '',
       payment: 'Cash',
       notes: '',
+      label: 'income',
     });
 
     this.incomeObj = {
       id: '',
       title: '',
       amount: 0,
+      time: '',
       date: '',
       payment: 0,
       notes: '',
+      label: 'income',
     };
   }
 
@@ -122,8 +130,10 @@ export class IncomeComponent {
     if (
       this.incomeForm.value.title == '' ||
       this.incomeForm.value.amount == '' ||
+      this.incomeForm.value.time == '' ||
       this.incomeForm.value.date == '' ||
-      this.incomeForm.value.payment == ''
+      this.incomeForm.value.payment == '' ||
+      this.incomeForm.value.label == 'income'
     ) {
       alert('All the required fields should be filled');
       return;
@@ -132,9 +142,11 @@ export class IncomeComponent {
     this.incomeObj.id = '';
     this.incomeObj.title = this.incomeForm.value.title;
     this.incomeObj.amount = this.incomeForm.value.amount;
+    this.incomeObj.time = this.incomeForm.value.time;
     this.incomeObj.date = this.incomeForm.value.date;
     this.incomeObj.payment = this.incomeForm.value.payment;
     this.incomeObj.notes = this.incomeForm.value.notes;
+    this.incomeObj.label == 'income';
 
     this.dataService
       .addIncome(this.incomeObj)
@@ -144,25 +156,26 @@ export class IncomeComponent {
         this.closePopupFn();
       })
       .catch((error) => {
-        alert('Error adding expense: ' + error.message);
+        alert('Error adding income: ' + error.message);
       });
   }
 
-  editIncome(expense: Income) {
-    this.incomeObj = { ...expense }; // Clone the expense object
+  editIncome(income: Income) {
+    this.incomeObj = { ...income }; // Clone the expense object
     console.log('Editing Income:', this.incomeObj.id);
 
     // Populate the form before opening the popup
     this.incomeForm.setValue({
-      title: expense.title,
-      amount: expense.amount,
-      date: expense.date,
-      payment: expense.payment,
-      notes: expense.notes,
+      title: income.title,
+      amount: income.amount,
+      time: income.time,
+      date: income.date,
+      payment: income.payment,
+      notes: income.notes,
+      label: 'income',
     });
 
     this.openPopupFn();
-
     this.showSubmit = false;
     this.showUpdate = true;
   }
@@ -171,9 +184,11 @@ export class IncomeComponent {
     if (this.incomeObj.id) {
       this.incomeObj.title = this.incomeForm.value.title;
       this.incomeObj.amount = this.incomeForm.value.amount;
+      this.incomeObj.time = this.incomeForm.value.time;
       this.incomeObj.date = this.incomeForm.value.date;
       this.incomeObj.payment = this.incomeForm.value.payment;
       this.incomeObj.notes = this.incomeForm.value.notes;
+      this.incomeObj.label = this.incomeForm.value.label;
 
       this.dataService
         .editIncome(this.incomeObj)
@@ -201,19 +216,20 @@ export class IncomeComponent {
     }
   }
 
+  // Category
   categoryView() {
     this.showCategory = !this.showCategory;
   }
 
   openCategoryPopupFn() {
     this.openCategoryPopup = true;
-
     this.showCategorySubmit = true;
     this.showCategoryUpdate = false;
   }
 
   closeCategoryPopup() {
     this.openCategoryPopup = false;
+    this.resetCategoryForm();
   }
 
   resetCategoryForm() {

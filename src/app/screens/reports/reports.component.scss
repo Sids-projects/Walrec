@@ -198,8 +198,62 @@
             }
           }
 
+          .td-label-expense {
+            background-color: #ff5555;
+            color: #ffffff;
+            font-weight: 500;
+            max-width: fit-content;
+            padding: 0.4rem 1.4rem 0.4rem 1rem;
+            border-radius: 10rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.4rem;
+            font-size: 1.2rem;
+
+            .material-symbols-outlined {
+              font-size: 1.8rem;
+            }
+          }
+
+          .td-label-income {
+            background-color: #5aaa5a;
+            color: #ffffff;
+            font-weight: 500;
+            max-width: fit-content;
+            padding: 0.4rem 1.4rem 0.4rem 1rem;
+            border-radius: 10rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.4rem;
+            font-size: 1.2rem;
+
+            .material-symbols-outlined {
+              font-size: 1.8rem;
+            }
+          }
+
           .nodata {
             text-align: center;
+          }
+
+          .td-days {
+            text-align: left;
+            background-color: #fafafa;
+
+            p {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              gap: 0.4rem;
+              font-weight: 500;
+              padding: 0.4rem;
+
+              .material-symbols-outlined {
+                font-size: 2rem;
+              }
+            }
           }
 
           &:last-child {
