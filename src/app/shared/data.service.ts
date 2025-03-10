@@ -9,6 +9,7 @@ import { Profile } from '../model/profile';
 import { Payment } from '../model/payment';
 import { Income } from '../model/income';
 import { IncomeMode } from '../model/income-mode';
+import { Budget } from '../model/budget';
 
 @Injectable({
   providedIn: 'root',
@@ -353,6 +354,78 @@ export class DataService {
                 .delete();
             } else {
               throw new Error('Category not found');
+            }
+          });
+      } else {
+        throw new Error('User not logged in');
+      }
+    });
+  }
+
+  // Expense
+  addBudget(budged: Budget) {
+    return this.fireauth.currentUser.then((user) => {
+      if (user) {
+        budged.id = this.afs.createId();
+        return this.afs.collection(`/Users/${user.uid}/Budget`).add(budged);
+      } else {
+        throw new Error('User not logged in');
+      }
+    });
+  }
+
+  getAllBudget(): Observable<DocumentChangeAction<any>[]> {
+    return this.fireauth.authState.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.afs
+            .collection(`/Users/${user.uid}/Budget`)
+            .snapshotChanges();
+        } else {
+          return of([]);
+        }
+      })
+    );
+  }
+
+  deleteBudget(budget: Budget) {
+    return this.fireauth.currentUser.then((user) => {
+      if (user) {
+        return this.afs
+          .collection(`/Users/${user.uid}/Budget`)
+          .ref.where('id', '==', budget.id)
+          .get()
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              const docId = querySnapshot.docs[0].id;
+              return this.afs
+                .doc(`/Users/${user.uid}/Budget/${docId}`)
+                .delete();
+            } else {
+              throw new Error('Budget not found');
+            }
+          });
+      } else {
+        throw new Error('User not logged in');
+      }
+    });
+  }
+
+  editBudget(budget: Budget) {
+    return this.fireauth.currentUser.then((user) => {
+      if (user) {
+        return this.afs
+          .collection(`/Users/${user.uid}/Budget`)
+          .ref.where('id', '==', budget.id)
+          .get()
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              const docId = querySnapshot.docs[0].id;
+              return this.afs
+                .doc(`/Users/${user.uid}/Budget/${docId}`)
+                .update(budget);
+            } else {
+              throw new Error('Budget not found');
             }
           });
       } else {

@@ -1,1 +1,179 @@
-<p>budgets works!</p>
+<section class="expense">
+  <div class="expense-title">
+    <h3>Budget</h3>
+    <div class="title-btn-box">
+      <button type="button" (click)="openPopupFn()">
+        <p>Create</p>
+        <span class="material-symbols-outlined"> add_circle </span>
+      </button>
+    </div>
+  </div>
+
+  <header class="set-01-header">
+    <select name="payment" id="payment">
+      <option value="" disabled selected>Payment Method</option>
+      <option value="Cash">Cash</option>
+      <option value="Credit Card">Credit Card</option>
+      <option value="Debit Card">Debit Card</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Digital Wallet">Digital Wallet</option>
+    </select>
+    <input
+      type="text"
+      id="dateInput"
+      onfocus="this.type='date'"
+      onblur="if(!this.value) this.type='text'"
+      placeholder="From date"
+    />
+    <input
+      type="text"
+      id="dateInput"
+      onfocus="this.type='date'"
+      onblur="if(!this.value) this.type='text'"
+      placeholder="To date"
+    />
+    <button type="button">
+      <span class="material-symbols-outlined"> filter_alt </span>
+    </button>
+    <button type="button">
+      <span class="material-symbols-outlined"> swap_vert </span>
+    </button>
+  </header>
+
+  <div class="set-01-body"></div>
+</section>
+
+<!-- Budget Popup -->
+<div class="expense-popup-box" *ngIf="openPopup">
+  <div class="expense-popup">
+    <div class="expense-popup-head">
+      <h3>Add Expense</h3>
+      <span class="material-symbols-outlined" (click)="closePopupFn()"
+        >close</span
+      >
+    </div>
+    <form class="grid-layout" [formGroup]="budgetForm">
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="label">Label</label>
+          <input formControlName="label" type="text" name="label" />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="title">Title</label>
+          <input
+            formControlName="title"
+            type="text"
+            name="title"
+            placeholder="e.g., Nothing Phone, Recharge"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="title">Bank Name</label>
+          <input
+            formControlName="bank"
+            type="text"
+            name="bank"
+            placeholder="e.g., HDFC, ICIC"
+            required
+          />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="bankCharges">Bank Charges</label>
+          <input
+            formControlName="bankCharges"
+            type="number"
+            name="bankCharges"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="amount">Monthly Payment</label>
+          <input
+            formControlName="amount"
+            type="number"
+            name="amount"
+            placeholder="e.g., 15,000"
+            required
+          />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="interest">Product Interest</label>
+          <input
+            formControlName="interest"
+            type="number"
+            name="interest"
+            placeholder="e.g., 5000"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="downPay">Down Payment</label>
+          <input
+            formControlName="downPay"
+            type="number"
+            name="downPay"
+            placeholder="e.g., 5000"
+            required
+          />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="duration">Duration</label>
+          <input
+            formControlName="duration"
+            type="number"
+            name="duration"
+            placeholder="e.g., 5000"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex-layout">
+        <div class="flex-layout-fluid">
+          <label for="date">Payment Date</label>
+          <input formControlName="date" type="date" name="date" required />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="time">Payment Time</label>
+          <input formControlName="time" type="time" name="time" required />
+        </div>
+      </div>
+      <div>
+        <label for="notes">Notes</label>
+        <textarea
+          formControlName="notes"
+          name="notes"
+          id="notes"
+          placeholder="Ex. From ABC Bank"
+        ></textarea>
+      </div>
+      <div class="btn-box">
+        <button type="reset" class="reset-btn">
+          <span class="material-symbols-outlined"> restart_alt </span>
+        </button>
+        <button
+          class="submit-btn"
+          type="button"
+          (click)="addBudget()"
+          *ngIf="showSubmit"
+        >
+          Submit
+        </button>
+        <button
+          class="submit-btn"
+          type="button"
+          (click)="updateBudget()"
+          *ngIf="showUpdate"
+        >
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

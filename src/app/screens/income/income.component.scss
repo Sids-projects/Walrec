@@ -94,7 +94,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 1.4rem;
-    margin-top: 3.4rem;
+    margin-top: 1.4rem;
     margin-bottom: 2rem;
 
     select,
@@ -200,6 +200,11 @@
 
           .nodata {
             text-align: center;
+          }
+
+          .td-day {
+            background-color: #fafafa;
+            text-align: left;
           }
 
           &:last-child {
