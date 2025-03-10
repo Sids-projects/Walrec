@@ -40,7 +40,103 @@
     </button>
   </header>
 
-  <div class="set-01-body"></div>
+  <div class="set-01-body">
+    <div class="budget-card" *ngFor="let data of budgetList">
+      <header class="budget-card-head">
+        <div>
+          <h3>{{ data.title }}</h3>
+          <p>{{ data.date }} | {{ data.time }}</p>
+        </div>
+        <div class="head-info">
+          <p class="budget-card-badge">{{ data.duration }} Months</p>
+          <p class="budget-card-badge" [matTooltip]="data.notes">
+            <span class="material-symbols-outlined">info</span>
+          </p>
+          <p class="budget-card-badge">
+            <span class="material-symbols-outlined">edit</span>
+          </p>
+        </div>
+      </header>
+      <div class="budget-card-body">
+        <div class="set-01">
+          <h3>
+            <span class="material-symbols-outlined"> account_balance </span>
+            Bank Details
+          </h3>
+          <div>
+            <p>
+              <span>Name:</span> <span>{{ data.bank }}</span>
+            </p>
+            <p>
+              <span>Charges:</span>
+              <span>{{
+                data.bankCharges | currency : "INR" : "symbol" : "2.0-2"
+              }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="set-02">
+          <h3>
+            <span class="material-symbols-outlined"> credit_card </span> Payment
+            Details
+          </h3>
+          <div>
+            <p>
+              <span>Down Payment:</span>
+              <span>{{
+                data.downPay | currency : "INR" : "symbol" : "2.0-2"
+              }}</span>
+            </p>
+            <p>
+              <span>Interest:</span>
+              <span>{{ data.interest }}%</span>
+            </p>
+            <p>
+              <span>Monthly:</span>
+              <span>{{
+                data.amount | currency : "INR" : "symbol" : "2.0-2"
+              }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="set-03">
+          <h3>
+            <span class="material-symbols-outlined"> edit_note </span> Dates
+          </h3>
+          <div>
+            <p>
+              <span>Start Date:</span>
+              <span>{{ data.amount }}</span>
+            </p>
+            <p>
+              <span>End Date:</span>
+              <span>{{ data.amount }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="set-04">
+          <h3>
+            <span class="material-symbols-outlined"> edit_note </span> Paid
+            Months
+          </h3>
+          <div class="months-list">
+            <p
+              *ngFor="let data of monthsList"
+              [class]="!data.status == true ? 'inactive' : ''"
+            >
+              <span
+                class="material-symbols-outlined"
+                *ngIf="data.status == true"
+              >
+                check
+              </span>
+              {{ data.month }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Budget Popup -->

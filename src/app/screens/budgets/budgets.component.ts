@@ -34,6 +34,20 @@ export class BudgetsComponent {
     notes: '',
     label: '',
   };
+  monthsList: { month: string; status: boolean }[] = [
+    { month: 'Jan', status: true },
+    { month: 'Feb', status: true },
+    { month: 'Mar', status: false },
+    { month: 'Apr', status: false },
+    { month: 'May', status: false },
+    { month: 'Jun', status: false },
+    { month: 'Jul', status: false },
+    { month: 'Aug', status: false },
+    { month: 'Sep', status: false },
+    { month: 'Oct', status: false },
+    { month: 'Nov', status: false },
+    { month: 'Dec', status: false },
+  ];
 
   constructor(private dataService: DataService) {}
 
