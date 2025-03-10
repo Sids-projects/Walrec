@@ -7,7 +7,9 @@ export interface Budget {
   interest: number;
   downPay: number;
   duration: number;
-  date: string;
+  fromDate: string;
+  toDate: string;
+  dueDate: string;
   time: string;
   notes: string;
   label: string;

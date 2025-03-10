@@ -45,15 +45,18 @@
       <header class="budget-card-head">
         <div>
           <h3>{{ data.title }}</h3>
-          <p>{{ data.date }} | {{ data.time }}</p>
+          <p>{{ data.fromDate }} - {{ data.toDate }} | {{ data.time }}</p>
         </div>
         <div class="head-info">
           <p class="budget-card-badge">{{ data.duration }} Months</p>
           <p class="budget-card-badge" [matTooltip]="data.notes">
             <span class="material-symbols-outlined">info</span>
           </p>
-          <p class="budget-card-badge">
+          <p class="budget-card-badge" (click)="editBudget(data)">
             <span class="material-symbols-outlined">edit</span>
+          </p>
+          <p class="budget-card-badge" (click)="deleteBudget(data)">
+            <span class="material-symbols-outlined">delete</span>
           </p>
         </div>
       </header>
@@ -188,7 +191,7 @@
       </div>
       <div class="flex-layout">
         <div class="flex-layout-fluid">
-          <label for="amount">Monthly Payment</label>
+          <label for="amount">Monthly</label>
           <input
             formControlName="amount"
             type="number"
@@ -198,7 +201,7 @@
           />
         </div>
         <div class="flex-layout-fluid">
-          <label for="interest">Product Interest</label>
+          <label for="interest">Interest</label>
           <input
             formControlName="interest"
             type="number"
@@ -207,10 +210,8 @@
             required
           />
         </div>
-      </div>
-      <div class="flex-layout">
         <div class="flex-layout-fluid">
-          <label for="downPay">Down Payment</label>
+          <label for="downPay">DownPayment</label>
           <input
             formControlName="downPay"
             type="number"
@@ -232,8 +233,16 @@
       </div>
       <div class="flex-layout">
         <div class="flex-layout-fluid">
-          <label for="date">Payment Date</label>
-          <input formControlName="date" type="date" name="date" required />
+          <label for="date">From</label>
+          <input formControlName="fromDate" type="date" name="date" required />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="date">Date</label>
+          <input formControlName="toDate" type="date" name="date" required />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="date">Due</label>
+          <input formControlName="dueDate" type="date" name="date" required />
         </div>
         <div class="flex-layout-fluid">
           <label for="time">Payment Time</label>

@@ -4,7 +4,6 @@ import { DataService } from '../../shared/data.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Budget } from '../../model/budget';
-import { Bank } from '../../model/bank';
 
 @Component({
   selector: 'app-budgets',
@@ -29,7 +28,9 @@ export class BudgetsComponent {
     interest: 0,
     downPay: 0,
     duration: 0,
-    date: '',
+    fromDate: '',
+    toDate: '',
+    dueDate: '',
     time: '',
     notes: '',
     label: '',
@@ -60,7 +61,9 @@ export class BudgetsComponent {
       interest: new FormControl(0),
       downPay: new FormControl(0),
       duration: new FormControl(0),
-      date: new FormControl(),
+      fromDate: new FormControl(),
+      toDate: new FormControl(),
+      dueDate: new FormControl(),
       time: new FormControl(),
       notes: new FormControl(''),
       label: new FormControl({ value: 'budget', disabled: true }),
@@ -113,7 +116,9 @@ export class BudgetsComponent {
       interest: 0,
       downPay: 0,
       duration: 0,
-      date: '',
+      fromDate: '',
+      toDate: '',
+      dueDate: '',
       time: '',
       notes: '',
     });
@@ -127,7 +132,9 @@ export class BudgetsComponent {
       interest: 0,
       downPay: 0,
       duration: 0,
-      date: '',
+      fromDate: '',
+      toDate: '',
+      dueDate: '',
       time: '',
       notes: '',
       label: '',
@@ -143,7 +150,9 @@ export class BudgetsComponent {
       this.budgetForm.value.interest == 0 ||
       this.budgetForm.value.downPay == 0 ||
       this.budgetForm.value.duration == 0 ||
-      this.budgetForm.value.date == '' ||
+      this.budgetForm.value.fromDate == '' ||
+      this.budgetForm.value.toDate == '' ||
+      this.budgetForm.value.dueDate == '' ||
       this.budgetForm.value.time == '' ||
       this.budgetForm.value.notes == ''
     ) {
@@ -159,7 +168,9 @@ export class BudgetsComponent {
     this.budgetObj.interest = this.budgetForm.value.interest;
     this.budgetObj.downPay = this.budgetForm.value.downPay;
     this.budgetObj.duration = this.budgetForm.value.duration;
-    this.budgetObj.date = this.budgetForm.value.date;
+    this.budgetObj.fromDate = this.budgetForm.value.fromDate;
+    this.budgetObj.toDate = this.budgetForm.value.toDate;
+    this.budgetObj.dueDate = this.budgetForm.value.dueDate;
     this.budgetObj.time = this.budgetForm.value.time;
     this.budgetObj.notes = this.budgetForm.value.notes;
     this.budgetObj.label = 'budget';
@@ -187,7 +198,9 @@ export class BudgetsComponent {
       interest: budget.interest,
       downPay: budget.downPay,
       duration: budget.duration,
-      date: budget.date,
+      fromDate: budget.fromDate,
+      toDate: budget.toDate,
+      dueDate: budget.dueDate,
       time: budget.time,
       notes: budget.notes,
       label: 'budget',
@@ -202,13 +215,15 @@ export class BudgetsComponent {
     if (this.budgetObj.id) {
       this.budgetObj.title = this.budgetForm.value.title;
       this.budgetObj.bank = this.budgetForm.value.bank;
-      this.budgetObj.bankCharges = this.budgetForm.value.bankCharges;
-      this.budgetObj.amount = this.budgetForm.value.monthlyAmount;
+      this.budgetObj.bankCharges = this.budgetForm.value.bank;
+      this.budgetObj.amount = this.budgetForm.value.amount;
       this.budgetObj.interest = this.budgetForm.value.interest;
-      this.budgetObj.downPay = this.budgetForm.value.downPayment;
+      this.budgetObj.downPay = this.budgetForm.value.downPay;
       this.budgetObj.duration = this.budgetForm.value.duration;
-      this.budgetObj.date = this.budgetForm.value.payemntDate;
-      this.budgetObj.time = this.budgetForm.value.paymentTime;
+      this.budgetObj.fromDate = this.budgetForm.value.fromDate;
+      this.budgetObj.toDate = this.budgetForm.value.toDate;
+      this.budgetObj.dueDate = this.budgetForm.value.dueDate;
+      this.budgetObj.time = this.budgetForm.value.time;
       this.budgetObj.notes = this.budgetForm.value.notes;
       this.budgetObj.label = 'budget';
 

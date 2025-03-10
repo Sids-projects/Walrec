@@ -265,7 +265,9 @@
     background-color: #ffffff;
     border: 0.1rem solid #e3e5e2;
     height: fit-content !important;
-    width: 54rem;
+    min-width: 30rem;
+    width: 100%;
+    max-width: 84rem;
     border-radius: 1rem;
     padding: 2rem;
     animation: popupOpen 0.5s forwards;
