@@ -11,7 +11,16 @@
         <button type="button">Explore</button>
       </div>
       <div>
-        <img src="./assets/profile-vector.svg" alt="Profile Vector" />
+        <img
+          [src]="
+            profileObj.gender === 'male'
+              ? './assets/profile-vector.svg'
+              : profileObj.gender === 'female'
+              ? './assets/profile-vector-02.svg'
+              : './assets/profile-vector.svg'
+          "
+          alt="Profile Vector"
+        />
       </div>
     </div>
 

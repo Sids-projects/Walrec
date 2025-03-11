@@ -13,6 +13,8 @@ export class SignupComponent {
   slideIndex: number = 0;
   slides = [false, false, false];
   interval: any;
+  viewPasswordKey: boolean = false;
+  viewPassword: string = 'password';
 
   constructor(private router: Router, private auth: AuthService) {}
 
@@ -59,5 +61,15 @@ export class SignupComponent {
 
   loginRoute() {
     this.router.navigate(['login']);
+  }
+
+  viewPasswordFn() {
+    this.viewPasswordKey = !this.viewPasswordKey;
+
+    if (this.viewPasswordKey) {
+      this.viewPassword = 'text';
+    } else {
+      this.viewPassword = 'password';
+    }
   }
 }

@@ -45,12 +45,17 @@
       </div>
       <div>
         <label for="password">Password</label>
-        <input
-          formControlName="password"
-          type="password"
-          name="password"
-          id="password"
-        />
+        <div class="password-field">
+          <input
+            formControlName="password"
+            [type]="viewPassword"
+            name="password"
+            id="password"
+          />
+          <span class="material-symbols-outlined" (click)="viewPasswordFn()">{{
+            viewPasswordKey ? "visibility_off" : "visibility"
+          }}</span>
+        </div>
       </div>
       <p class="forgot-txt" (click)="forgotPassword()">Forgot Password?</p>
       <p class="or-txt">

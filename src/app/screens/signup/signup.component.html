@@ -45,12 +45,17 @@
       </div>
       <div>
         <label for="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          formControlName="password"
-        />
+        <div class="password-field">
+          <input
+            [type]="viewPassword"
+            name="password"
+            id="password"
+            formControlName="password"
+          />
+          <span class="material-symbols-outlined" (click)="viewPasswordFn()">{{
+            viewPasswordKey ? "visibility_off" : "visibility"
+          }}</span>
+        </div>
       </div>
       <button type="submit" class="login-btn">Signup</button>
       <p class="or-txt">

@@ -122,18 +122,19 @@
             <span class="material-symbols-outlined"> edit_note </span> Paid
             Months
           </h3>
-          <div class="months-list">
-            <p
-              *ngFor="let data of monthsList"
-              [class]="!data.status == true ? 'inactive' : ''"
-            >
-              <span
-                class="material-symbols-outlined"
-                *ngIf="data.status == true"
-              >
-                check
-              </span>
-              {{ data.month }}
+          <div
+            *ngIf="budgetForm.get('months')?.valid"
+            class="months-list"
+            [formGroup]="monthsProp"
+          >
+            <p *ngFor="let data of monthsList">
+              <label [for]="data.keyValue">{{ data.display }}</label>
+              <input
+                type="checkbox"
+                [formControlName]="data.keyValue"
+                [id]="data.keyValue"
+                [name]="data.keyValue"
+              />
             </p>
           </div>
         </div>

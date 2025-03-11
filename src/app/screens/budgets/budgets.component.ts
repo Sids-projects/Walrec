@@ -34,21 +34,36 @@ export class BudgetsComponent {
     time: '',
     notes: '',
     label: '',
+    months: {
+      jan: false,
+      feb: false,
+      mar: false,
+      apr: false,
+      may: false,
+      jun: false,
+      jul: false,
+      aug: false,
+      sep: false,
+      oct: false,
+      nov: false,
+      dec: false,
+    },
   };
-  monthsList: { month: string; status: boolean }[] = [
-    { month: 'Jan', status: true },
-    { month: 'Feb', status: true },
-    { month: 'Mar', status: false },
-    { month: 'Apr', status: false },
-    { month: 'May', status: false },
-    { month: 'Jun', status: false },
-    { month: 'Jul', status: false },
-    { month: 'Aug', status: false },
-    { month: 'Sep', status: false },
-    { month: 'Oct', status: false },
-    { month: 'Nov', status: false },
-    { month: 'Dec', status: false },
+  monthsList: { display: string; keyValue: string }[] = [
+    { display: 'Jan', keyValue: 'jan' },
+    { display: 'Feb', keyValue: 'feb' },
+    { display: 'Mar', keyValue: 'mar' },
+    { display: 'Apr', keyValue: 'apr' },
+    { display: 'May', keyValue: 'may' },
+    { display: 'Jun', keyValue: 'jun' },
+    { display: 'Jul', keyValue: 'jul' },
+    { display: 'Aug', keyValue: 'aug' },
+    { display: 'Sep', keyValue: 'sep' },
+    { display: 'Oct', keyValue: 'oct' },
+    { display: 'Nov', keyValue: 'nov' },
+    { display: 'Dec', keyValue: 'dec' },
   ];
+  monthsProp: any;
 
   constructor(private dataService: DataService) {}
 
@@ -67,8 +82,23 @@ export class BudgetsComponent {
       time: new FormControl(),
       notes: new FormControl(''),
       label: new FormControl({ value: 'budget', disabled: true }),
+      months: new FormGroup({
+        jan: new FormControl(false),
+        feb: new FormControl(false),
+        mar: new FormControl(false),
+        apr: new FormControl(false),
+        may: new FormControl(false),
+        jun: new FormControl(false),
+        jul: new FormControl(false),
+        aug: new FormControl(false),
+        sep: new FormControl(false),
+        oct: new FormControl(false),
+        nov: new FormControl(false),
+        dec: new FormControl(false),
+      }),
     });
 
+    this.monthsProp = this.budgetForm.get('months');
     this.getAllBudget();
   }
 
@@ -138,6 +168,20 @@ export class BudgetsComponent {
       time: '',
       notes: '',
       label: '',
+      months: {
+        jan: false,
+        feb: false,
+        mar: false,
+        apr: false,
+        may: false,
+        jun: false,
+        jul: false,
+        aug: false,
+        sep: false,
+        oct: false,
+        nov: false,
+        dec: false,
+      },
     };
   }
 
@@ -174,6 +218,18 @@ export class BudgetsComponent {
     this.budgetObj.time = this.budgetForm.value.time;
     this.budgetObj.notes = this.budgetForm.value.notes;
     this.budgetObj.label = 'budget';
+    this.budgetObj.months.jan = this.budgetForm.get('months')?.value.jan;
+    this.budgetObj.months.feb = this.budgetForm.get('months')?.value.feb;
+    this.budgetObj.months.mar = this.budgetForm.get('months')?.value.mar;
+    this.budgetObj.months.apr = this.budgetForm.get('months')?.value.apr;
+    this.budgetObj.months.may = this.budgetForm.get('months')?.value.may;
+    this.budgetObj.months.jun = this.budgetForm.get('months')?.value.jun;
+    this.budgetObj.months.jul = this.budgetForm.get('months')?.value.jul;
+    this.budgetObj.months.aug = this.budgetForm.get('months')?.value.aug;
+    this.budgetObj.months.sep = this.budgetForm.get('months')?.value.sep;
+    this.budgetObj.months.oct = this.budgetForm.get('months')?.value.oct;
+    this.budgetObj.months.nov = this.budgetForm.get('months')?.value.nov;
+    this.budgetObj.months.dec = this.budgetForm.get('months')?.value.dec;
 
     this.dataService
       .addBudget(this.budgetObj)
@@ -190,7 +246,7 @@ export class BudgetsComponent {
   editBudget(budget: Budget) {
     this.budgetObj = { ...budget };
 
-    this.budgetForm.setValue({
+    this.budgetForm.patchValue({
       title: budget.title,
       bank: budget.bank,
       bankCharges: budget.bankCharges,
@@ -204,6 +260,20 @@ export class BudgetsComponent {
       time: budget.time,
       notes: budget.notes,
       label: 'budget',
+      months: {
+        jan: budget.months.jan,
+        feb: budget.months.feb,
+        mar: budget.months.mar,
+        apr: budget.months.apr,
+        may: budget.months.may,
+        jun: budget.months.jun,
+        jul: budget.months.jul,
+        aug: budget.months.aug,
+        sep: budget.months.sep,
+        oct: budget.months.oct,
+        nov: budget.months.nov,
+        dec: budget.months.dec,
+      },
     });
 
     this.openPopupFn();

@@ -186,5 +186,20 @@
         }
       }
     }
+
+    .password-field {
+      position: relative;
+
+      .material-symbols-outlined {
+        background-color: #ffffff;
+        position: absolute;
+        right: 0.1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        padding: 0 1rem 0 0.8rem;
+        font-size: 2.2rem;
+      }
+    }
   }
 }
