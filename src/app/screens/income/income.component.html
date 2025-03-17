@@ -1,5 +1,5 @@
-<section class="expense">
-  <div class="expense-title">
+<section class="component-box">
+  <div class="title-bar">
     <h3>Income</h3>
     <div class="title-btn-box">
       <button type="button" (click)="categoryView()">
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="pay-method-list" *ngIf="showCategory">
+  <div class="category-list" *ngIf="showCategory">
     <h3>Categories</h3>
     <div>
       <p *ngFor="let data of paymentList">
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <header class="set-01-header">
+  <header class="filter-bar">
     <select name="payment" id="payment">
       <option value="" disabled selected>Payment Method</option>
       <option value="Cash">Cash</option>
@@ -70,7 +70,7 @@
     </button>
   </header>
 
-  <div class="set-01-body">
+  <div class="table-box">
     <table>
       <thead>
         <tr>
@@ -141,7 +141,7 @@
 </section>
 
 <!-- Expense Popup -->
-<div class="expense-popup-box" *ngIf="openPopup">
+<div class="popup-box" *ngIf="openPopup">
   <div class="expense-popup">
     <div class="expense-popup-head">
       <h3>Add Income</h3>
@@ -237,7 +237,7 @@
 </div>
 
 <!-- Category Popup -->
-<div class="expense-popup-box" *ngIf="openCategoryPopup">
+<div class="popup-box" *ngIf="openCategoryPopup">
   <div class="expense-popup">
     <div class="expense-popup-head">
       <h3>Add Income Category</h3>

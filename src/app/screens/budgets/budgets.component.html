@@ -1,5 +1,5 @@
-<section class="expense">
-  <div class="expense-title">
+<section class="component-box">
+  <div class="title-bar">
     <h3>Budget</h3>
     <div class="title-btn-box">
       <button type="button" (click)="openPopupFn()">
@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <header class="set-01-header">
+  <header class="filter-bar">
     <select name="payment" id="payment">
       <option value="" disabled selected>Payment Method</option>
       <option value="Cash">Cash</option>
@@ -40,7 +40,7 @@
     </button>
   </header>
 
-  <div class="set-01-body">
+  <div class="budget-body">
     <div class="budget-card" *ngFor="let data of budgetList">
       <header class="budget-card-head">
         <div>
@@ -149,7 +149,7 @@
 </section>
 
 <!-- Budget Popup -->
-<div class="expense-popup-box" *ngIf="openPopup">
+<div class="popup-box" *ngIf="openPopup">
   <div class="expense-popup">
     <div class="expense-popup-head">
       <h3>Add Expense</h3>

@@ -52,9 +52,11 @@
           <span class="material-symbols-outlined"> face </span>
           Profile
         </a>
-        <a routerLink="settings" routerLinkActive="active-nav-link">
-          <span class="material-symbols-outlined"> settings </span>
-          Settings
+        <a (click)="colorModeFn()">
+          <span class="material-symbols-outlined">
+            {{ currentMode ? "nights_stay" : "brightness_5" }}
+          </span>
+          {{ currentMode ? "Dark Mode" : "Light Mode" }}
         </a>
         <button (click)="logout()">
           <span class="material-symbols-outlined"> logout </span>

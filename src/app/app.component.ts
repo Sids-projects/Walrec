@@ -24,6 +24,8 @@ export class AppComponent {
     userEmail: '',
     gender: '',
   };
+  colorMode: boolean = false;
+  currentMode!: any;
 
   constructor(
     private auth: AuthService,
@@ -35,6 +37,13 @@ export class AppComponent {
     this.isLoggedIn = !!localStorage.getItem('token');
     this.getUserEmail();
     this.getProfileData();
+    // Convert string to boolean
+    this.currentMode = localStorage.getItem('darkMode') === 'true';
+
+    // Apply the class if dark mode is on
+    if (this.currentMode) {
+      document.body.classList.add('dark');
+    }
   }
 
   logout() {
@@ -74,5 +83,14 @@ export class AppComponent {
           console.error(err);
         },
       });
+  }
+
+  colorModeFn() {
+    this.currentMode = !this.currentMode; // Toggle the mode
+    const body = document.body;
+
+    // Save the mode and toggle class
+    localStorage.setItem('darkMode', this.currentMode.toString());
+    body.classList.toggle('dark', this.currentMode);
   }
 }
