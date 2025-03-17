@@ -362,7 +362,7 @@ export class DataService {
     });
   }
 
-  // Expense
+  // Budget
   addBudget(budged: Budget) {
     return this.fireauth.currentUser.then((user) => {
       if (user) {

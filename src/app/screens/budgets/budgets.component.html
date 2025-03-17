@@ -49,9 +49,6 @@
         </div>
         <div class="head-info">
           <p class="budget-card-badge">{{ data.duration }} Months</p>
-          <p class="budget-card-badge" [matTooltip]="data.notes">
-            <span class="material-symbols-outlined">info</span>
-          </p>
           <p class="budget-card-badge" (click)="editBudget(data)">
             <span class="material-symbols-outlined">edit</span>
           </p>
@@ -109,34 +106,42 @@
           <div>
             <p>
               <span>Start Date:</span>
-              <span>{{ data.amount }}</span>
+              <span>{{ data.fromDate }}</span>
             </p>
             <p>
               <span>End Date:</span>
-              <span>{{ data.amount }}</span>
+              <span>{{ data.toDate }}</span>
+            </p>
+            <p>
+              <span>Due Date:</span>
+              <span>{{ data.dueDate }}</span>
             </p>
           </div>
         </div>
         <div class="set-04">
           <h3>
-            <span class="material-symbols-outlined"> edit_note </span> Paid
-            Months
+            <span class="material-symbols-outlined">info</span>
+            Comment
           </h3>
-          <div
-            *ngIf="budgetForm.get('months')?.valid"
-            class="months-list"
-            [formGroup]="monthsProp"
-          >
-            <p *ngFor="let data of monthsList">
-              <label [for]="data.keyValue">{{ data.display }}</label>
-              <input
-                type="checkbox"
-                [formControlName]="data.keyValue"
-                [id]="data.keyValue"
-                [name]="data.keyValue"
-              />
-            </p>
+          <p>{{ data.notes }}</p>
+        </div>
+        <div class="set-05">
+          <div class="progress-field-header">
+            <h3>
+              <span class="material-symbols-outlined"> edit_note </span> Paid
+              Months
+            </h3>
+            <div>
+              <p>
+                {{ data.paidMonths }} Months out of {{ data.duration }} Months
+              </p>
+            </div>
           </div>
+          <progress
+            id="paidMonths"
+            [value]="data.paidMonths"
+            [max]="data.duration"
+          ></progress>
         </div>
       </div>
     </div>
@@ -189,6 +194,16 @@
             required
           />
         </div>
+        <div class="flex-layout-fluid">
+          <label for="interest">Interest</label>
+          <input
+            formControlName="interest"
+            type="number"
+            name="interest"
+            placeholder="e.g., 5000"
+            required
+          />
+        </div>
       </div>
       <div class="flex-layout">
         <div class="flex-layout-fluid">
@@ -198,16 +213,6 @@
             type="number"
             name="amount"
             placeholder="e.g., 15,000"
-            required
-          />
-        </div>
-        <div class="flex-layout-fluid">
-          <label for="interest">Interest</label>
-          <input
-            formControlName="interest"
-            type="number"
-            name="interest"
-            placeholder="e.g., 5000"
             required
           />
         </div>
@@ -222,6 +227,10 @@
           />
         </div>
         <div class="flex-layout-fluid">
+          <label for="date">Start</label>
+          <input formControlName="fromDate" type="date" name="date" required />
+        </div>
+        <div class="flex-layout-fluid">
           <label for="duration">Duration</label>
           <input
             formControlName="duration"
@@ -234,20 +243,33 @@
       </div>
       <div class="flex-layout">
         <div class="flex-layout-fluid">
-          <label for="date">From</label>
-          <input formControlName="fromDate" type="date" name="date" required />
-        </div>
-        <div class="flex-layout-fluid">
-          <label for="date">Date</label>
+          <label for="date">End</label>
           <input formControlName="toDate" type="date" name="date" required />
         </div>
-        <div class="flex-layout-fluid">
+        <div class="flex-layout-fluid due-date-field">
           <label for="date">Due</label>
-          <input formControlName="dueDate" type="date" name="date" required />
+          <input
+            formControlName="dueDate"
+            type="date"
+            name="date"
+            [min]="getMinDate()"
+            [max]="getMaxDate()"
+            onkeydown="return false"
+            required
+          />
         </div>
         <div class="flex-layout-fluid">
           <label for="time">Payment Time</label>
           <input formControlName="time" type="time" name="time" required />
+        </div>
+        <div class="flex-layout-fluid">
+          <label for="paidMonths">Months Paid</label>
+          <input
+            formControlName="paidMonths"
+            type="number"
+            name="paidMonths"
+            required
+          />
         </div>
       </div>
       <div>
@@ -260,9 +282,6 @@
         ></textarea>
       </div>
       <div class="btn-box">
-        <button type="reset" class="reset-btn">
-          <span class="material-symbols-outlined"> restart_alt </span>
-        </button>
         <button
           class="submit-btn"
           type="button"

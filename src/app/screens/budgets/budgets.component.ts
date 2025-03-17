@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
@@ -19,6 +19,7 @@ export class BudgetsComponent {
   showUpdate: boolean = false;
   showSubmit: boolean = true;
   budgetList: Budget[] = [];
+  defaultDueDate: any;
   budgetObj: Budget = {
     id: '',
     title: '',
@@ -34,40 +35,18 @@ export class BudgetsComponent {
     time: '',
     notes: '',
     label: '',
-    months: {
-      jan: false,
-      feb: false,
-      mar: false,
-      apr: false,
-      may: false,
-      jun: false,
-      jul: false,
-      aug: false,
-      sep: false,
-      oct: false,
-      nov: false,
-      dec: false,
-    },
+    paidMonths: 0,
   };
-  monthsList: { display: string; keyValue: string }[] = [
-    { display: 'Jan', keyValue: 'jan' },
-    { display: 'Feb', keyValue: 'feb' },
-    { display: 'Mar', keyValue: 'mar' },
-    { display: 'Apr', keyValue: 'apr' },
-    { display: 'May', keyValue: 'may' },
-    { display: 'Jun', keyValue: 'jun' },
-    { display: 'Jul', keyValue: 'jul' },
-    { display: 'Aug', keyValue: 'aug' },
-    { display: 'Sep', keyValue: 'sep' },
-    { display: 'Oct', keyValue: 'oct' },
-    { display: 'Nov', keyValue: 'nov' },
-    { display: 'Dec', keyValue: 'dec' },
-  ];
   monthsProp: any;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+    this.defaultDueDate = `${currentYear}-${currentMonth}-01`;
+
     this.budgetForm = new FormGroup({
       title: new FormControl(''),
       bank: new FormControl(''),
@@ -78,28 +57,53 @@ export class BudgetsComponent {
       duration: new FormControl(0),
       fromDate: new FormControl(),
       toDate: new FormControl(),
-      dueDate: new FormControl(),
+      dueDate: new FormControl(this.defaultDueDate),
       time: new FormControl(),
       notes: new FormControl(''),
       label: new FormControl({ value: 'budget', disabled: true }),
-      months: new FormGroup({
-        jan: new FormControl(false),
-        feb: new FormControl(false),
-        mar: new FormControl(false),
-        apr: new FormControl(false),
-        may: new FormControl(false),
-        jun: new FormControl(false),
-        jul: new FormControl(false),
-        aug: new FormControl(false),
-        sep: new FormControl(false),
-        oct: new FormControl(false),
-        nov: new FormControl(false),
-        dec: new FormControl(false),
-      }),
+      paidMonths: new FormControl(0),
+    });
+    this.getAllBudget();
+
+    this.budgetForm.get('fromDate')?.valueChanges.subscribe(() => {
+      this.calculateEndDate();
     });
 
-    this.monthsProp = this.budgetForm.get('months');
-    this.getAllBudget();
+    this.budgetForm.get('duration')?.valueChanges.subscribe(() => {
+      this.calculateEndDate();
+    });
+  }
+
+  getMinDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}-01`;
+  }
+
+  getMaxDate(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}-31`;
+  }
+
+  calculateEndDate() {
+    const fromDate = this.budgetForm.get('fromDate')?.value;
+    const duration = this.budgetForm.get('duration')?.value;
+
+    if (fromDate && duration) {
+      const startDate = new Date(fromDate);
+      const endDate = new Date(
+        startDate.setMonth(startDate.getMonth() + duration)
+      );
+
+      // Format the end date to match the 'yyyy-mm-dd' format for consistency
+      const endDateString = endDate.toISOString().split('T')[0];
+
+      // Set the calculated end date in the 'toDate' field
+      this.budgetForm.get('toDate')?.setValue(endDateString);
+    }
   }
 
   openPopupFn() {
@@ -148,7 +152,7 @@ export class BudgetsComponent {
       duration: 0,
       fromDate: '',
       toDate: '',
-      dueDate: '',
+      dueDate: this.defaultDueDate,
       time: '',
       notes: '',
     });
@@ -164,24 +168,11 @@ export class BudgetsComponent {
       duration: 0,
       fromDate: '',
       toDate: '',
-      dueDate: '',
+      dueDate: this.defaultDueDate,
       time: '',
       notes: '',
       label: '',
-      months: {
-        jan: false,
-        feb: false,
-        mar: false,
-        apr: false,
-        may: false,
-        jun: false,
-        jul: false,
-        aug: false,
-        sep: false,
-        oct: false,
-        nov: false,
-        dec: false,
-      },
+      paidMonths: 0,
     };
   }
 
@@ -218,18 +209,7 @@ export class BudgetsComponent {
     this.budgetObj.time = this.budgetForm.value.time;
     this.budgetObj.notes = this.budgetForm.value.notes;
     this.budgetObj.label = 'budget';
-    this.budgetObj.months.jan = this.budgetForm.get('months')?.value.jan;
-    this.budgetObj.months.feb = this.budgetForm.get('months')?.value.feb;
-    this.budgetObj.months.mar = this.budgetForm.get('months')?.value.mar;
-    this.budgetObj.months.apr = this.budgetForm.get('months')?.value.apr;
-    this.budgetObj.months.may = this.budgetForm.get('months')?.value.may;
-    this.budgetObj.months.jun = this.budgetForm.get('months')?.value.jun;
-    this.budgetObj.months.jul = this.budgetForm.get('months')?.value.jul;
-    this.budgetObj.months.aug = this.budgetForm.get('months')?.value.aug;
-    this.budgetObj.months.sep = this.budgetForm.get('months')?.value.sep;
-    this.budgetObj.months.oct = this.budgetForm.get('months')?.value.oct;
-    this.budgetObj.months.nov = this.budgetForm.get('months')?.value.nov;
-    this.budgetObj.months.dec = this.budgetForm.get('months')?.value.dec;
+    this.budgetObj.paidMonths = this.budgetForm.value.paidMonths;
 
     this.dataService
       .addBudget(this.budgetObj)
@@ -260,20 +240,7 @@ export class BudgetsComponent {
       time: budget.time,
       notes: budget.notes,
       label: 'budget',
-      months: {
-        jan: budget.months.jan,
-        feb: budget.months.feb,
-        mar: budget.months.mar,
-        apr: budget.months.apr,
-        may: budget.months.may,
-        jun: budget.months.jun,
-        jul: budget.months.jul,
-        aug: budget.months.aug,
-        sep: budget.months.sep,
-        oct: budget.months.oct,
-        nov: budget.months.nov,
-        dec: budget.months.dec,
-      },
+      paidMonths: budget.paidMonths,
     });
 
     this.openPopupFn();
@@ -285,7 +252,7 @@ export class BudgetsComponent {
     if (this.budgetObj.id) {
       this.budgetObj.title = this.budgetForm.value.title;
       this.budgetObj.bank = this.budgetForm.value.bank;
-      this.budgetObj.bankCharges = this.budgetForm.value.bank;
+      this.budgetObj.bankCharges = this.budgetForm.value.bankCharges;
       this.budgetObj.amount = this.budgetForm.value.amount;
       this.budgetObj.interest = this.budgetForm.value.interest;
       this.budgetObj.downPay = this.budgetForm.value.downPay;
@@ -296,6 +263,7 @@ export class BudgetsComponent {
       this.budgetObj.time = this.budgetForm.value.time;
       this.budgetObj.notes = this.budgetForm.value.notes;
       this.budgetObj.label = 'budget';
+      this.budgetObj.paidMonths = this.budgetForm.value.paidMonths;
 
       this.dataService
         .editBudget(this.budgetObj)

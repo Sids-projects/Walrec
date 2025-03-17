@@ -202,15 +202,53 @@
             text-align: center;
           }
 
-          .td-day {
+          .td-days {
             background-color: #fafafa;
-            text-align: left;
+
+            p {
+              text-align: left;
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              gap: 0.6rem;
+
+              .material-symbols-outlined {
+                font-size: 1.8rem;
+              }
+            }
           }
 
           &:last-child {
             td {
               border-bottom: none;
             }
+          }
+        }
+
+        .td-label-expense,
+        .td-label-income {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 0.8rem;
+
+          .material-symbols-outlined {
+            font-size: 1.6rem;
+            padding: 0.2rem;
+            border-radius: 0.4rem;
+            color: #ffffff;
+          }
+        }
+
+        .td-label-expense {
+          .material-symbols-outlined {
+            background-color: #ffa500;
+          }
+        }
+
+        .td-label-income {
+          .material-symbols-outlined {
+            background-color: rgb(19, 144, 19);
           }
         }
       }

@@ -3,6 +3,63 @@
 :root {
   --screen-padding: 1.8rem 2.2rem 1.4rem 0.6rem;
   --auth-screens-padding: 2rem;
+  --border-colour: #e2c957;
+  --background-colour: #ffe267;
+  // Input
+  --input-bdr-colour: #d8d8d8;
+  --input-font-colour: #5e5e5e;
+  --input-outline-colour: #e2c74b;
+  --input-accent-colour: #ffe267;
+  --input-focus-colour: #e2c957;
+}
+
+/* General input styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+input[type="time"] {
+  border: 0.1rem solid var(--input-bdr-colour);
+  outline-color: var(--input-outline-colour);
+  color: var(--input-font-colour);
+  padding: 1rem;
+  transition: 0.3s ease-in-out;
+}
+
+/* Focus effect */
+input:focus {
+  border-color: var(--input-focus-colour);
+}
+
+/* Checkboxes and radios accent color */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--input-accent-colour); /* Modern browsers */
+}
+
+/* Progress bar styling */
+progress {
+  border-radius: 10px;
+  appearance: none;
+}
+
+/* Webkit browsers (Chrome, Edge) */
+progress::-webkit-progress-bar {
+  border: 0.1rem solid var(--input-bdr-colour);
+  background-color: #efefef;
+  border-radius: 1rem;
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--input-accent-colour);
+  border-radius: 1rem;
+}
+
+/* Firefox */
+progress::-moz-progress-bar {
+  background-color: #4caf50;
+  border-radius: 1rem;
 }
 
 html,
@@ -66,18 +123,12 @@ label {
 }
 
 input {
-  border: 0.1rem solid #d8d8d8;
   width: 100%;
   height: 4rem;
   padding: 0 1.4rem;
   border-radius: 0.6rem;
   font-size: 1.6rem;
   font-weight: 500;
-  color: #757575;
-
-  &:focus {
-    outline: 0.1rem solid #e2c74b;
-  }
 }
 
 input[type="radio"] {
@@ -85,23 +136,13 @@ input[type="radio"] {
   padding: 0 !important;
 }
 
+textarea,
 select {
-  border: 0.1rem solid #d8d8d8;
-  width: 100%;
-  padding: 0.8rem;
-  border-radius: 0.6rem;
-  font-size: 1.4rem;
-  color: #757575;
-}
-
-textarea {
-  border: 0.1rem solid #d8d8d8;
   width: 100%;
   padding: 0.8rem;
   border-radius: 0.6rem;
   font-size: 1.4rem;
   font-weight: 500;
-  color: #757575;
 }
 
 .truncate-email {
@@ -110,157 +151,4 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.app-main-withNav {
-  grid-template-columns: 25rem calc(100vw - 25rem);
-}
-
-.app-main-noNav {
-  grid-template-columns: 100vw;
-}
-
-.app-main {
-  background-color: #f3f5f7;
-  height: 100vh;
-  display: grid;
-
-  .app-nav-box {
-    height: 100%;
-    padding: 1.4rem;
-
-    .app-nav {
-      border: 0.1rem solid #e3e5e2;
-      background-color: #ffffff;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      padding: 1.4rem 1.6rem;
-      border-radius: 1rem;
-      height: 100%;
-
-      .app-nav-head {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1.2rem;
-        text-align: center;
-        padding: 0.6rem 0;
-
-        h2 {
-          background-color: #ffe267;
-          border: 0.1rem solid #e2c957;
-          padding: 0.8rem;
-          border-radius: 10rem;
-
-          .material-symbols-outlined {
-            font-size: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 0.2rem !important;
-          }
-        }
-
-        .user-name {
-          display: flex;
-          flex-direction: column;
-          gap: 0.6rem;
-
-          p {
-            font-size: 1.8rem;
-            font-weight: 700;
-            line-height: 1.4rem;
-          }
-
-          small {
-            font-weight: 600;
-            line-height: 1.8rem;
-          }
-        }
-
-        .edit-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 0.4rem;
-          text-decoration: none;
-          overflow: hidden;
-
-          .material-symbols-outlined {
-            font-size: 2.4rem;
-            color: #000000;
-          }
-        }
-      }
-
-      .app-nav-body {
-        padding: 3.8rem 1rem;
-
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
-        gap: 2.6rem;
-
-        a {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          text-decoration: none;
-          font-weight: 600;
-          font-size: 1.4rem;
-          color: #28313e;
-          gap: 0.8rem;
-          color: #848c93;
-        }
-
-        .active-nav-link {
-          color: #000000;
-        }
-      }
-
-      .app-nav-footer {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 2.2rem;
-        padding: 1.8rem 1rem;
-
-        a {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          text-decoration: none;
-          font-weight: 600;
-          color: #848c93;
-          font-size: 1.4rem;
-          gap: 0.8rem;
-          cursor: pointer;
-        }
-
-        button {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          text-decoration: none;
-          font-weight: 600;
-          background-color: transparent;
-          border: none;
-          font-size: 1.4rem;
-          gap: 0.8rem;
-          cursor: pointer;
-        }
-
-        .active-nav-link {
-          color: black;
-        }
-      }
-    }
-  }
-
-  .app-body {
-    overflow-y: auto;
-  }
 }
