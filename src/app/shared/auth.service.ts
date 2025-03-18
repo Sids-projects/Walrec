@@ -73,12 +73,13 @@ export class AuthService {
   }
 
   sendEmailForVerification(user: any) {
-    user.sendEmailForVerification().then(
-      (res: any) => {
+    user.sendEmailVerification().then(
+      () => {
+        alert('Verification email sent. Please check your inbox!');
         this.router.navigate(['/verifyEmail']);
       },
       (err: any) => {
-        alert('Somthing went wrong');
+        alert('Something went wrong: ' + err.message);
       }
     );
   }
