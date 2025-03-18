@@ -11,15 +11,15 @@
   }
 
   .chart-cubes {
-    border: 0.1rem solid #e3e5e2;
-    background-color: #ffffff;
+    border: 0.1rem solid var(--chart-cubes-bdr);
+    background-color: var(--chart-cubes-bg);
     border-radius: 1rem;
     padding: 1rem 1.6rem;
 
     p {
       font-weight: 500;
       margin-bottom: 1rem;
-      color: #848c93;
+      color: var(--chart-cubes-title);
       font-size: 1.6rem;
     }
 
@@ -40,8 +40,8 @@
     }
 
     div {
-      border: 0.1rem solid #e3e5e2;
-      background-color: #ffffff;
+      border: 0.1rem solid var(--chart-cubes-bdr);
+      background-color: var(--chart-cubes-bg);
       border-radius: 1rem;
       padding: 1rem;
     }

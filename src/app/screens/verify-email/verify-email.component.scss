@@ -7,8 +7,8 @@
   justify-content: center;
 
   .verift-card {
-    border: 0.1rem solid #d8d8d8;
-    background-color: #ffffff;
+    border: 0.1rem solid var(--verify-email-bdr);
+    background-color: var(--verify-email-bg);
     max-width: 50rem;
     padding: 4rem;
     border-radius: 1rem;
