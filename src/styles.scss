@@ -32,7 +32,7 @@
   --table-td-font-clr: #3c3c3c;
 
   // Cards View
-  --card-box-bdr: #e3e5e2;
+  --card-box-bdr: #e2c957;
   --card-box-bg: #ffffff;
   --card-box-header-bg: #fee77d;
 
@@ -421,6 +421,7 @@ select {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(34rem, 1fr));
   gap: 1.8rem;
+  margin-top: 2rem;
 
   .cards-view {
     border: 0.1rem solid var(--card-box-bdr);
