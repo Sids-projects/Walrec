@@ -73,11 +73,23 @@
 
     <div
       class="app-pop-icon"
-      *ngIf="screenWidth < 870 && currentComponent != 'profile'"
+      *ngIf="
+        screenWidth < 870 &&
+        currentComponent != 'profile' &&
+        currentComponent != 'login'
+      "
     >
-      <span class="material-symbols-outlined" routerLink="profile"
-        >settings</span
-      >
+      <span class="material-symbols-outlined" [matMenuTriggerFor]="menu">
+        settings
+      </span>
+      <mat-menu #menu="matMenu" class="mat-menu-btns">
+        <button mat-menu-item routerLink="profile">
+          <span class="material-symbols-outlined">face</span> Profile
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <span class="material-symbols-outlined">logout</span> Logout
+        </button>
+      </mat-menu>
     </div>
   </section>
 </main>

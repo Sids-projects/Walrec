@@ -48,7 +48,6 @@
           <p>{{ data.fromDate }} - {{ data.toDate }} | {{ data.time }}</p>
         </div>
         <div class="head-info">
-          <p class="budget-card-badge">{{ data.duration }} Months</p>
           <p class="budget-card-badge" (click)="editBudget(data)">
             <span class="material-symbols-outlined">edit</span>
           </p>
@@ -72,6 +71,10 @@
               <span>{{
                 data.bankCharges | currency : "INR" : "symbol" : "2.0-2"
               }}</span>
+            </p>
+            <p>
+              <span>Duration:</span>
+              <span>{{ data.duration }} Months</span>
             </p>
           </div>
         </div>

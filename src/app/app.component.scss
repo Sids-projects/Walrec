@@ -156,6 +156,22 @@
     grid-template-columns: 100vw !important;
     grid-template-rows: 18rem calc(1fr - 18rem) !important;
     gap: 0 !important;
+
+    .app-body {
+      height: calc(100dvh - 6.4rem) !important;
+      grid-row-start: 1;
+      padding: 1.8rem;
+    }
+  }
+
+  .app-main-noNav {
+    grid-template-columns: 100vw !important;
+
+    .app-body {
+      height: 100dvh !important;
+      grid-row-start: 1;
+      padding: 1.8rem;
+    }
   }
 
   .app-nav-box {
@@ -219,11 +235,5 @@
         display: none !important;
       }
     }
-  }
-
-  .app-body {
-    height: calc(100dvh - 6.4rem) !important;
-    grid-row-start: 1;
-    padding: 1.8rem;
   }
 }

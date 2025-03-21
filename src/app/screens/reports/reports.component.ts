@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Expense } from '../../model/expense';
 import { Income } from '../../model/income';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-reports',
@@ -18,12 +20,29 @@ export class ReportsComponent {
   todayList: any[] = [];
   yesterdayList: any[] = [];
   olderList: any[] = [];
+  togglesKey: string = 'table';
+  screenWidth!: number;
+  screenHeight!: number;
+  private screenSizeSub!: Subscription;
 
-  constructor(private dataService: DataService, private auth: AuthService) {}
+  constructor(
+    private dataService: DataService,
+    private auth: AuthService,
+    private sharedService: SharedService
+  ) {}
 
   ngOnInit() {
     this.getAllExpense();
     this.getAllIncome();
+
+    this.screenSizeSub = this.sharedService.screenSize$.subscribe((size) => {
+      this.screenWidth = size.width;
+      this.screenHeight = size.height;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.screenSizeSub) this.screenSizeSub.unsubscribe();
   }
 
   getAllExpense() {
@@ -101,5 +120,9 @@ export class ReportsComponent {
         this.olderList.push(item);
       }
     });
+  }
+
+  togglesFn(param: string) {
+    this.togglesKey = param;
   }
 }

@@ -34,7 +34,32 @@
     </button>
   </header>
 
-  <div class="table-box">
+  <nav class="toggles" *ngIf="screenWidth > 870">
+    <div>
+      <span
+        [class]="
+          togglesKey === 'table'
+            ? 'material-symbols-outlined active-toggle'
+            : 'material-symbols-outlined'
+        "
+        (click)="togglesFn('table')"
+      >
+        table_chart
+      </span>
+      <span
+        [class]="
+          togglesKey === 'card'
+            ? 'material-symbols-outlined active-toggle'
+            : 'material-symbols-outlined'
+        "
+        (click)="togglesFn('card')"
+      >
+        dashboard
+      </span>
+    </div>
+  </nav>
+
+  <div class="table-box" *ngIf="screenWidth > 870 && togglesKey === 'table'">
     <table>
       <thead>
         <tr>
@@ -167,4 +192,135 @@
       </tbody>
     </table>
   </div>
+
+  <section class="cards-box" *ngIf="screenWidth < 870 || togglesKey === 'card'">
+    <ng-container *ngIf="todayList.length > 0">
+      <p class="card-box-title">Today</p>
+      <div class="cards-view" *ngFor="let data of todayList">
+        <header>
+          <div class="set-01">
+            <div>
+              <h4 class="truncate-title">{{ data.title }}</h4>
+            </div>
+          </div>
+        </header>
+        <div class="cards-view-body">
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Date:
+            </p>
+            <p>{{ data.date }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Time:
+            </p>
+            <p>{{ data.time }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> attach_money </span>
+              Amount:
+            </p>
+            <p>{{ data.amount | number : "1.2-2" : "en-IN" }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> credit_card </span>
+              Method:
+            </p>
+            <p>{{ data.payment }}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="yesterdayList.length > 0">
+      <p class="card-box-title">Yesterday</p>
+      <div class="cards-view" *ngFor="let data of yesterdayList">
+        <header>
+          <div class="set-01">
+            <div>
+              <h4 class="truncate-title">{{ data.title }}</h4>
+            </div>
+          </div>
+        </header>
+        <div class="cards-view-body">
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Date:
+            </p>
+            <p>{{ data.date }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Time:
+            </p>
+            <p>{{ data.time }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> attach_money </span>
+              Amount:
+            </p>
+            <p>{{ data.amount | number : "1.2-2" : "en-IN" }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> credit_card </span>
+              Method:
+            </p>
+            <p>{{ data.payment }}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="olderList.length > 0">
+      <p class="card-box-title">Older</p>
+      <div class="cards-view" *ngFor="let data of olderList">
+        <header>
+          <div class="set-01">
+            <div>
+              <h4 class="truncate-title">{{ data.title }}</h4>
+            </div>
+          </div>
+        </header>
+        <div class="cards-view-body">
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Date:
+            </p>
+            <p>{{ data.date }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> calendar_today </span>
+              Time:
+            </p>
+            <p>{{ data.time }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> attach_money </span>
+              Amount:
+            </p>
+            <p>{{ data.amount | number : "1.2-2" : "en-IN" }}</p>
+          </div>
+          <div class="card-view-list">
+            <p>
+              <span class="material-symbols-outlined"> credit_card </span>
+              Method:
+            </p>
+            <p>{{ data.payment }}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </section>
 </section>

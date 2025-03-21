@@ -116,7 +116,6 @@
               Amount
             </p>
           </th>
-
           <th>
             <p>
               <span class="material-symbols-outlined"> credit_card </span>
@@ -169,10 +168,9 @@
     <div class="cards-view" *ngFor="let data of expenseList; let i = index">
       <header>
         <div class="set-01">
-          <span class="material-symbols-outlined"> calendar_today </span>
+          <p>{{ i + 1 }}</p>
           <div>
-            <p>Date & Time</p>
-            <h4>{{ data.date }} | {{ data.time }}</h4>
+            <h4 class="truncate-title">{{ data.title }}</h4>
           </div>
         </div>
         <div class="set-02">
@@ -190,9 +188,17 @@
       <div class="cards-view-body">
         <div class="card-view-list">
           <p>
-            <span class="material-symbols-outlined"> titlecase </span> Title:
+            <span class="material-symbols-outlined"> calendar_today </span>
+            Date:
           </p>
-          <p>{{ data.title }}</p>
+          <p>{{ data.date }}</p>
+        </div>
+        <div class="card-view-list">
+          <p>
+            <span class="material-symbols-outlined"> calendar_today </span>
+            Time:
+          </p>
+          <p>{{ data.time }}</p>
         </div>
         <div class="card-view-list">
           <p>
