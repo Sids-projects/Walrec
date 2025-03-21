@@ -8,7 +8,7 @@
 
 .app-main {
   background-color: var(--app-background);
-  height: 100vh;
+  height: 100dvh;
   display: grid;
 
   .app-nav-box {
@@ -206,7 +206,7 @@
   }
 
   .app-body {
-    height: calc(100vh - 9rem) !important;
+    height: calc(100dvh - 9rem) !important;
     grid-row-start: 1;
     padding: 1.8rem;
   }
