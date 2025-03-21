@@ -133,6 +133,21 @@
 
   .app-body {
     overflow-y: auto;
+
+    .app-pop-icon {
+      border: 0.1rem solid var(--app-theme-border-colour);
+      background-color: var(--app-theme-background);
+      position: fixed;
+      bottom: 8rem;
+      right: 1rem;
+      width: 4.8rem;
+      height: 4.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      border-radius: 10rem;
+    }
   }
 }
 
@@ -207,7 +222,7 @@
   }
 
   .app-body {
-    height: calc(100vh - 6.4rem) !important;
+    height: calc(100dvh - 6.4rem) !important;
     grid-row-start: 1;
     padding: 1.8rem;
   }

@@ -70,5 +70,14 @@
 
   <section class="app-body">
     <router-outlet></router-outlet>
+
+    <div
+      class="app-pop-icon"
+      *ngIf="screenWidth < 870 && currentComponent != 'profile'"
+    >
+      <span class="material-symbols-outlined" routerLink="profile"
+        >settings</span
+      >
+    </div>
   </section>
 </main>

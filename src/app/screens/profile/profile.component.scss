@@ -7,8 +7,16 @@
     justify-content: space-between;
 
     h3 {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.4rem;
       font-weight: 700;
       font-size: 2rem;
+
+      .material-symbols-outlined {
+        display: none;
+      }
     }
 
     button {
@@ -197,6 +205,43 @@
         border-radius: 0.6rem;
         font-size: 1.6rem;
         font-weight: 600;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 870px) {
+  .profile {
+    padding: 0 !important;
+
+    header {
+      .material-symbols-outlined {
+        display: block !important;
+      }
+    }
+
+    .profile-box {
+      grid-template-columns: 1fr !important;
+
+      .welcome-box {
+        padding: 1rem 2rem !important;
+
+        img {
+          display: none;
+        }
+      }
+    }
+
+    .profile-fields {
+      grid-template-columns: 1fr !important;
+      gap: 2rem;
+
+      .grid-expand {
+        grid-column: span 1 !important;
+      }
+
+      .profile-faces {
+        justify-content: center !important;
       }
     }
   }

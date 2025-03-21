@@ -2,9 +2,12 @@ import { Component, HostListener } from '@angular/core';
 import { AuthService } from './shared/auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { DataService } from './shared/data.service';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Profile } from './model/profile';
+import { Subscription } from 'rxjs';
+import { SharedService } from './shared/shared.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +29,17 @@ export class AppComponent {
   };
   colorMode: boolean = false;
   currentMode!: any;
+  screenWidth!: number;
+  screenHeight!: number;
+  private screenSizeSub!: Subscription;
+  currentComponent: string = '';
 
   constructor(
     private auth: AuthService,
     private fireauth: AngularFireAuth,
-    private dataService: DataService
+    private dataService: DataService,
+    private sharedService: SharedService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -44,6 +53,21 @@ export class AppComponent {
     if (this.currentMode) {
       document.body.classList.add('dark');
     }
+
+    this.screenSizeSub = this.sharedService.screenSize$.subscribe((size) => {
+      this.screenWidth = size.width;
+      this.screenHeight = size.height;
+    });
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.currentComponent = this.router.url.split('/').pop() || '';
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.screenSizeSub) this.screenSizeSub.unsubscribe();
   }
 
   logout() {

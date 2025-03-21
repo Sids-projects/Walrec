@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Profile } from '../../model/profile';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,7 @@ export class ProfileComponent {
   profileForm!: FormGroup;
   userEmail: string = '';
   profileList: Profile[] = [];
+
   profileObj: Profile = {
     id: '',
     profilePic: '',
@@ -41,7 +43,8 @@ export class ProfileComponent {
 
   constructor(
     private fireauth: AngularFireAuth,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -153,5 +156,9 @@ export class ProfileComponent {
           alert('Error updating profile: ' + error.message);
         });
     }
+  }
+
+  routeTo() {
+    this.router.navigate(['dashboard']);
   }
 }
