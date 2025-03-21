@@ -5,6 +5,8 @@ import { Income } from '../../model/income';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Payment } from '../../model/payment';
+import { SharedService } from '../../shared/shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-income',
@@ -47,8 +49,15 @@ export class IncomeComponent {
     value: '',
     creation: 'custom',
   };
+  togglesKey: string = 'table';
+  screenWidth!: number;
+  screenHeight!: number;
+  private screenSizeSub!: Subscription;
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private sharedService: SharedService
+  ) {}
 
   ngOnInit() {
     this.incomeForm = new FormGroup({
@@ -65,8 +74,17 @@ export class IncomeComponent {
       categoryName: new FormControl(''),
     });
 
+    this.screenSizeSub = this.sharedService.screenSize$.subscribe((size) => {
+      this.screenWidth = size.width;
+      this.screenHeight = size.height;
+    });
+
     this.getAllIncome();
     this.getAllCategory();
+  }
+
+  ngOnDestroy() {
+    if (this.screenSizeSub) this.screenSizeSub.unsubscribe();
   }
 
   openPopupFn() {
@@ -334,5 +352,9 @@ export class IncomeComponent {
       .catch((error) => {
         alert('Error adding category: ' + error.message);
       });
+  }
+
+  togglesFn(param: string) {
+    this.togglesKey = param;
   }
 }

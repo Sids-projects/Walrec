@@ -194,7 +194,6 @@ export class DataService {
 
   editProfile(profile: Profile) {
     return this.fireauth.currentUser.then((user) => {
-      console.log('user', user);
       if (user) {
         return this.afs
           .collection(`/Users/${user.uid}/Profile`)

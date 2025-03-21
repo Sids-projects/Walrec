@@ -70,7 +70,32 @@
     </button>
   </header>
 
-  <div class="table-box">
+  <nav class="toggles" *ngIf="screenWidth > 870">
+    <div>
+      <span
+        [class]="
+          togglesKey === 'table'
+            ? 'material-symbols-outlined active-toggle'
+            : 'material-symbols-outlined'
+        "
+        (click)="togglesFn('table')"
+      >
+        table_chart
+      </span>
+      <span
+        [class]="
+          togglesKey === 'card'
+            ? 'material-symbols-outlined active-toggle'
+            : 'material-symbols-outlined'
+        "
+        (click)="togglesFn('card')"
+      >
+        dashboard
+      </span>
+    </div>
+  </nav>
+
+  <div class="table-box" *ngIf="screenWidth > 870 && togglesKey === 'table'">
     <table>
       <thead>
         <tr>
@@ -138,6 +163,53 @@
       </tbody>
     </table>
   </div>
+
+  <section class="cards-box" *ngIf="screenWidth < 870 || togglesKey === 'card'">
+    <div class="cards-view" *ngFor="let data of incomeList; let i = index">
+      <header>
+        <div class="set-01">
+          <span class="material-symbols-outlined"> calendar_today </span>
+          <div>
+            <p>Date & Time</p>
+            <h4>{{ data.date }} | {{ data.time }}</h4>
+          </div>
+        </div>
+        <div class="set-02">
+          <span class="material-symbols-outlined" (click)="editIncome(data)">
+            edit
+          </span>
+          <span class="material-symbols-outlined" (click)="deleteIncome(data)">
+            delete
+          </span>
+          <span class="material-symbols-outlined" [matTooltip]="data.notes">
+            error
+          </span>
+        </div>
+      </header>
+      <div class="cards-view-body">
+        <div class="card-view-list">
+          <p>
+            <span class="material-symbols-outlined"> titlecase </span> Title:
+          </p>
+          <p>{{ data.title }}</p>
+        </div>
+        <div class="card-view-list">
+          <p>
+            <span class="material-symbols-outlined"> attach_money </span>
+            Amount:
+          </p>
+          <p>{{ data.amount | number : "1.2-2" : "en-IN" }}</p>
+        </div>
+        <div class="card-view-list">
+          <p>
+            <span class="material-symbols-outlined"> credit_card </span>
+            Method:
+          </p>
+          <p>{{ data.payment }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <!-- Expense Popup -->

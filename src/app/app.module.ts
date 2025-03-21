@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
 
 // Components
 import { DashboardComponent } from './screens/dashboard/dashboard.component';
@@ -58,6 +59,7 @@ import { ProfileComponent } from './screens/profile/profile.component';
     MatMenuModule,
     FormsModule,
     MatCheckboxModule,
+    MatTabsModule,
   ],
   providers: [
     provideAnimationsAsync(),

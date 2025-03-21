@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { AuthService } from './shared/auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { DataService } from './shared/data.service';

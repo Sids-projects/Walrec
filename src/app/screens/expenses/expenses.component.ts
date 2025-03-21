@@ -6,6 +6,8 @@ import { AuthService } from '../../shared/auth.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Payment } from '../../model/payment';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-expenses',
@@ -50,8 +52,16 @@ export class ExpensesComponent {
     creation: 'custom',
   };
   newDate = new Date();
+  togglesKey: string = 'table';
+  screenWidth!: number;
+  screenHeight!: number;
+  private screenSizeSub!: Subscription;
 
-  constructor(private dataService: DataService, private auth: AuthService) {
+  constructor(
+    private dataService: DataService,
+    private auth: AuthService,
+    private sharedService: SharedService
+  ) {
     console.log(this.newDate);
   }
 
@@ -70,8 +80,17 @@ export class ExpensesComponent {
       categoryName: new FormControl(''),
     });
 
+    this.screenSizeSub = this.sharedService.screenSize$.subscribe((size) => {
+      this.screenWidth = size.width;
+      this.screenHeight = size.height;
+    });
+
     this.getAllExpense();
     this.getAllCategory();
+  }
+
+  ngOnDestroy() {
+    if (this.screenSizeSub) this.screenSizeSub.unsubscribe();
   }
 
   openPopupFn() {
@@ -341,5 +360,9 @@ export class ExpensesComponent {
       .catch((error) => {
         alert('Error adding category: ' + error.message);
       });
+  }
+
+  togglesFn(param: string) {
+    this.togglesKey = param;
   }
 }

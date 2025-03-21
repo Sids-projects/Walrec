@@ -16,6 +16,10 @@
   --screen-padding: 1.8rem 2.2rem 1.4rem 0.6rem;
   --auth-screens-padding: 2rem;
 
+  // Toggles
+  --toggle-bdr: #e3e5e2;
+  --toggle-bg: #ffffff;
+
   // Table
   --table-border: #e3e5e2;
   --table-bg: #ffffff;
@@ -26,6 +30,11 @@
   --table-td-colSpan-bg: #fafafa;
   --table-tbody-bg: #ffffff;
   --table-td-font-clr: #3c3c3c;
+
+  // Cards View
+  --card-box-bdr: #e3e5e2;
+  --card-box-bg: #ffffff;
+  --card-box-header-bg: #fee77d;
 
   // Charts
   --chart-cubes-bdr: #e3e5e2;
@@ -93,6 +102,10 @@
   --table-td-icon: #767676;
   --table-td-colSpan-bg: #2e3038;
   --table-td-icon: #dad9d9;
+
+  // Cards View
+  --card-box-bdr: #4a505c;
+  --card-box-bg: #393e47;
 
   // Input
   --input-bdr-colour: #4a505c;
@@ -403,11 +416,86 @@ select {
   }
 }
 
+// Cards View
+.cards-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(34rem, 1fr));
+  gap: 1.8rem;
+
+  .cards-view {
+    border: 0.1rem solid var(--card-box-bdr);
+    background-color: var(--card-box-bg);
+    border-radius: 1rem !important;
+    overflow: hidden;
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.4rem;
+      background-color: var(--card-box-header-bg);
+
+      .set-01 {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        div {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          p,
+          h4 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.6rem;
+          }
+        }
+      }
+
+      .set-02 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        .material-symbols-outlined {
+          font-size: 2rem;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .cards-view-body {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1.4rem;
+      padding: 1rem 1.4rem;
+
+      .card-view-list {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        p {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 0.4rem;
+        }
+      }
+    }
+  }
+}
+
 // Title Bar
 .title-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 1.4rem;
 
   h3 {
     font-weight: 700;
@@ -448,6 +536,7 @@ select {
   padding: 1.4rem;
   border-radius: 0.8rem;
   margin-top: 2rem;
+  margin-bottom: 1.4rem;
 
   h3 {
     font-weight: 700;
@@ -498,12 +587,11 @@ select {
   align-items: center;
   justify-content: flex-start;
   gap: 1.4rem;
-  margin-top: 1.4rem;
   margin-bottom: 2rem;
 
   select,
   input {
-    min-width: 18rem;
+    min-width: 14rem;
     width: 100%;
     max-width: 20rem;
     padding: 0.8rem;
@@ -524,6 +612,38 @@ select {
 
     .material-symbols-outlined {
       font-size: 2rem;
+    }
+  }
+}
+
+// Toggles
+.toggles {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 1.8rem;
+
+  div {
+    border: 0.1rem solid var(--toggle-bdr);
+    background-color: var(--toggle-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.6rem;
+    overflow: hidden;
+
+    .material-symbols-outlined {
+      width: 4.6rem;
+      height: 3.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .active-toggle {
+      background-color: var(--app-theme-background);
     }
   }
 }
@@ -671,6 +791,7 @@ select {
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: var(--auth-screens-padding);
+  border-radius: 1.2rem;
 
   .set-01 {
     background-color: #fefaeb;
@@ -681,6 +802,7 @@ select {
     align-items: center;
     justify-content: center;
     border-radius: 0.8rem;
+    padding: 2rem;
     overflow: hidden;
     position: relative;
 
@@ -876,5 +998,26 @@ select {
         font-size: 2.2rem;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 870px) {
+  .login {
+    grid-template-columns: 1fr;
+    padding: 0 !important;
+
+    .set-01 {
+      display: none;
+    }
+  }
+
+  .component-box {
+    padding: 0 !important;
+  }
+}
+
+@media only screen and (max-width: 580px) {
+  .filter-bar {
+    display: none !important;
   }
 }
