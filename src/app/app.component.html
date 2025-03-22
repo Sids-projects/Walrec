@@ -86,6 +86,12 @@
         <button mat-menu-item routerLink="profile">
           <span class="material-symbols-outlined">face</span> Profile
         </button>
+        <button mat-menu-item (click)="colorModeFn()">
+          <span class="material-symbols-outlined">
+            {{ currentMode ? "nights_stay" : "brightness_5" }}
+          </span>
+          {{ currentMode ? "Dark Mode" : "Light Mode" }}
+        </button>
         <button mat-menu-item (click)="logout()">
           <span class="material-symbols-outlined">logout</span> Logout
         </button>
