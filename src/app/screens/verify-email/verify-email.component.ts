@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -7,7 +8,13 @@ import { Router } from '@angular/router';
   styleUrl: './verify-email.component.scss',
 })
 export class VerifyEmailComponent {
-  constructor(private router: Router) {}
+  isLoading = false;
+
+  constructor(private router: Router, private loadingService: LoadingService) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   routeToLogin() {
     this.router.navigate(['login']);

@@ -7,6 +7,7 @@ import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Payment } from '../../model/payment';
 import { SharedService } from '../../shared/shared.service';
 import { Subscription } from 'rxjs';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-income',
@@ -53,11 +54,17 @@ export class IncomeComponent {
   screenWidth!: number;
   screenHeight!: number;
   private screenSizeSub!: Subscription;
+  isLoading = false;
 
   constructor(
     private dataService: DataService,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     this.incomeForm = new FormGroup({
@@ -199,6 +206,7 @@ export class IncomeComponent {
   }
 
   updateIncome() {
+    console.log(this.incomeObj.id);
     if (this.incomeObj.id) {
       this.incomeObj.title = this.incomeForm.value.title;
       this.incomeObj.amount = this.incomeForm.value.amount;
@@ -206,8 +214,9 @@ export class IncomeComponent {
       this.incomeObj.date = this.incomeForm.value.date;
       this.incomeObj.payment = this.incomeForm.value.payment;
       this.incomeObj.notes = this.incomeForm.value.notes;
-      this.incomeObj.label = this.incomeForm.value.label;
+      this.incomeObj.label = 'income';
 
+      console.log(this.incomeObj);
       this.dataService
         .editIncome(this.incomeObj)
         .then(() => {

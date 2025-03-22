@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { Expense } from '../../model/expense';
-import { AuthService } from '../../shared/auth.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Payment } from '../../model/payment';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/shared.service';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-expenses',
@@ -56,13 +56,16 @@ export class ExpensesComponent {
   screenWidth!: number;
   screenHeight!: number;
   private screenSizeSub!: Subscription;
+  isLoading = false;
 
   constructor(
     private dataService: DataService,
-    private auth: AuthService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private loadingService: LoadingService
   ) {
-    console.log(this.newDate);
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
   }
 
   ngOnInit() {

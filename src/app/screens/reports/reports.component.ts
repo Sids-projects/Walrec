@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../shared/auth.service';
 import { DataService } from '../../shared/data.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
@@ -7,6 +6,7 @@ import { Expense } from '../../model/expense';
 import { Income } from '../../model/income';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/shared.service';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-reports',
@@ -24,12 +24,17 @@ export class ReportsComponent {
   screenWidth!: number;
   screenHeight!: number;
   private screenSizeSub!: Subscription;
+  isLoading = false;
 
   constructor(
     private dataService: DataService,
-    private auth: AuthService,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     this.getAllExpense();

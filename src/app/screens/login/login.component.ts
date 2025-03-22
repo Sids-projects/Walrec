@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +16,17 @@ export class LoginComponent {
   interval: any;
   viewPasswordKey: boolean = false;
   viewPassword: string = 'password';
+  isLoading = false;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     this.loginForm = new FormGroup({

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Budget } from '../../model/budget';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-budgets',
@@ -38,8 +39,16 @@ export class BudgetsComponent {
     paidMonths: 0,
   };
   monthsProp: any;
+  isLoading = false;
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     const now = new Date();

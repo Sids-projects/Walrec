@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Expense } from '../../model/expense';
 import { Income } from '../../model/income';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +38,16 @@ export class DashboardComponent implements AfterViewInit {
     colors: ['#FF9999'], // Mild red
   };
 
-  constructor(private dataService: DataService) {}
+  isLoading = false;
+
+  constructor(
+    private dataService: DataService,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     this.getAllExpense();

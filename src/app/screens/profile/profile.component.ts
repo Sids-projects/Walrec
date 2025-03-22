@@ -6,6 +6,7 @@ import { Profile } from '../../model/profile';
 import { map } from 'rxjs/operators';
 import { DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-profile',
@@ -40,12 +41,18 @@ export class ProfileComponent {
     userEmail: '',
     gender: '',
   };
+  isLoading = false;
 
   constructor(
     private fireauth: AngularFireAuth,
     private dataService: DataService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     this.profileForm = new FormGroup({

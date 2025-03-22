@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../shared/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { LoadingService } from '../../shared/loading.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,8 +14,17 @@ export class ForgotPasswordComponent {
   slideIndex: number = 0;
   slides = [false, false, false];
   interval: any;
+  isLoading = false;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private loadingService: LoadingService
+  ) {
+    this.loadingService.loading$.subscribe((state) => {
+      this.isLoading = state;
+    });
+  }
 
   ngOnInit() {
     this.forgotForm = new FormGroup({

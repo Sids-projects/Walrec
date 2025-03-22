@@ -6,16 +6,23 @@ import {
   FacebookAuthProvider,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private fireauth: AngularFireAuth, private router: Router) {}
+  constructor(
+    private fireauth: AngularFireAuth,
+    private router: Router,
+    private loadingService: LoadingService
+  ) {}
 
   login(email: string, password: string) {
+    this.loadingService.startLoading();
     this.fireauth.signInWithEmailAndPassword(email, password).then(
       (res) => {
+        this.loadingService.stopLoading();
         localStorage.setItem('token', 'true');
 
         if (res.user?.emailVerified == true) {
@@ -27,7 +34,8 @@ export class AuthService {
         }
       },
       (err) => {
-        alert('Something went wrong');
+        this.loadingService.stopLoading();
+        alert('Something went wrong: ' + err.message);
         this.router.navigate(['/login']);
       }
     );
