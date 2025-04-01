@@ -52,4 +52,4 @@ To get more help on the Angular CLI, use ng help or check out the Angular CLI Ov
 
 ## 📬 Feedback & Contributions
 
-Feel free to fork this repository, report issues, or suggest improvements! Contributions are welcome. 😊
+Feel free suggest improvements! Contributions are welcome. 😊
