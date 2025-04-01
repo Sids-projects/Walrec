@@ -26,27 +26,27 @@ Backend: (To be added, if applicable)
 
 Database: (To be added, if applicable)
 
-## 📌 Development Server
+## Development Server
 
 Run ng serve for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## 📌 Code Scaffolding
+## Code Scaffolding
 
 Run ng generate component component-name to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## 📌 Build
+## Build
 
 Run ng build to build the project. The build artifacts will be stored in the `dist/ directory`.
 
-## 📌 Running Unit Tests
+## Running Unit Tests
 
 Run ng test to execute the unit tests via Karma.
 
-## 📌 Running End-to-End Tests
+## Running End-to-End Tests
 
 Run ng e2e to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## 📌 Further Help
+## Further Help
 
 To get more help on the Angular CLI, use ng help or check out the Angular CLI Overview and Command Reference page.
 
