@@ -1,0 +1,36 @@
+.calendar-container {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  font-family: sans-serif;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .weekdays,
+  .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+  }
+
+  .day {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+
+    &:hover {
+      background-color: #ddd;
+    }
+
+    &.empty {
+      background: transparent;
+    }
+  }
+}

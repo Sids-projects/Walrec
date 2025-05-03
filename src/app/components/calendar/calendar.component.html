@@ -1,0 +1,17 @@
+<div class="calendar-container">
+  <div class="header">
+    <button (click)="changeMonth(-1)">&#8592;</button>
+    <div>{{ currentYear }} - {{ currentMonth + 1 }}</div>
+    <button (click)="changeMonth(1)">&#8594;</button>
+  </div>
+
+  <div class="weekdays">
+    <div *ngFor="let day of weekDays">{{ day }}</div>
+  </div>
+
+  <div class="days">
+    <div *ngFor="let day of daysInMonth" [class.empty]="day === 0" class="day">
+      {{ day === 0 ? "" : day }}
+    </div>
+  </div>
+</div>

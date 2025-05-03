@@ -34,6 +34,7 @@ import { ForgotPasswordComponent } from './screens/forgot-password/forgot-passwo
 import { VerifyEmailComponent } from './screens/verify-email/verify-email.component';
 import { ProfileComponent } from './screens/profile/profile.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     VerifyEmailComponent,
     ProfileComponent,
     SpinnerComponent,
+    CalendarComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
