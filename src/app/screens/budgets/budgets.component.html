@@ -3,42 +3,10 @@
     <h3>Budget</h3>
     <div class="title-btn-box">
       <button type="button" (click)="openPopupFn()">
-        <p>Create</p>
-        <span class="material-symbols-outlined"> add_circle </span>
+        <span class="material-symbols-outlined"> add </span>
       </button>
     </div>
   </div>
-
-  <header class="filter-bar">
-    <select name="payment" id="payment">
-      <option value="" disabled selected>Payment Method</option>
-      <option value="Cash">Cash</option>
-      <option value="Credit Card">Credit Card</option>
-      <option value="Debit Card">Debit Card</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="Digital Wallet">Digital Wallet</option>
-    </select>
-    <input
-      type="text"
-      id="dateInput"
-      onfocus="this.type='date'"
-      onblur="if(!this.value) this.type='text'"
-      placeholder="From date"
-    />
-    <input
-      type="text"
-      id="dateInput"
-      onfocus="this.type='date'"
-      onblur="if(!this.value) this.type='text'"
-      placeholder="To date"
-    />
-    <button type="button">
-      <span class="material-symbols-outlined"> filter_alt </span>
-    </button>
-    <button type="button">
-      <span class="material-symbols-outlined"> swap_vert </span>
-    </button>
-  </header>
 
   <div class="budget-body">
     <div class="budget-card" *ngFor="let data of budgetList">

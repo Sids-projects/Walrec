@@ -1,18 +1,31 @@
 <section class="component-box">
-  <div class="title-bar">
+  <nav class="component-calendar">
+    <app-calendar [isHorizontalView]="true" (dateSelected)="onDatePicked($event)"></app-calendar>
+  </nav>
+
+  <header class="title-bar">
     <h3>Income</h3>
     <div class="title-btn-box">
-      <button type="button" (click)="categoryView()">
-        <p>Categories</p>
-        <span class="material-symbols-outlined"> category </span>
-      </button>
       <button type="button" (click)="openPopupFn()">
-        <p>Create</p>
-        <span class="material-symbols-outlined"> add_circle </span>
+        <span class="material-symbols-outlined"> add </span>
       </button>
+      <button type="button" (click)="categoryView()">Categories</button>
+      <button
+        type="button"
+        *ngIf="screenWidth > 870"
+        [matMenuTriggerFor]="menu"
+      >
+        Change View
+        <span class="material-symbols-outlined"> arrow_drop_down </span>
+      </button>
+      <mat-menu #menu="matMenu">
+        <span mat-menu-item (click)="togglesFn('table')"> Table View </span>
+        <span mat-menu-item (click)="togglesFn('card')"> Card View </span>
+      </mat-menu>
     </div>
-  </div>
+  </header>
 
+  <!-- Category -->
   <div class="category-list" *ngIf="showCategory">
     <h3>Categories</h3>
     <div>
@@ -39,92 +52,15 @@
     </div>
   </div>
 
-  <header class="filter-bar">
-    <select name="payment" id="payment">
-      <option value="" disabled selected>Payment Method</option>
-      <option value="Cash">Cash</option>
-      <option value="Credit Card">Credit Card</option>
-      <option value="Debit Card">Debit Card</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="Digital Wallet">Digital Wallet</option>
-    </select>
-    <input
-      type="text"
-      id="dateInput"
-      onfocus="this.type='date'"
-      onblur="if(!this.value) this.type='text'"
-      placeholder="From date"
-    />
-    <input
-      type="text"
-      id="dateInput"
-      onfocus="this.type='date'"
-      onblur="if(!this.value) this.type='text'"
-      placeholder="To date"
-    />
-    <button type="button">
-      <span class="material-symbols-outlined"> filter_alt </span>
-    </button>
-    <button type="button">
-      <span class="material-symbols-outlined"> swap_vert </span>
-    </button>
-  </header>
-
-  <nav class="toggles" *ngIf="screenWidth > 870">
-    <div>
-      <span
-        [class]="
-          togglesKey === 'table'
-            ? 'material-symbols-outlined active-toggle'
-            : 'material-symbols-outlined'
-        "
-        (click)="togglesFn('table')"
-      >
-        table_chart
-      </span>
-      <span
-        [class]="
-          togglesKey === 'card'
-            ? 'material-symbols-outlined active-toggle'
-            : 'material-symbols-outlined'
-        "
-        (click)="togglesFn('card')"
-      >
-        dashboard
-      </span>
-    </div>
-  </nav>
-
   <div class="table-box" *ngIf="screenWidth > 870 && togglesKey === 'table'">
     <table>
       <thead>
         <tr>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Date & Time
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> titlecase </span> Title
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> attach_money </span>
-              Amount
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> credit_card </span>
-              Method
-            </p>
-          </th>
-          <th>
-            <p><span class="material-symbols-outlined"> edit </span> Actions</p>
-          </th>
+          <th>Date & Time</th>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>

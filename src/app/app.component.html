@@ -5,30 +5,12 @@
   <section class="app-nav-box" *ngIf="isLoggedIn">
     <nav class="app-nav">
       <header class="app-nav-head">
-        <h2>
-          <span class="material-symbols-outlined">
-            {{
-              profileList.length == 0 ? "face" : profileList[0].profilePic
-            }}</span
-          >
-        </h2>
-        <div class="user-name">
-          <p>
-            {{
-              profileList.length == 0
-                ? userEmail.split("@")[0]
-                : profileList[0].firstName + " " + profileList[0].lastName
-            }}
-          </p>
-          <small [matTooltip]="userEmail" class="truncate-email">{{
-            userEmail
-          }}</small>
-        </div>
+        <img src="./assets/app-icon.svg" alt="App Logo" />
       </header>
       <div class="app-nav-body">
         <a routerLink="dashboard" routerLinkActive="active-nav-link">
           <span class="material-symbols-outlined"> monitoring </span>
-          <span class="nav-menu-name">Dashboard</span>
+          <span class="nav-menu-name">Home</span>
         </a>
         <a routerLink="expense" routerLinkActive="active-nav-link">
           <span class="material-symbols-outlined"> paid </span>
@@ -52,23 +34,28 @@
       <footer class="app-nav-footer">
         <a routerLink="profile" routerLinkActive="active-nav-link">
           <span class="material-symbols-outlined"> face </span>
-          Profile
         </a>
         <a (click)="colorModeFn()">
           <span class="material-symbols-outlined">
             {{ currentMode ? "nights_stay" : "brightness_5" }}
           </span>
-          {{ currentMode ? "Dark Mode" : "Light Mode" }}
         </a>
         <button (click)="logout()">
           <span class="material-symbols-outlined"> logout </span>
-          Logout
         </button>
       </footer>
     </nav>
   </section>
 
   <section class="app-body">
+    <header
+      class="app-body-header"
+      *ngIf="currentComponent != 'profile' && currentComponent != 'login'"
+    >
+      <h3>👋 Hello {{ profileList[0].firstName }}</h3>
+      <input type="search" placeholder="Search Record" />
+    </header>
+
     <router-outlet></router-outlet>
 
     <div

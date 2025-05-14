@@ -3,95 +3,48 @@
     <h3>Report</h3>
   </div>
 
-  <header class="filter-bar">
-    <select name="payment" id="payment">
-      <option value="" disabled selected>Payment Method</option>
-      <option value="Cash">Cash</option>
-      <option value="Credit Card">Credit Card</option>
-      <option value="Debit Card">Debit Card</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="Digital Wallet">Digital Wallet</option>
-    </select>
-    <input
-      type="text"
-      id="dateInput"
-      onfocus="this.type='date'"
-      onblur="if(!this.value) this.type='text'"
-      placeholder="From date"
-    />
-    <input
-      type="text"
-      id="dateInput"
-      onfocus="this.type='date'"
-      onblur="if(!this.value) this.type='text'"
-      placeholder="To date"
-    />
-    <button type="button">
-      <span class="material-symbols-outlined"> filter_alt </span>
+  <header class="filter-view-bar">
+    <form [formGroup]="budgetHeaderForm" class="filter-view-01">
+      <input
+        type="text"
+        id="dateInput"
+        onfocus="this.type='date'"
+        onblur="if(!this.value) this.type='text'"
+        placeholder="From date"
+      />
+      <input
+        type="text"
+        id="dateInput"
+        onfocus="this.type='date'"
+        onblur="if(!this.value) this.type='text'"
+        placeholder="To date"
+      />
+      <button type="button" (click)="filterByDateRange()">
+        <span class="material-symbols-outlined"> filter_alt </span>
+      </button>
+      <button type="button">
+        <span class="material-symbols-outlined"> swap_vert </span>
+      </button>
+    </form>
+    <button type="button" *ngIf="screenWidth > 870" [matMenuTriggerFor]="menu">
+      Change View
+      <span class="material-symbols-outlined"> arrow_drop_down </span>
     </button>
-    <button type="button">
-      <span class="material-symbols-outlined"> swap_vert </span>
-    </button>
+    <mat-menu #menu="matMenu">
+      <span mat-menu-item (click)="togglesFn('table')"> Table View </span>
+      <span mat-menu-item (click)="togglesFn('card')"> Card View </span>
+    </mat-menu>
   </header>
 
-  <nav class="toggles" *ngIf="screenWidth > 870">
-    <div>
-      <span
-        [class]="
-          togglesKey === 'table'
-            ? 'material-symbols-outlined active-toggle'
-            : 'material-symbols-outlined'
-        "
-        (click)="togglesFn('table')"
-      >
-        table_chart
-      </span>
-      <span
-        [class]="
-          togglesKey === 'card'
-            ? 'material-symbols-outlined active-toggle'
-            : 'material-symbols-outlined'
-        "
-        (click)="togglesFn('card')"
-      >
-        dashboard
-      </span>
-    </div>
-  </nav>
-
-  <div class="table-box" *ngIf="screenWidth > 870 && togglesKey === 'table'">
+  <section class="table-box" *ngIf="screenWidth > 870 && togglesKey === 'table'">
     <table>
       <thead>
         <tr>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Date
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> titlecase </span> Title
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> attach_money </span>
-              Amount
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> credit_card </span>
-              Method
-            </p>
-          </th>
-          <th>
-            <p>
-              <span class="material-symbols-outlined"> tag </span>
-              Label
-            </p>
-          </th>
+          <th>Date</th>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Label</th>
         </tr>
       </thead>
       <tbody>
@@ -104,63 +57,7 @@
             </p>
           </td>
         </tr>
-        <tr *ngFor="let data of todayList">
-          <td>{{ data.date }}</td>
-          <td>{{ data.title }}</td>
-          <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
-          <td>{{ data.payment }}</td>
-          <td>
-            <p
-              [class]="
-                data.label == 'expense' ? 'td-label-expense' : 'td-label-income'
-              "
-            >
-              <span class="material-symbols-outlined">
-                {{ data.label == "expense" ? "north_east" : "south_west" }}
-              </span>
-              {{ data.label }}
-            </p>
-          </td>
-        </tr>
-
-        <!-- Yesterday Section -->
-        <tr *ngIf="yesterdayList.length > 0">
-          <td colspan="5" class="td-days">
-            <p>
-              <span class="material-symbols-outlined"> flag </span>
-              Yesterday
-            </p>
-          </td>
-        </tr>
-        <tr *ngFor="let data of yesterdayList">
-          <td>{{ data.date }}</td>
-          <td>{{ data.title }}</td>
-          <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
-          <td>{{ data.payment }}</td>
-          <td>
-            <p
-              [class]="
-                data.label == 'expense' ? 'td-label-expense' : 'td-label-income'
-              "
-            >
-              <span class="material-symbols-outlined">
-                {{ data.label == "expense" ? "north_east" : "south_west" }}
-              </span>
-              {{ data.label }}
-            </p>
-          </td>
-        </tr>
-
-        <!-- Older Section -->
-        <tr *ngIf="olderList.length > 0">
-          <td colspan="5" class="td-days">
-            <p>
-              <span class="material-symbols-outlined"> flag </span>
-              Older
-            </p>
-          </td>
-        </tr>
-        <tr *ngFor="let data of olderList">
+        <tr *ngFor="let data of expIncomeData">
           <td>{{ data.date }}</td>
           <td>{{ data.title }}</td>
           <td>{{ data.amount | number : "1.2-2" : "en-IN" }}</td>
@@ -180,109 +77,17 @@
         </tr>
 
         <!-- No Data Message -->
-        <tr
-          *ngIf="
-            todayList.length === 0 &&
-            yesterdayList.length === 0 &&
-            olderList.length === 0
-          "
-        >
+        <tr *ngIf="expIncomeData.length === 0">
           <td colspan="5" class="nodata">No Data Found</td>
         </tr>
       </tbody>
     </table>
-  </div>
+  </section>
 
   <section class="cards-box" *ngIf="screenWidth < 870 || togglesKey === 'card'">
-    <ng-container *ngIf="todayList.length > 0">
+    <ng-container *ngIf="expIncomeData.length > 0">
       <p class="card-box-title">Today</p>
-      <div class="cards-view" *ngFor="let data of todayList">
-        <header>
-          <div class="set-01">
-            <div>
-              <h4 class="truncate-title">{{ data.title }}</h4>
-            </div>
-          </div>
-        </header>
-        <div class="cards-view-body">
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Date:
-            </p>
-            <p>{{ data.date }}</p>
-          </div>
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Time:
-            </p>
-            <p>{{ data.time }}</p>
-          </div>
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> attach_money </span>
-              Amount:
-            </p>
-            <p>{{ data.amount | number : "1.2-2" : "en-IN" }}</p>
-          </div>
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> credit_card </span>
-              Method:
-            </p>
-            <p>{{ data.payment }}</p>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="yesterdayList.length > 0">
-      <p class="card-box-title">Yesterday</p>
-      <div class="cards-view" *ngFor="let data of yesterdayList">
-        <header>
-          <div class="set-01">
-            <div>
-              <h4 class="truncate-title">{{ data.title }}</h4>
-            </div>
-          </div>
-        </header>
-        <div class="cards-view-body">
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Date:
-            </p>
-            <p>{{ data.date }}</p>
-          </div>
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> calendar_today </span>
-              Time:
-            </p>
-            <p>{{ data.time }}</p>
-          </div>
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> attach_money </span>
-              Amount:
-            </p>
-            <p>{{ data.amount | number : "1.2-2" : "en-IN" }}</p>
-          </div>
-          <div class="card-view-list">
-            <p>
-              <span class="material-symbols-outlined"> credit_card </span>
-              Method:
-            </p>
-            <p>{{ data.payment }}</p>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="olderList.length > 0">
-      <p class="card-box-title">Older</p>
-      <div class="cards-view" *ngFor="let data of olderList">
+      <div class="cards-view" *ngFor="let data of expIncomeData">
         <header>
           <div class="set-01">
             <div>

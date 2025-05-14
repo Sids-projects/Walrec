@@ -1,17 +1,52 @@
-<div class="calendar-container">
+<div class="calendar-container" [ngClass]="{ horizontal: isHorizontalView }">
   <div class="header">
-    <button (click)="changeMonth(-1)">&#8592;</button>
-    <div>{{ currentYear }} - {{ currentMonth + 1 }}</div>
-    <button (click)="changeMonth(1)">&#8594;</button>
+    <h3>{{ monthNames[currentMonth] }}, {{ currentYear }}</h3>
+    <div class="header-btns">
+      <button (click)="changeMonth(-1)">
+        <span class="material-symbols-outlined"> chevron_left </span>
+      </button>
+      <p>Today</p>
+      <button (click)="changeMonth(1)">
+        <span class="material-symbols-outlined"> chevron_right </span>
+      </button>
+    </div>
   </div>
 
-  <div class="weekdays">
-    <div *ngFor="let day of weekDays">{{ day }}</div>
-  </div>
-
-  <div class="days">
-    <div *ngFor="let day of daysInMonth" [class.empty]="day === 0" class="day">
+  <!-- For vertical view -->
+  <div class="days" *ngIf="!isHorizontalView">
+    <div
+      *ngFor="let day of daysInMonth"
+      (click)="selectDay(day)"
+      [class.empty]="day === 0"
+      [class.today]="isToday(day)"
+      [class.selected]="day === selectedDay"
+      class="day"
+    >
       {{ day === 0 ? "" : day }}
     </div>
+  </div>
+
+  <!-- For horizontal view -->
+  <div class="horizontal-scroll-wrapper" *ngIf="isHorizontalView">
+    <button class="scroll-btn left" (click)="scrollDays('left')">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+
+    <div class="days" #daysContainer>
+      <div
+        *ngFor="let day of daysInMonth"
+        (click)="selectDay(day)"
+        [class.empty]="day === 0"
+        [class.today]="isToday(day)"
+        [class.selected]="day === selectedDay"
+        class="day"
+      >
+        {{ day === 0 ? "" : day }}
+      </div>
+    </div>
+
+    <button class="scroll-btn right" (click)="scrollDays('right')">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
   </div>
 </div>

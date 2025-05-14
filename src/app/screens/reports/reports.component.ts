@@ -7,6 +7,7 @@ import { Income } from '../../model/income';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../shared/shared.service';
 import { LoadingService } from '../../shared/loading.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-reports',
@@ -25,6 +26,8 @@ export class ReportsComponent {
   screenHeight!: number;
   private screenSizeSub!: Subscription;
   isLoading = false;
+  expIncomeData: any[] = [];
+  budgetHeaderForm!: FormGroup;
 
   constructor(
     private dataService: DataService,
@@ -37,6 +40,15 @@ export class ReportsComponent {
   }
 
   ngOnInit() {
+    this.budgetHeaderForm = new FormGroup({
+      fromDate: new FormControl(''),
+      toDate: new FormControl(''),
+    });
+
+    this.budgetHeaderForm.valueChanges.subscribe(() => {
+      this.filterByDateRange();
+    });
+
     this.getAllExpense();
     this.getAllIncome();
 
@@ -97,33 +109,30 @@ export class ReportsComponent {
   }
 
   categorizeData() {
+    this.expIncomeData = [...this.expenseList, ...this.incomeList];
+    console.log(this.expIncomeData);
+  }
+
+  filterByDateRange() {
+    const fromDate = this.budgetHeaderForm.get('fromDate')?.value;
+    const toDate = this.budgetHeaderForm.get('toDate')?.value;
+
+    if (!fromDate || !toDate) {
+      return; // Prevent filtering if one date is missing
+    }
+
+    const from = new Date(fromDate);
+    const to = new Date(toDate);
+
+    // Clear time portion to make it date-only comparison
+    from.setHours(0, 0, 0, 0);
+    to.setHours(23, 59, 59, 999);
+
     const allData = [...this.expenseList, ...this.incomeList];
 
-    // Sort by date (latest first)
-    allData.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-
-    // Get today's date and yesterday's date
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-    // Reset lists
-    this.todayList = [];
-    this.yesterdayList = [];
-    this.olderList = [];
-
-    // Categorize data
-    allData.forEach((item) => {
-      if (item.date === today) {
-        this.todayList.push(item);
-      } else if (item.date === yesterdayStr) {
-        this.yesterdayList.push(item);
-      } else {
-        this.olderList.push(item);
-      }
+    this.expIncomeData = allData.filter((item: any) => {
+      const itemDate = new Date(item.date);
+      return itemDate >= from && itemDate <= to;
     });
   }
 

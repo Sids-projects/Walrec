@@ -18,7 +18,16 @@ export class AppComponent {
   title = 'walrec';
   isLoggedIn = false;
   userEmail: string = '';
-  profileList: Profile[] = [];
+  profileList: Profile[] = [
+    {
+      id: '',
+      profilePic: '',
+      firstName: '',
+      lastName: '',
+      userEmail: '',
+      gender: '',
+    },
+  ];
   profileObj: Profile = {
     id: '',
     profilePic: '',

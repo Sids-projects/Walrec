@@ -163,4 +163,9 @@ export class DashboardComponent implements AfterViewInit {
     );
     this.balance = this.incomeAmount - this.expenseAmount;
   }
+
+  onDatePicked(date: Date) {
+    console.log('Selected Date:', date);
+    // you can store it or use it as needed
+  }
 }

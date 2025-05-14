@@ -55,6 +55,7 @@ export class IncomeComponent {
   screenHeight!: number;
   private screenSizeSub!: Subscription;
   isLoading = false;
+  selectedDate: string = ''; 
 
   constructor(
     private dataService: DataService,
@@ -88,6 +89,7 @@ export class IncomeComponent {
 
     this.getAllIncome();
     this.getAllCategory();
+    this.onDatePicked(new Date());
   }
 
   ngOnDestroy() {
@@ -116,10 +118,23 @@ export class IncomeComponent {
           })
         )
       )
+      // .subscribe({
+      //   next: (res) => {
+      //     this.incomeList = res;
+      //     console.log(this.incomeList);
+      //   },
+      //   error: (err) => {
+      //     alert('Error while fetching data');
+      //     console.error(err);
+      //   },
+      // });
       .subscribe({
         next: (res) => {
-          this.incomeList = res;
-          console.log(this.incomeList);
+          this.originalData = res;
+          this.incomeList = this.selectedDate
+            ? res.filter((income) => income.date === this.selectedDate)
+            : res;
+          console.log(this.originalData);
         },
         error: (err) => {
           alert('Error while fetching data');
@@ -365,5 +380,30 @@ export class IncomeComponent {
 
   togglesFn(param: string) {
     this.togglesKey = param;
+  }
+
+  filterIncomeByDate() {
+    if (!this.selectedDate) {
+      this.getAllIncome();
+      return;
+    }
+  
+    this.incomeList = this.originalData.filter(
+      (income: any) => income.date === this.selectedDate
+    );
+  }
+
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are 0-indexed
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`; // returns 'YYYY-MM-DD'
+  }
+  
+
+  onDatePicked(date: Date) {
+    const formattedDate = this.formatDate(date); // e.g., '2025-05-07'
+    this.selectedDate = formattedDate;
+    this.filterIncomeByDate();
   }
 }

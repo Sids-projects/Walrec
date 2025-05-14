@@ -57,6 +57,7 @@ export class ExpensesComponent {
   screenHeight!: number;
   private screenSizeSub!: Subscription;
   isLoading = false;
+  selectedDate: string = ''; 
 
   constructor(
     private dataService: DataService,
@@ -90,6 +91,7 @@ export class ExpensesComponent {
 
     this.getAllExpense();
     this.getAllCategory();
+    this.onDatePicked(new Date());
   }
 
   ngOnDestroy() {
@@ -118,10 +120,23 @@ export class ExpensesComponent {
           })
         )
       )
+      // .subscribe({
+      //   next: (res) => {
+      //     this.expenseList = res;
+      //     console.log(this.expenseList);
+      //   },
+      //   error: (err) => {
+      //     alert('Error while fetching data');
+      //     console.error(err);
+      //   },
+      // });
       .subscribe({
         next: (res) => {
-          this.expenseList = res;
-          console.log(this.expenseList);
+          this.originalData = res;
+          this.expenseList = this.selectedDate
+            ? res.filter((expense) => expense.date === this.selectedDate)
+            : res;
+          console.log(this.originalData);
         },
         error: (err) => {
           alert('Error while fetching data');
@@ -367,5 +382,30 @@ export class ExpensesComponent {
 
   togglesFn(param: string) {
     this.togglesKey = param;
+  }
+
+  filterExpensesByDate() {
+    if (!this.selectedDate) {
+      this.getAllExpense();
+      return;
+    }
+  
+    this.expenseList = this.originalData.filter(
+      (expense: any) => expense.date === this.selectedDate
+    );
+  }
+
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are 0-indexed
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`; // returns 'YYYY-MM-DD'
+  }
+  
+
+  onDatePicked(date: Date) {
+    const formattedDate = this.formatDate(date); // e.g., '2025-05-07'
+    this.selectedDate = formattedDate;
+    this.filterExpensesByDate();
   }
 }

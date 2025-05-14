@@ -1,31 +1,34 @@
 <section class="dashboard">
-  <h3>Dashboard</h3>
-  <div class="chart-cubes">
-    <p>Income</p>
-    <h4>{{ incomeAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
+  <div class="dashboard-charts">
+    <div class="chart-cubes">
+      <p>Income</p>
+      <h4>{{ incomeAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
+    </div>
+    <div class="chart-cubes">
+      <p>Expense</p>
+      <h4>{{ expenseAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
+    </div>
+    <div class="chart-cubes">
+      <p>Balance</p>
+      <h4>
+        {{
+          incomeAmount - expenseAmount | currency : "INR" : "symbol" : "2.0-2"
+        }}
+      </h4>
+    </div>
+    <div class="chart-01">
+      <h3>Income</h3>
+      <div id="incomeChart"></div>
+    </div>
+    <div class="chart-01">
+      <h3>Expense</h3>
+      <div id="expenseChart"></div>
+    </div>
   </div>
-  <div class="chart-cubes">
-    <p>Expense</p>
-    <h4>{{ expenseAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
-  </div>
-  <div class="chart-cubes">
-    <p>Balance</p>
-    <h4>
-      {{ incomeAmount - expenseAmount | currency : "INR" : "symbol" : "2.0-2" }}
-    </h4>
-  </div>
-  <div class="chart-cubes">
-    <p>Total</p>
-    <h4>{{ incomeAmount | currency : "INR" : "symbol" : "2.0-2" }}</h4>
-  </div>
-  <div class="chart-01">
-    <h3>Income</h3>
-    <div id="incomeChart"></div>
-  </div>
-  <div class="chart-01">
-    <h3>Expense</h3>
-    <div id="expenseChart"></div>
-  </div>
+
+  <aside>
+    <app-calendar [isHorizontalView]="false" (dateSelected)="onDatePicked($event)"></app-calendar>
+  </aside>
 </section>
 
 <app-spinner [isLoading]="isLoading"></app-spinner>
