@@ -40,9 +40,13 @@ export class ReportsComponent {
   }
 
   ngOnInit() {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
     this.budgetHeaderForm = new FormGroup({
-      fromDate: new FormControl(''),
-      toDate: new FormControl(''),
+      fromDate: new FormControl(firstDay.toISOString().split('T')[0]),
+      toDate: new FormControl(lastDay.toISOString().split('T')[0]),
     });
 
     this.budgetHeaderForm.valueChanges.subscribe(() => {
@@ -76,7 +80,7 @@ export class ReportsComponent {
       .subscribe({
         next: (res) => {
           this.expenseList = res;
-          this.categorizeData();
+          this.filterByDateRange();
         },
         error: (err) => {
           alert('Error while fetching expenses');
@@ -99,7 +103,7 @@ export class ReportsComponent {
       .subscribe({
         next: (res) => {
           this.incomeList = res;
-          this.categorizeData();
+          this.filterByDateRange();
         },
         error: (err) => {
           alert('Error while fetching incomes');
@@ -108,30 +112,23 @@ export class ReportsComponent {
       });
   }
 
-  categorizeData() {
-    this.expIncomeData = [...this.expenseList, ...this.incomeList];
-    console.log(this.expIncomeData);
-  }
-
   filterByDateRange() {
     const fromDate = this.budgetHeaderForm.get('fromDate')?.value;
     const toDate = this.budgetHeaderForm.get('toDate')?.value;
 
     if (!fromDate || !toDate) {
-      return; // Prevent filtering if one date is missing
+      return; // Return early if either is missing
     }
 
     const from = new Date(fromDate);
     const to = new Date(toDate);
-
-    // Clear time portion to make it date-only comparison
     from.setHours(0, 0, 0, 0);
     to.setHours(23, 59, 59, 999);
 
     const allData = [...this.expenseList, ...this.incomeList];
 
-    this.expIncomeData = allData.filter((item: any) => {
-      const itemDate = new Date(item.date);
+    this.expIncomeData = allData.filter((item) => {
+      const itemDate = new Date(item.date); // assumes 'YYYY-MM-DD'
       return itemDate >= from && itemDate <= to;
     });
   }

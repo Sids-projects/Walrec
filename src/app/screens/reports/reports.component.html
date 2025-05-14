@@ -5,25 +5,10 @@
 
   <header class="filter-view-bar">
     <form [formGroup]="budgetHeaderForm" class="filter-view-01">
-      <input
-        type="text"
-        id="dateInput"
-        onfocus="this.type='date'"
-        onblur="if(!this.value) this.type='text'"
-        placeholder="From date"
-      />
-      <input
-        type="text"
-        id="dateInput"
-        onfocus="this.type='date'"
-        onblur="if(!this.value) this.type='text'"
-        placeholder="To date"
-      />
+      <input type="date" placeholder="From date" formControlName="fromDate" />
+      <input type="date" placeholder="To date" formControlName="toDate" />
       <button type="button" (click)="filterByDateRange()">
         <span class="material-symbols-outlined"> filter_alt </span>
-      </button>
-      <button type="button">
-        <span class="material-symbols-outlined"> swap_vert </span>
       </button>
     </form>
     <button type="button" *ngIf="screenWidth > 870" [matMenuTriggerFor]="menu">
@@ -36,7 +21,10 @@
     </mat-menu>
   </header>
 
-  <section class="table-box" *ngIf="screenWidth > 870 && togglesKey === 'table'">
+  <section
+    class="table-box"
+    *ngIf="screenWidth > 870 && togglesKey === 'table'"
+  >
     <table>
       <thead>
         <tr>
